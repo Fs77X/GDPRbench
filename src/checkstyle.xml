@@ -20,6 +20,8 @@ LICENSE file.
     "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
     "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 
+    
+
 <!--
 
   Checkstyle configuration for Hadoop that is based on the sun_checks.xml file
@@ -49,7 +51,9 @@ LICENSE file.
 -->
 
 <module name="Checker">
-
+  <module name="SuppressionFilter">
+      <property name="file" value="mysuppressions.xml" />
+  </module>
     <!-- Checks that a package.html file exists for each package.     -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html#PackageHtml -->
     <module name="JavadocPackage"/>

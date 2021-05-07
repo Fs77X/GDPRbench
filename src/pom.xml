@@ -57,6 +57,16 @@ LICENSE file.
         <artifactId>slf4j-api</artifactId>
         <version>1.7.25</version>
       </dependency>
+      <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.2.20</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.htrace</groupId>
+        <artifactId>htrace-core4</artifactId>
+        <version>4.1.0-incubating</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -64,7 +74,11 @@ LICENSE file.
   <properties>
     <maven.assembly.version>2.5.5</maven.assembly.version>
     <maven.dependency.version>2.10</maven.dependency.version>
-
+    <hbase098.version>0.98.14-hadoop2</hbase098.version>
+    <hbase10.version>1.0.2</hbase10.version>
+    <hbase12.version>1.2.5</hbase12.version>
+    <hbase14.version>1.4.2</hbase14.version>
+    <hbase20.version>2.0.0</hbase20.version>
     <!-- datastore binding versions, lex sorted -->
     <!--<accumulo.1.6.version>1.6.6</accumulo.1.6.version>
     <accumulo.1.7.version>1.7.4</accumulo.1.7.version>
@@ -96,9 +110,10 @@ LICENSE file.
     <mapkeeper.version>1.0</mapkeeper.version>
     <mongodb.version>3.8.0</mongodb.version>
     <mongodb.async.version>2.0.1</mongodb.async.version>
-    <openjpa.jdbc.version>2.1.1</openjpa.jdbc.version>
+    
     <orientdb.version>2.2.37</orientdb.version>-->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <openjpa.jdbc.version>2.1.1</openjpa.jdbc.version>
     <redis.version>2.9.0</redis.version>
     <!--<riak.version>2.0.5</riak.version>
     <rocksdb.version>5.11.3</rocksdb.version>
@@ -114,7 +129,6 @@ LICENSE file.
     <!-- our internals -->
     <module>core</module>
     <module>binding-parent</module>
-    <module>distribution</module>
     <!-- all the datastore bindings, lex sorted please -->
     <!--<module>accumulo1.6</module>
     <module>accumulo1.7</module>
@@ -144,7 +158,7 @@ LICENSE file.
     <module>hypertable</module>
     <module>ignite</module>
     <module>infinispan</module>
-    <module>jdbc</module>
+    
     <module>kudu</module>
     <module>mapkeeper</module>
     <module>maprdb</module>
@@ -163,6 +177,8 @@ LICENSE file.
     <module>solr6</module>
     <module>tarantool</module>
     <module>voldemort</module>-->
+    <module>jdbc</module>
+    <module>distribution</module>
   </modules>
 
   <build>
