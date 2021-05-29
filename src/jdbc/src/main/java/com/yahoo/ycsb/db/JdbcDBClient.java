@@ -27,6 +27,14 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import com.yahoo.ycsb.db.flavors.DBFlavor;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.MultipartBody;
+
 
 /**
  * A class that wraps a JDBC compliant database to allow it to be interfaced
@@ -330,6 +338,7 @@ public class JdbcDBClient extends DB {
 
   @Override
   public Status read(String tableName, String key, Set<String> fields, Map<String, ByteIterator> result) {
+    // System.out.println("we in the read");
     try {
       StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(key));
       PreparedStatement readStatement = cachedStatements.get(type);
@@ -425,6 +434,7 @@ public class JdbcDBClient extends DB {
   @Override
   public Status scan(String tableName, String startKey, int recordcount, Set<String> fields,
                      Vector<HashMap<String, ByteIterator>> result) {
+    // System.out.println("we in the scan");
     try {
       StatementType type = new StatementType(StatementType.Type.SCAN, tableName, 1, "", getShardIndexByKey(startKey));
       PreparedStatement scanStatement = cachedStatements.get(type);
@@ -454,9 +464,11 @@ public class JdbcDBClient extends DB {
   @Override
   public Status update(String tableName, String key, Map<String, ByteIterator> values) {
     try {
-      //System.out.println("Key in update "+key);
+      // System.out.println("Key in update "+key);
+      // System.out.println("Values in update" + values);
       int numFields = values.size();
       OrderedFieldInfo fieldInfo = getFieldInfo(values);
+      // System.out.println("fieldInfo: " + fieldInfo.getFieldValues().get(0));
       StatementType type = new StatementType(StatementType.Type.UPDATE, tableName,
           numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
       PreparedStatement updateStatement = cachedStatements.get(type);
@@ -591,6 +603,7 @@ public class JdbcDBClient extends DB {
 
   @Override
   public Status deleteMeta(String table, int fieldnum, String condition, String keymatch) {
+    // System.out.println("we in the deleteMeta");
     try{
       StatementType type = new StatementType(StatementType.Type.DELETE, table, 1, "", getShardIndexByKey(keymatch));
       PreparedStatement deleteStatement = createAndCacheDeleteMetaStatement(type, keymatch);
@@ -605,6 +618,7 @@ public class JdbcDBClient extends DB {
 
   private OrderedFieldInfo getFieldInfo(Map<String, ByteIterator> values) {
     String fieldKeys = "";
+    // System.out.println("we in the getfieldinfo");
     List<String> fieldValues = new ArrayList<>();
     int count = 0;
     for (Map.Entry<String, ByteIterator> entry : values.entrySet()) {
@@ -615,18 +629,48 @@ public class JdbcDBClient extends DB {
       fieldValues.add(count, entry.getValue().toString());
       count++;
     }
-
+    // System.out.println(fieldKeys);
+    // System.out.println(fieldValues.get(0));
     return new OrderedFieldInfo(fieldKeys, fieldValues);
   }
 
   @Override
   public Status verifyTTL(String table, long recordcount) {
+    System.out.println("we in the verifyttl");
+    System.out.println(table + " " + recordcount);
     return Status.OK;
   }
 
   @Override
   public Status insertTTL(String table, String key,
                          Map<String, ByteIterator> values, int ttl) {
+    System.out.println(table + " " + key);
+    System.out.println(ttl);
+    System.out.println(values);
+    // create a client
+    try{
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      MediaType mediaType = MediaType.parse("text/plain");
+      RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+          .addFormDataPart("id", key)
+          .addFormDataPart("name", "Bol")
+          .addFormDataPart("gpa", "3.8")
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/madd_obj/")
+          .method("POST", body)
+          .build();
+      Response response = client.newCall(request).execute();
+      System.out.println(response);
+    } catch(Exception e) {
+      System.out.println(e);
+    }
+
+    // the response:
+    
+    OrderedFieldInfo payload = getFieldInfo(values);
+    System.out.println(payload.getFieldValues().get(0));
     return Status.OK;
   }
 }

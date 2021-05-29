@@ -817,8 +817,12 @@ public class GDPRWorkload extends Workload {
       }
       sb.setLength(size);
     } else {
+      // System.out.println(fieldvalues);
+      // System.out.println(fieldnum);
+      // System.out.println(fieldvalues[fieldnum].get((int)keynum%fieldvalues[fieldnum].size()));
       sb.append(fieldvalues[fieldnum].get((int)keynum%fieldvalues[fieldnum].size()));
     }
+    // System.out.println(sb);
     return sb.toString();
   }
 
@@ -996,8 +1000,13 @@ public class GDPRWorkload extends Workload {
       fields.add(fieldname);
     } else if (dataintegrity) {
       // pass the full field list if dataintegrity is on for verification
+      System.out.println("fieldnames in integ ");
+      System.out.println(fieldnames);
       fields = new HashSet<String>(fieldnames);
+      System.out.println("fields in integ ");
+      System.out.println(fields);
     }
+    System.out.println(fields);
 
     HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
     db.read(table, keyname, fields, cells);
@@ -1029,7 +1038,7 @@ public class GDPRWorkload extends Workload {
   }
 
   public void doTransactionCheckCompliance(DB db) {
-
+    System.out.println(recordcount);
     long count = (long) (recordcount * 0.9);
 
     System.err.println("Verify conformance called with recordcount "+ count);
@@ -1179,6 +1188,7 @@ public class GDPRWorkload extends Workload {
 
       int ttl = buildTTLValue(keynum);
       HashMap<String, ByteIterator> values = buildValues(keynum, dbkey);
+      System.out.println("gdprworkload insert");
       db.insertTTL(table, dbkey, values, ttl);
     } finally {
       transactioninsertkeysequence.acknowledge(keynum);
