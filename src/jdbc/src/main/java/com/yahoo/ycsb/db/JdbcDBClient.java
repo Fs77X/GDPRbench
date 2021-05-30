@@ -499,11 +499,10 @@ public class JdbcDBClient extends DB {
     try{
       StatementType type = new StatementType(StatementType.Type.UPDATE, table,
           1, "", getShardIndexByKey(keymatch));
-      //System.out.println(type.getFieldString());
       PreparedStatement updateStatement = createAndCacheUpdateMetaStatement(type, keymatch);
       //updateStatement.setString(1,keymatch);
       int result = updateStatement.executeUpdate();
-      //System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
+      // System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
       return Status.OK;
     } catch(SQLException e) {
       System.err.println("Error in processing update to table: " + table + e);
@@ -590,6 +589,7 @@ public class JdbcDBClient extends DB {
         deleteStatement = createAndCacheDeleteStatement(type, key);
       }
       deleteStatement.setString(1, key);
+      // System.out.println(deleteStatement);
       int result = deleteStatement.executeUpdate();
       //System.err.println("Delete Jdbc key "+key+ "result "+ result);
       if (result == 1) {
@@ -685,7 +685,7 @@ public class JdbcDBClient extends DB {
           .method("POST", body)
           .build();
       Response response = client.newCall(request).execute();
-      System.out.println(response);
+      // System.out.println(response);
       if (response.code() != 201) {
         return Status.ERROR;
       }
@@ -701,13 +701,13 @@ public class JdbcDBClient extends DB {
   @Override
   public Status insertTTL(String table, String key,
                          Map<String, ByteIterator> values, int ttl) {
-    System.out.println(table + " " + key);
-    System.out.println(ttl);
+    // System.out.println(table + " " + key);
+    // System.out.println(ttl);
     System.out.println(values);
     // create a client
     try{
       OrderedFieldInfo payload = getFieldInfo(values);
-      System.out.println(payload.getFieldValues().get(6));
+      // System.out.println(payload.getFieldValues().get(6));
       Status insertStatus = insertEntry(key, payload.getFieldValues().get(6));
       if (insertStatus == null || !insertStatus.isOk()) {
         return Status.ERROR;
