@@ -34,6 +34,7 @@ import okhttp3.Response;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 
 
 /**
@@ -641,6 +642,59 @@ public class JdbcDBClient extends DB {
     return Status.OK;
   }
 
+  private Status insertEntry(String key, String value) {
+    try {
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      MediaType mediaType = MediaType.parse("text/plain");
+      RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+          .addFormDataPart("id", key)
+          .addFormDataPart("name", "Bol")
+          .addFormDataPart("gpa", value)
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/madd_obj/")
+          .method("POST", body)
+          .build();
+      Response response = client.newCall(request).execute();
+      if (response.code() != 201) {
+        return Status.ERROR;
+      }
+      ResponseBody boi = response.body();
+      boi.close();
+      return Status.OK;
+    } catch (Exception e) {
+      System.err.println(e);
+      return Status.ERROR;
+    } 
+  }
+
+  private Status insertMeta(String key, String property, String value) {
+    try{
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      MediaType mediaType = MediaType.parse("text/plain");
+      RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+          .addFormDataPart("property", property)
+          .addFormDataPart("info", value)
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/madd_metaobj/" + key)
+          .method("POST", body)
+          .build();
+      Response response = client.newCall(request).execute();
+      if (response.code() != 200) {
+        return Status.ERROR;
+      }
+      ResponseBody boi = response.body();
+      boi.close();
+      return Status.OK;
+    } catch (Exception e) {
+      System.out.println(e);
+      return Status.ERROR;
+    }
+  }
+
   @Override
   public Status insertTTL(String table, String key,
                          Map<String, ByteIterator> values, int ttl) {
@@ -651,32 +705,74 @@ public class JdbcDBClient extends DB {
     try{
       OrderedFieldInfo payload = getFieldInfo(values);
       System.out.println(payload.getFieldValues().get(6));
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
-      MediaType mediaType = MediaType.parse("text/plain");
-      RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-          .addFormDataPart("id", key)
-          .addFormDataPart("name", "Bol")
-          .addFormDataPart("gpa", payload.getFieldValues().get(6))
-          .build();
-      Request request = new Request.Builder()
-          .url("http://localhost:8000/madd_obj/")
-          .method("POST", body)
-          .build();
-      Response response = client.newCall(request).execute();
-      System.out.println(response.code());
-      if (response.code === 201) {
-        return Status.OK;
-      } else {
+      Status insertStatus = insertEntry(key, payload.getFieldValues().get(6));
+      if (insertStatus == null || !insertStatus.isOk()) {
         return Status.ERROR;
       }
+      Status ttlStatus = insertMeta(key, "TTL", payload.getFieldValues().get(9));
+      if (ttlStatus == null || !ttlStatus.isOk()) {
+        return Status.ERROR;
+      }
+      // OkHttpClient client = new OkHttpClient().newBuilder()
+      //     .build();
+      // MediaType mediaType = MediaType.parse("text/plain");
+      // RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+      //     .addFormDataPart("id", key)
+      //     .addFormDataPart("name", "Bol")
+      //     .addFormDataPart("gpa", payload.getFieldValues().get(6))
+      //     .build();
+      // Request request = new Request.Builder()
+      //     .url("http://localhost:8000/madd_obj/")
+      //     .method("POST", body)
+      //     .build();
+      // Response response = client.newCall(request).execute();
+      // System.out.println(response.code());
+      // if (response.code() != 201) {
+      //   return Status.ERROR;
+      // }
+      for (int i = 0; i < 9; i++) {
+        switch(i) {
+        case 0:
+          Status admStatus = insertMeta(key, "adm", payload.getFieldValues().get(i));
+          if (admStatus == null || !admStatus.isOk()) {
+            return Status.ERROR;
+          }
+          break;
+        case 2:
+          Status originStatus = insertMeta(key, "origin", payload.getFieldValues().get(i));
+          if (originStatus == null || !originStatus.isOk()) {
+            return Status.ERROR;
+          }
+          break;
+        case 3:
+          Status objectionStat = insertMeta(key, "objection", payload.getFieldValues().get(i));
+          if (objectionStat == null || !objectionStat.isOk()) {
+            return Status.ERROR;
+          }
+          break;
+        case 7:
+          Status purposeStatus = insertMeta(key, "purpose", payload.getFieldValues().get(i));
+          if (purposeStatus == null || !purposeStatus.isOk()) {
+            return Status.ERROR;
+          }
+          break;
+        case 8:
+          Status sharingStatus = insertMeta(key, "sharing", payload.getFieldValues().get(i));
+          if (sharingStatus == null || !sharingStatus.isOk()) {
+            return Status.ERROR;
+          }
+          break;
+        case 1: case 4: case 5: case 6:
+          System.out.println("rubbish");
+          break;
+        default:
+          return Status.ERROR;
+        }
+      }
+      return Status.OK;
     } catch(Exception e) {
       System.out.println(e);
+      return Status.ERROR;
     }
-
-    // the response:
-    
-  
-    return Status.OK;
   }
 }
