@@ -649,28 +649,34 @@ public class JdbcDBClient extends DB {
     System.out.println(values);
     // create a client
     try{
+      OrderedFieldInfo payload = getFieldInfo(values);
+      System.out.println(payload.getFieldValues().get(6));
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       MediaType mediaType = MediaType.parse("text/plain");
       RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
           .addFormDataPart("id", key)
           .addFormDataPart("name", "Bol")
-          .addFormDataPart("gpa", "3.8")
+          .addFormDataPart("gpa", payload.getFieldValues().get(6))
           .build();
       Request request = new Request.Builder()
           .url("http://localhost:8000/madd_obj/")
           .method("POST", body)
           .build();
       Response response = client.newCall(request).execute();
-      System.out.println(response);
+      System.out.println(response.code());
+      if (response.code === 201) {
+        return Status.OK;
+      } else {
+        return Status.ERROR;
+      }
     } catch(Exception e) {
       System.out.println(e);
     }
 
     // the response:
     
-    OrderedFieldInfo payload = getFieldInfo(values);
-    System.out.println(payload.getFieldValues().get(0));
+  
     return Status.OK;
   }
 }

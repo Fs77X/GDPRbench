@@ -21,4 +21,15 @@ configure workloads/gdpr_{controller|customer|processor|regulator}
 ```
 
 Interested in exploring the research behind this project? Check out our [website](https://gdprbench.org/).
+To do before running commands:
+1. Download the following jars:
+ - https://repo1.maven.org/maven2/org/apache/htrace/htrace-core4/4.2.0-incubating/htrace-core4-4.2.0-incubating.jar 
+ - https://repo1.maven.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar 
+2. Create directory in /GDPRbench/src/core/target called "dependency" (without quotes)
+3. place into new folder
+4. run program
 
+If running into filepointer limit issues do this:
+Run these commands in all terminals running benchmark, middleware and logservice in order for the benchmark to run.
+1. mylimit=100000
+2. sudo prlimit --nofile=$mylimit --pid $$; ulimit -n $mylimit
