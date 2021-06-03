@@ -27,7 +27,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import com.yahoo.ycsb.db.flavors.DBFlavor;
-// import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -635,10 +637,40 @@ public class JdbcDBClient extends DB {
     return new OrderedFieldInfo(fieldKeys, fieldValues);
   }
 
+  public long getKeys() {
+    try{
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      Request request = new Request.Builder()
+          .url("localhost:8000/getKeyCount")
+          .method("GET", null)
+          .build();
+      Response response = client.newCall(request).execute();
+      ResponseBody boi = response.body();
+      ObjectMapper mapper = new ObjectMapper();
+      TTLBlob count = mapper.readValue(boi.string(), TTLBlob.class);
+      boi.close();
+      return count.getCount();
+    } catch (Exception e) {
+      System.out.println(e);
+      return -1;
+    }
+    
+  }
   @Override
   public Status verifyTTL(String table, long recordcount) {
     System.out.println("we in the verifyttl");
     System.out.println(table + " " + recordcount);
+    recordcount++;
+    long keys = getKeys();
+    while(keys > recordcount) {
+      try { 
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        System.out.println(e);
+      }
+      keys = getKeys();
+    }
     return Status.OK;
   }
 
