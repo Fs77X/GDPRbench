@@ -222,7 +222,7 @@ public class RedisClient extends DB {
 
   @Override
   public Status updateMeta(String table, int fieldnum, String condition, 
-      String keymatch, String newfieldname, String newmetadatavalue) {
+      String keymatch, String newfieldname, String newmetadatavalue, String condProp) {
     //System.out.println("HELLO updateMeta got called with startkey "+ startkey);
     Set<String> keys = ((Jedis) jedis).keys(keymatch);
     HashSet<String> fields = null;

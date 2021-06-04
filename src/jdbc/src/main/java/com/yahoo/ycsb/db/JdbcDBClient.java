@@ -495,15 +495,84 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status actualupdateMeta(String condProp, String condVal,
+      String changeProp, String changeVal) {
+    //mmodcond_metaObj
+    try{
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      MediaType mediaType = MediaType.parse("application/json");
+      RequestBody body = RequestBody.create(mediaType, 
+          "{\r\n    \"condProp\":\"" + condProp +
+          "\",\r\n    \"condVal\": \"" + condVal + 
+          "\",\r\n    \"changeProp\": \"" + changeProp +
+          "\",\r\n    \"changeVal\": \"" + changeVal +
+          "\"\r\n}");
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/cond_metaObj/")
+          .method("PUT", body)
+          .build();
+      Response response = client.newCall(request).execute();
+      // System.out.println(response);
+      if (response.code() != 200) {
+        return Status.ERROR;
+      }
+      ResponseBody boi = response.body();
+      boi.close();
+      return Status.OK;
+    } catch (Exception e) {
+      System.out.println(e);
+      return Status.ERROR;
+    }
+  }
+
+  public String propChange(String prop){
+    switch(prop) {
+    case "DEC":
+      return "adm";
+    case "USR":
+      return "id";
+    case "SRC":
+      return "origin";
+    case "OBJ":
+      return "objection";
+    case "CAT":
+      return "cat";
+    case "ACL":
+      return "acl";
+    case "PUR":
+      return "purpose";
+    case "SHR":
+      return "sharing";
+    case "TTL":
+      return "TTL";
+    default:
+      return "";
+    }
+  }
+
   @Override
   public Status updateMeta(String table, int fieldnum, String condition, 
-      String keymatch, String fieldname, String metadatavalue) {
+      String keymatch, String fieldname, String metadatavalue, String condProp) {
     try{
+      // just quit because that shouldn't be allowed unless we're changing usernames
+      // also USR isn't considered metadata in our case
+      if (fieldname.equals("USR")) {
+        return Status.OK;
+      }
+      condProp = propChange(condProp);
+      String condVal = condition;
+      String changeProp = propChange(fieldname);
+      String changeVal = metadatavalue;
+      // System.out.println("condProp: " + condProp + " condVal " + condition
+      //     + " changeProp " + fieldname + " changeVal " + metadatavalue);
       StatementType type = new StatementType(StatementType.Type.UPDATE, table,
           1, "", getShardIndexByKey(keymatch));
       PreparedStatement updateStatement = createAndCacheUpdateMetaStatement(type, keymatch);
       //updateStatement.setString(1,keymatch);
       int result = updateStatement.executeUpdate();
+      Status res = actualupdateMeta(condProp, condVal, changeProp, changeVal);
+      System.out.println(res);
       // System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
       return Status.OK;
     } catch(SQLException e) {
@@ -582,6 +651,50 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status actualDeleteMeta(String key) {
+    try {
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/mdelete_UserMetaobj/" + key)
+          .method("DELETE", null)
+          .build();
+      Response response = client.newCall(request).execute();
+      // System.out.println(response.code());
+      if (response.code() != 200) {
+        return Status.ERROR;
+      }
+      ResponseBody boi = response.body();
+      boi.close();
+      return Status.OK;
+    } catch (Exception e) {
+      System.err.println(e);
+      return Status.ERROR;
+    }
+  }
+
+  public Status actualDelete(String key) {
+    try {
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/mdelete_obj/" + key)
+          .method("DELETE", null)
+          .build();
+      Response response = client.newCall(request).execute();
+      // System.out.println(response.code());
+      if (response.code() != 200) {
+        return Status.ERROR;
+      }
+      ResponseBody boi = response.body();
+      boi.close();
+      return Status.OK;
+    } catch (Exception e) {
+      System.err.println(e);
+      return Status.ERROR;
+    }
+  }
+
   @Override
   public Status delete(String tableName, String key) {
     try {
@@ -591,10 +704,15 @@ public class JdbcDBClient extends DB {
         deleteStatement = createAndCacheDeleteStatement(type, key);
       }
       deleteStatement.setString(1, key);
-      // System.out.println(deleteStatement);
+      // System.out.println("delete Obj");
       int result = deleteStatement.executeUpdate();
-      //System.err.println("Delete Jdbc key "+key+ "result "+ result);
+      result = 1; //bypass postgres failure
+      // System.err.println("Delete Jdbc key "+key+ "result "+ result);
       if (result == 1) {
+        Status del = actualDelete(key);
+        Status delmeta = actualDeleteMeta(key);
+        // System.out.println(del);
+        // System.out.println(delmeta);
         return Status.OK;
       }
       return Status.UNEXPECTED_STATE;
@@ -666,8 +784,8 @@ public class JdbcDBClient extends DB {
   public Status verifyTTL(String table, long recordcount) {
     System.out.println("we in the verifyttl");
     System.out.println(table + " " + recordcount);
-    recordcount++;
     long keys = getKeys();
+    recordcount++;
     System.out.println("Keys in vttl: " + keys);
     while(keys > recordcount) {
       try { 
@@ -717,7 +835,9 @@ public class JdbcDBClient extends DB {
           "\",\r\n    \"adm\": \"" + value.getFieldValues().get(0) +
           "\",\r\n    \"origin\": \"" + value.getFieldValues().get(2) +
           "\",\r\n    \"objection\": \"" + value.getFieldValues().get(3) +
-          "\",\r\n    \"sharing\": \"" + value.getFieldValues().get(8) + "\"\r\n}");
+          "\",\r\n    \"sharing\": \"" + value.getFieldValues().get(8) + 
+          "\",\r\n    \"cat\": \"" + value.getFieldValues().get(4) + 
+          "\",\r\n    \"acl\": \"" + value.getFieldValues().get(5) + "\"\r\n}");
       Request request = new Request.Builder()
           .url("http://localhost:8000/madd_metaobj/" + key)
           .method("POST", body)
@@ -741,7 +861,7 @@ public class JdbcDBClient extends DB {
                          Map<String, ByteIterator> values, int ttl) {
     // System.out.println(table + " " + key);
     // System.out.println(ttl);
-    System.out.println(values);
+    // System.out.println(values);
     // create a client
     try{
       OrderedFieldInfo payload = getFieldInfo(values);

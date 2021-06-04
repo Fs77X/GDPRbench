@@ -116,7 +116,7 @@ public abstract class DB {
    */
   public abstract Status update(String table, String key, Map<String, ByteIterator> values);
   public abstract Status updateMeta(String table, int fieldnum, String cond, String keymatch, 
-                                    String fieldkey, String fieldvalue);
+                                    String fieldkey, String fieldvalue, String condProp);
 
   /**
    * Insert a record in the database. Any field/value pairs in the specified values HashMap will be written into the

@@ -1136,7 +1136,7 @@ public class GDPRWorkload extends Workload {
     //                   " fieldnum " + fieldnum + " keynum " + keynum + " fieldnames.get "
     //                   + fieldnames.get(metadatanum));
     
-    db.updateMeta(table, metadatanum, metadatacond, "key*", fieldkey, metadatavalue);
+    db.updateMeta(table, metadatanum, metadatacond, "key*", fieldkey, metadatavalue, fieldnames.get(metadatanum));
   }
 
   public void doTransactionUpdate(DB db) {
@@ -1164,7 +1164,7 @@ public class GDPRWorkload extends Workload {
     
     String keyname = buildKeyName(keynum);
     
-    //System.err.println("Transaction delete called for: "+ keyname);
+    System.err.println("Transaction delete called for: "+ keyname);
     
     db.delete(table, keyname);
   }
