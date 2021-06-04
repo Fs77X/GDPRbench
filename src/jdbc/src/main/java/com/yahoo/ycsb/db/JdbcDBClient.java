@@ -642,15 +642,20 @@ public class JdbcDBClient extends DB {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("localhost:8000/getKeyCount")
+          .url("http://localhost:8000/getKeyCount")
           .method("GET", null)
           .build();
       Response response = client.newCall(request).execute();
+      // System.out.println(response.body().string());
       ResponseBody boi = response.body();
       ObjectMapper mapper = new ObjectMapper();
+      // System.out.println(boi.string());
+      System.out.println("reach b4b4here");
       TTLBlob count = mapper.readValue(boi.string(), TTLBlob.class);
+      System.out.println("reach b4here");
       boi.close();
-      return count.getCount();
+      System.out.println("reach here");
+      return Long.parseLong(count.getIDCount());
     } catch (Exception e) {
       System.out.println(e);
       return -1;
@@ -663,6 +668,7 @@ public class JdbcDBClient extends DB {
     System.out.println(table + " " + recordcount);
     recordcount++;
     long keys = getKeys();
+    System.out.println("Keys in vttl: " + keys);
     while(keys > recordcount) {
       try { 
         Thread.sleep(1000);

@@ -1,21 +1,20 @@
 package com.yahoo.ycsb.db;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * ttlcount class ye.
  */
 public class TTLBlob {
-  private long count;
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  private String idCount;
 
-  public TTLBlob() {
-    super();
+  // public TTLBlob(String count) {
+  //   this.idCount = count;
+  // }
+  public void setCount(String count) {
+    this.idCount = count;
   }
-
-  public TTLBlob(long count) {
-    this.count = count;
-  }
-  public void setCount(long ourCount) {
-    this.count = ourCount;
-  }
-  public long getCount(){
-    return this.count;
+  public String getIDCount(){
+    return this.idCount;
   }
 }

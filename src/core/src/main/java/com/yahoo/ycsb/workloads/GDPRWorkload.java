@@ -1000,13 +1000,13 @@ public class GDPRWorkload extends Workload {
       fields.add(fieldname);
     } else if (dataintegrity) {
       // pass the full field list if dataintegrity is on for verification
-      System.out.println("fieldnames in integ ");
-      System.out.println(fieldnames);
+      // System.out.println("fieldnames in integ ");
+      // System.out.println(fieldnames);
       fields = new HashSet<String>(fieldnames);
-      System.out.println("fields in integ ");
-      System.out.println(fields);
+      // System.out.println("fields in integ ");
+      // System.out.println(fields);
     }
-    System.out.println(fields);
+    // System.out.println(fields);
 
     HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
     db.read(table, keyname, fields, cells);
@@ -1023,7 +1023,7 @@ public class GDPRWorkload extends Workload {
     // match on meta data field passed
     String metadatacond = buildDeterministicValue(keynum, metadatanum, fieldnames.get(metadatanum));
 
-    System.err.println("Read metadata called with cond: "+ metadatacond + " Field num: " + metadatanum);
+    // System.err.println("Read metadata called with cond: "+ metadatacond + " Field num: " + metadatanum);
 
     db.readMeta(table, metadatanum, metadatacond, "key*", new Vector<HashMap<String, ByteIterator>>());
   }
@@ -1032,13 +1032,13 @@ public class GDPRWorkload extends Workload {
     // choose a random scan length
     int len = scanlength.nextValue().intValue();
 
-    System.err.println("Read log called with scan len: "+ len);
+    // System.err.println("Read log called with scan len: "+ len);
 
     db.readLog(table, len);
   }
 
   public void doTransactionCheckCompliance(DB db) {
-    System.out.println(recordcount);
+    // System.out.println(recordcount);
     long count = (long) (recordcount * 0.9);
 
     System.err.println("Verify conformance called with recordcount "+ count);
@@ -1131,9 +1131,10 @@ public class GDPRWorkload extends Workload {
     // new value for another meta data field
     String metadatavalue = buildDeterministicValue(keynum, fieldnum, fieldkey);
 
-    System.err.println("Update metadata called with cond: "+ metadatacond +
-                      " value: " + metadatavalue + " metadatanum " + metadatanum + " fieldkey " + fieldkey +
-                      " fieldnum " + fieldnum + " keynum " + keynum + " fieldnames.get " + fieldnames.get(metadatanum));
+    // System.err.println("Update metadata called with cond: "+ metadatacond +
+    //                   " value: " + metadatavalue + " metadatanum " + metadatanum + " fieldkey " + fieldkey +
+    //                   " fieldnum " + fieldnum + " keynum " + keynum + " fieldnames.get "
+    //                   + fieldnames.get(metadatanum));
     
     db.updateMeta(table, metadatanum, metadatacond, "key*", fieldkey, metadatavalue);
   }
