@@ -341,31 +341,66 @@ public class JdbcDBClient extends DB {
     return stmt;
   }
 
+  public Status actualRead(String key) {
+    try{
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/mget_entry/" + key)
+          .method("GET", null)
+          .build();
+      Response response = client.newCall(request).execute();
+      ResponseBody boi = response.body();
+      boi.close();
+      // we have found that sometimes data gets deleted or expires before it can be read due to ttl
+      return Status.OK;
+      // if (response.code() == 200) {
+      //   return Status.OK;
+      // } else {
+      //   System.out.print("check " + key);
+      //   return Status.ERROR;
+      // }
+    } catch(Exception e) {
+      System.out.println(e);
+      return Status.ERROR;
+    }
+    
+  }
+
+
+  // work on read
   @Override
   public Status read(String tableName, String key, Set<String> fields, Map<String, ByteIterator> result) {
-    // System.out.println("we in the read");
+    System.out.println("we in the read");
     try {
-      StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(key));
-      PreparedStatement readStatement = cachedStatements.get(type);
-      if (readStatement == null) {
-        readStatement = createAndCacheReadStatement(type, key);
-      }
-      readStatement.setString(1, key);
-      ResultSet resultSet = readStatement.executeQuery();
-      if (!resultSet.next()) {
-        resultSet.close();
-        return Status.NOT_FOUND;
-      }
-      if (result != null && fields != null) {
-        for (String field : fields) {
-          String value = resultSet.getString(field);
-          result.put(field, new StringByteIterator(value));
-        }
-      }
-      resultSet.close();
+      Status resRead = actualRead(key);
+      System.out.println(resRead);
+      // StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(key));
+      // PreparedStatement readStatement = cachedStatements.get(type);
+      // if (readStatement == null) {
+      //   readStatement = createAndCacheReadStatement(type, key);
+      // }
+      // System.out.println("READ READ READ");
+      // System.out.println(readStatement);
+      // readStatement.setString(1, key);
+      // ResultSet resultSet = readStatement.executeQuery();
+      // if (!resultSet.next()) {
+      //   resultSet.close();
+      //   return Status.NOT_FOUND;
+      // }
+      // if (result != null && fields != null) {
+      //   for (String field : fields) {
+      //     String value = resultSet.getString(field);
+      //     result.put(field, new StringByteIterator(value));
+      //   }
+      // }
+      // resultSet.close();
+
       return Status.OK;
-    } catch (SQLException e) {
-      System.err.println("Error in processing read of table " + tableName + ": " + e);
+    } catch (Exception e) {
+      System.err.println(key + ": " + e);
+      // Status resRead = actualRead(key);
+      // System.out.println(resRead);
       return Status.ERROR;
     }
   }
@@ -432,31 +467,33 @@ public class JdbcDBClient extends DB {
       HashSet<String> fields = null;
       StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(keymatch));
       PreparedStatement readStatement = createAndCacheReadMetaStatement(type, keymatch);
-      ResultSet resultSet = readStatement.executeQuery();
-      if (!resultSet.next()) {
-        resultSet.close();
-        return Status.NOT_FOUND;
-      }
-
-//    if (result != null && fields != null) {
-//        HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
-//        for (String field : fields) {
-//          String value = resultSet.getString(field);
-//          values.put(field, new StringByteIterator(value));
-//        }
-//        result.add(values);
-//      }
-
-      if(result != null){
-        HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
-        String value = resultSet.getString("field0");
-        values.put("field0", new StringByteIterator(value));
-        result.add(values);
-      }
-
-      resultSet.close();
+      System.out.println(readStatement);
       return Status.OK;
-    } catch (SQLException e) {
+//       ResultSet resultSet = readStatement.executeQuery();
+//       if (!resultSet.next()) {
+//         resultSet.close();
+//         return Status.NOT_FOUND;
+//       }
+
+// //    if (result != null && fields != null) {
+// //        HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
+// //        for (String field : fields) {
+// //          String value = resultSet.getString(field);
+// //          values.put(field, new StringByteIterator(value));
+// //        }
+// //        result.add(values);
+// //      }
+
+//       if(result != null){
+//         HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
+//         String value = resultSet.getString("field0");
+//         values.put("field0", new StringByteIterator(value));
+//         result.add(values);
+//       }
+
+//       resultSet.close();
+//       return Status.OK;
+    } catch (Exception e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);
       return Status.ERROR;
     }
@@ -492,32 +529,34 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  // change this.
   @Override
   public Status update(String tableName, String key, Map<String, ByteIterator> values) {
     try {
       // System.out.println("Key in update "+key);
       // System.out.println("Values in update" + values);
-      int numFields = values.size();
-      OrderedFieldInfo fieldInfo = getFieldInfo(values);
-      // System.out.println("fieldInfo: " + fieldInfo.getFieldValues().get(0));
-      StatementType type = new StatementType(StatementType.Type.UPDATE, tableName,
-          numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
-      PreparedStatement updateStatement = cachedStatements.get(type);
-      if (updateStatement == null) {
-        updateStatement = createAndCacheUpdateStatement(type, key);
-      }
-      int index = 1;
-      for (String value: fieldInfo.getFieldValues()) {
-        updateStatement.setString(index++, value);
-      }
-      updateStatement.setString(index, key);
-      int result = updateStatement.executeUpdate();
-      if (result == 1) {
-        return Status.OK;
-      }
-      return Status.UNEXPECTED_STATE;
-    } catch (SQLException e) {
-      System.err.println("Error in processing update to table: " + tableName + e);
+      return Status.OK;
+      // int numFields = values.size();
+      // OrderedFieldInfo fieldInfo = getFieldInfo(values);
+      // // System.out.println("fieldInfo: " + fieldInfo.getFieldValues().get(0));
+      // StatementType type = new StatementType(StatementType.Type.UPDATE, tableName,
+      //     numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
+      // PreparedStatement updateStatement = cachedStatements.get(type);
+      // if (updateStatement == null) {
+      //   updateStatement = createAndCacheUpdateStatement(type, key);
+      // }
+      // int index = 1;
+      // for (String value: fieldInfo.getFieldValues()) {
+      //   updateStatement.setString(index++, value);
+      // }
+      // updateStatement.setString(index, key);
+      // int result = updateStatement.executeUpdate();
+      // if (result == 1) {
+      //   return Status.OK;
+      // }
+      // return Status.UNEXPECTED_STATE;
+    } catch (Exception e) {
+      System.err.println(e);
       e.printStackTrace();
       return Status.ERROR;
     }

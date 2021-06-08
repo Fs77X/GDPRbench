@@ -983,6 +983,7 @@ public class GDPRWorkload extends Workload {
     return keynum;
   }
 
+  //work on this
   public void doTransactionRead(DB db) {
     // choose a random key
     long keynum = nextKeynum();
@@ -1023,7 +1024,7 @@ public class GDPRWorkload extends Workload {
     // match on meta data field passed
     String metadatacond = buildDeterministicValue(keynum, metadatanum, fieldnames.get(metadatanum));
 
-    // System.err.println("Read metadata called with cond: "+ metadatacond + " Field num: " + metadatanum);
+    System.err.println("Read metadata called with cond: "+ metadatacond + " Field num: " + metadatanum);
 
     db.readMeta(table, metadatanum, metadatacond, "key*", new Vector<HashMap<String, ByteIterator>>());
   }
@@ -1139,6 +1140,7 @@ public class GDPRWorkload extends Workload {
     db.updateMeta(table, metadatanum, metadatacond, "key*", fieldkey, metadatavalue, fieldnames.get(metadatanum));
   }
 
+  // work on this
   public void doTransactionUpdate(DB db) {
     // choose a random key
     long keynum = nextKeynum();
