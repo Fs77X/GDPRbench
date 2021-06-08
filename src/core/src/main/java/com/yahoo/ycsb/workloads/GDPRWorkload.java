@@ -1164,7 +1164,7 @@ public class GDPRWorkload extends Workload {
     
     String keyname = buildKeyName(keynum);
     
-    System.err.println("Transaction delete called for: "+ keyname);
+    // System.err.println("Transaction delete called for: "+ keyname);
     
     db.delete(table, keyname);
   }

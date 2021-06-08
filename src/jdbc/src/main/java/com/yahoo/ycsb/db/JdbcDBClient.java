@@ -29,6 +29,8 @@ import java.util.concurrent.ConcurrentMap;
 import com.yahoo.ycsb.db.flavors.DBFlavor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.fasterxml.jackson.core.type.TypeReference;
+// import com.fasterxml.jackson.databind.DeserializationFeature;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -368,28 +370,54 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status getLog(String logCount) {
+    try{
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/getLogs/" + logCount)
+          .method("GET", null)
+          .addHeader("Content-Type", "application/json")
+          .build();
+      Response response = client.newCall(request).execute();
+      ResponseBody boi = response.body();
+      ObjectMapper mapper = new ObjectMapper();
+      List<String> logList = mapper.readValue(boi.string(), List.class);
+      for (String log: logList) {
+        System.out.println(log);
+      }
+      boi.close();
+      return Status.OK;
+    } catch(Exception e) {
+      System.out.println(e);
+      return Status.ERROR;
+    }
+  }
+
   @Override
   public Status readLog(String table, int logcount){
     try {
-      String s = null;
-      String query = null;
-      Process p = null;
-      query = "tail -n " + logcount + " /home/audit_logs/audit_dump.xm";
-      p = Runtime.getRuntime().exec(query);
-      BufferedReader stdInput = new BufferedReader(new
-           InputStreamReader(p.getInputStream()));
-      BufferedReader stdError = new BufferedReader(new
-           InputStreamReader(p.getErrorStream()));
-      // read the output from the command
-      while ((s = stdInput.readLine()) != null) {
-        System.out.println(s);
-      }
-      // read any errors from the attempted command
-      while ((s = stdError.readLine()) != null) {
-        System.out.println(s);
-      }
+      System.out.println(logcount);
+      Status res = getLog(String.valueOf(logcount));
+      // String s = null;
+      // String query = null;
+      // Process p = null;
+      // query = "tail -n " + logcount + " /home/audit_logs/audit_dump.xm";
+      // p = Runtime.getRuntime().exec(query);
+      // BufferedReader stdInput = new BufferedReader(new
+      //      InputStreamReader(p.getInputStream()));
+      // BufferedReader stdError = new BufferedReader(new
+      //      InputStreamReader(p.getErrorStream()));
+      // // read the output from the command
+      // while ((s = stdInput.readLine()) != null) {
+      //   System.out.println(s);
+      // }
+      // // read any errors from the attempted command
+      // while ((s = stdError.readLine()) != null) {
+      //   System.out.println(s);
+      // }
       return Status.OK;
-    } catch (IOException e) {
+    } catch (Exception e) {
       System.out.println("exception happened - here's what I know: ");
       e.printStackTrace();
       return Status.ERROR;
@@ -572,7 +600,7 @@ public class JdbcDBClient extends DB {
       //updateStatement.setString(1,keymatch);
       int result = updateStatement.executeUpdate();
       Status res = actualupdateMeta(condProp, condVal, changeProp, changeVal);
-      System.out.println(res);
+      // System.out.println(res);
       // System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
       return Status.OK;
     } catch(SQLException e) {
@@ -789,7 +817,7 @@ public class JdbcDBClient extends DB {
     System.out.println("Keys in vttl: " + keys);
     while(keys > recordcount) {
       try { 
-        Thread.sleep(1000);
+        Thread.sleep(10000);
       } catch (InterruptedException e) {
         System.out.println(e);
       }

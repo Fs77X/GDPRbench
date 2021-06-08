@@ -38,11 +38,12 @@ aclcount=10
 shrcount=10
 srccount=10
 catcount=10
-
+# todo
 readproportion=0.2
 readmetapurposeproportion=0.1
 readmetauserproportion=0.1
 updateproportion=0.2
+# done
 updatemetapurposeproportion=0.1
 updatemetauserproportion=0.1
 deleteproportion=0.2
