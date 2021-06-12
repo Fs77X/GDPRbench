@@ -1017,6 +1017,7 @@ public class GDPRWorkload extends Workload {
     }*/
   }
 
+  // one last function
   public void doTransactionReadMeta(DB db, int metadatanum) {
 
     long keynum = nextKeynum();
@@ -1027,7 +1028,8 @@ public class GDPRWorkload extends Workload {
     System.err.println("Read metadata called with cond: " +
         metadatacond + " Field num: " + fieldnames.get(metadatanum));
 
-    db.readMeta(table, metadatanum, fieldnames.get(metadatanum), "key*", new Vector<HashMap<String, ByteIterator>>());
+    db.readMeta(table, metadatanum, fieldnames.get(metadatanum), metadatacond
+        , new Vector<HashMap<String, ByteIterator>>());
   }
 
   public void doTransactionReadLog(DB db) {

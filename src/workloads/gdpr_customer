@@ -42,7 +42,7 @@ catcount=10
 
 readmetapurposeproportion=0.1
 readmetauserproportion=0.1
-updateproportion=0.2
+
 # done
 readproportion=0.2
 updatemetapurposeproportion=0.1
@@ -53,6 +53,7 @@ deletemetauserproportion=0
 scanproportion=0
 insertproportion=0
 insertorder=ordered
+updateproportion=0.2
 
 requestdistribution=zipfian
 

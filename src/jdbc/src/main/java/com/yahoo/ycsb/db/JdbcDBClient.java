@@ -459,6 +459,37 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status actualReadMeta(String cond, String keymatch) {
+    String id = "[]";
+    String purpose = "[]";
+    if (cond.equals("USR")) {
+      id = "[\"" + keymatch.replace("user", "key") + "\"]";
+    } else {
+      purpose = "[{\"prop\": \"" + propChange(cond) + "\", \"info\": \"" + keymatch + "\"}]";
+    }
+    System.out.println(id);
+    System.out.println(purpose);
+    try {
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      MediaType mediaType = MediaType.parse("application/json");
+      RequestBody body = RequestBody.create(mediaType, 
+          "{\r\n    \"property\": " + purpose + ",\r\n    \"id\": " + id + "\r\n}");
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/mget_obj/")
+          .method("POST", body)
+          .addHeader("Content-Type", "application/json")
+          .build();
+      Response response = client.newCall(request).execute();
+      ResponseBody boi = response.body();
+      boi.close();
+      return Status.OK;
+    } catch (Exception e) {
+      System.out.println(e);
+      return Status.ERROR;
+    }
+  }
+
   @Override
   public Status readMeta(String tableName, int fieldnum, String cond, 
       String keymatch, Vector<HashMap<String, ByteIterator>> result) {
@@ -469,8 +500,7 @@ public class JdbcDBClient extends DB {
       //tableName, 1, "", getShardIndexByKey(keymatch));
       // PreparedStatement readStatement = createAndCacheReadMetaStatement(type, keymatch);
       // System.out.println(readStatement);
-      
-      return Status.OK;
+      return actualReadMeta(cond, keymatch);
 //       ResultSet resultSet = readStatement.executeQuery();
 //       if (!resultSet.next()) {
 //         resultSet.close();
@@ -684,7 +714,7 @@ public class JdbcDBClient extends DB {
     try{
       // just quit because that shouldn't be allowed unless we're changing usernames
       // also USR isn't considered metadata in our case
-      if (fieldname.equals("USR")) {
+      if (fieldname.equals("USR") || fieldname.equals("Data")) {
         return Status.OK;
       }
       condProp = propChange(condProp);
@@ -925,14 +955,14 @@ public class JdbcDBClient extends DB {
     return Status.OK;
   }
 
-  private Status insertEntry(String key, String value) {
+  private Status insertEntry(String key, String value, String name) {
     try {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       MediaType mediaType = MediaType.parse("text/plain");
       RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
           .addFormDataPart("id", key)
-          .addFormDataPart("name", "Bol")
+          .addFormDataPart("name", name)
           .addFormDataPart("gpa", value)
           .build();
       Request request = new Request.Builder()
@@ -993,7 +1023,7 @@ public class JdbcDBClient extends DB {
     try{
       OrderedFieldInfo payload = getFieldInfo(values);
       // System.out.println(payload.getFieldValues().get(6));
-      Status insertStatus = insertEntry(key, payload.getFieldValues().get(6));
+      Status insertStatus = insertEntry(key, payload.getFieldValues().get(6), payload.getFieldValues().get(1));
       if (insertStatus == null || !insertStatus.isOk()) {
         return Status.ERROR;
       }
