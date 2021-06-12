@@ -1024,9 +1024,10 @@ public class GDPRWorkload extends Workload {
     // match on meta data field passed
     String metadatacond = buildDeterministicValue(keynum, metadatanum, fieldnames.get(metadatanum));
 
-    System.err.println("Read metadata called with cond: "+ metadatacond + " Field num: " + metadatanum);
+    System.err.println("Read metadata called with cond: " +
+        metadatacond + " Field num: " + fieldnames.get(metadatanum));
 
-    db.readMeta(table, metadatanum, metadatacond, "key*", new Vector<HashMap<String, ByteIterator>>());
+    db.readMeta(table, metadatanum, fieldnames.get(metadatanum), "key*", new Vector<HashMap<String, ByteIterator>>());
   }
 
   public void doTransactionReadLog(DB db) {
@@ -1156,7 +1157,8 @@ public class GDPRWorkload extends Workload {
       // update a random field
       values = buildSingleValue(keynum, keyname);
     }
-
+    System.out.println("Update");
+    System.out.println(values);
     db.update(table, keyname, values);
   }
 

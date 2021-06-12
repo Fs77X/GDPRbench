@@ -464,10 +464,12 @@ public class JdbcDBClient extends DB {
       String keymatch, Vector<HashMap<String, ByteIterator>> result) {
     //TODO: No use for keyMatch whatsoever, so check if without queering for keys this will work.
     try {
-      HashSet<String> fields = null;
-      StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(keymatch));
-      PreparedStatement readStatement = createAndCacheReadMetaStatement(type, keymatch);
-      System.out.println(readStatement);
+      // HashSet<String> fields = null;
+      // StatementType type = new StatementType(StatementType.Type.READ, 
+      //tableName, 1, "", getShardIndexByKey(keymatch));
+      // PreparedStatement readStatement = createAndCacheReadMetaStatement(type, keymatch);
+      // System.out.println(readStatement);
+      
       return Status.OK;
 //       ResultSet resultSet = readStatement.executeQuery();
 //       if (!resultSet.next()) {
@@ -529,12 +531,70 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status actualUpdate(String key, Map<String, ByteIterator> values) {
+    try {
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      MediaType mediaType = MediaType.parse("text/plain");
+      RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+          .addFormDataPart("name", key)
+          .addFormDataPart("gpa", "" + values.get("Data"))
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/mmodify_obj/" + key)
+          .method("PUT", body)
+          .build();
+      Response response = client.newCall(request).execute();
+      ResponseBody boi = response.body();
+      boi.close();
+      return Status.OK;
+    } catch (Exception e) {
+      System.out.println(e);
+      return Status.ERROR;
+    }
+  }
+
+  public Status updateIndividualMeta(String key, String prop, String info) {
+    try {
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      MediaType mediaType = MediaType.parse("text/plain");
+      RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+          .addFormDataPart("property", prop)
+          .addFormDataPart("info", info)
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/mmodify_metaobj/" + key)
+          .method("PUT", body)
+          .build();
+      Response response = client.newCall(request).execute();
+      ResponseBody boi = response.body();
+      boi.close();
+      return Status.OK;
+    } catch (Exception e) {
+      System.out.println(e);
+      return Status.ERROR;
+    }
+  }
+
   // change this.
   @Override
   public Status update(String tableName, String key, Map<String, ByteIterator> values) {
     try {
-      // System.out.println("Key in update "+key);
-      // System.out.println("Values in update" + values);
+      System.out.println("Key in update "+key);
+      System.out.println("Values in update" + values);
+      Status updateObj = actualUpdate(key, values);
+      if (!updateObj.isOk()) {
+        return Status.ERROR;
+      }
+      for(Map.Entry m:values.entrySet()){  
+        if (!m.getKey().equals("USR")) {
+          Status updateMeta = updateIndividualMeta(key, propChange("" + m.getKey()), "" + m.getValue());
+          if (!updateMeta.isOk()) {
+            return Status.ERROR;
+          }
+        }
+      }  
       return Status.OK;
       // int numFields = values.size();
       // OrderedFieldInfo fieldInfo = getFieldInfo(values);
