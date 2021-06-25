@@ -354,12 +354,6 @@ public class JdbcDBClient extends DB {
       boi.close();
       // we have found that sometimes data gets deleted or expires before it can be read due to ttl
       return Status.OK;
-      // if (response.code() == 200) {
-      //   return Status.OK;
-      // } else {
-      //   System.out.print("check " + key);
-      //   return Status.ERROR;
-      // }
     } catch(Exception e) {
       System.out.println(e);
       return Status.ERROR;
@@ -374,33 +368,9 @@ public class JdbcDBClient extends DB {
     System.out.println("we in the read");
     try {
       Status resRead = actualRead(key);
-      System.out.println(resRead);
-      // StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(key));
-      // PreparedStatement readStatement = cachedStatements.get(type);
-      // if (readStatement == null) {
-      //   readStatement = createAndCacheReadStatement(type, key);
-      // }
-      // System.out.println("READ READ READ");
-      // System.out.println(readStatement);
-      // readStatement.setString(1, key);
-      // ResultSet resultSet = readStatement.executeQuery();
-      // if (!resultSet.next()) {
-      //   resultSet.close();
-      //   return Status.NOT_FOUND;
-      // }
-      // if (result != null && fields != null) {
-      //   for (String field : fields) {
-      //     String value = resultSet.getString(field);
-      //     result.put(field, new StringByteIterator(value));
-      //   }
-      // }
-      // resultSet.close();
-
       return Status.OK;
     } catch (Exception e) {
       System.err.println(key + ": " + e);
-      // Status resRead = actualRead(key);
-      // System.out.println(resRead);
       return Status.ERROR;
     }
   }
@@ -434,23 +404,6 @@ public class JdbcDBClient extends DB {
     try {
       System.out.println(logcount);
       Status res = getLog(String.valueOf(logcount));
-      // String s = null;
-      // String query = null;
-      // Process p = null;
-      // query = "tail -n " + logcount + " /home/audit_logs/audit_dump.xm";
-      // p = Runtime.getRuntime().exec(query);
-      // BufferedReader stdInput = new BufferedReader(new
-      //      InputStreamReader(p.getInputStream()));
-      // BufferedReader stdError = new BufferedReader(new
-      //      InputStreamReader(p.getErrorStream()));
-      // // read the output from the command
-      // while ((s = stdInput.readLine()) != null) {
-      //   System.out.println(s);
-      // }
-      // // read any errors from the attempted command
-      // while ((s = stdError.readLine()) != null) {
-      //   System.out.println(s);
-      // }
       return Status.OK;
     } catch (Exception e) {
       System.out.println("exception happened - here's what I know: ");
@@ -495,36 +448,7 @@ public class JdbcDBClient extends DB {
       String keymatch, Vector<HashMap<String, ByteIterator>> result) {
     //TODO: No use for keyMatch whatsoever, so check if without queering for keys this will work.
     try {
-      // HashSet<String> fields = null;
-      // StatementType type = new StatementType(StatementType.Type.READ, 
-      //tableName, 1, "", getShardIndexByKey(keymatch));
-      // PreparedStatement readStatement = createAndCacheReadMetaStatement(type, keymatch);
-      // System.out.println(readStatement);
       return actualReadMeta(cond, keymatch);
-//       ResultSet resultSet = readStatement.executeQuery();
-//       if (!resultSet.next()) {
-//         resultSet.close();
-//         return Status.NOT_FOUND;
-//       }
-
-// //    if (result != null && fields != null) {
-// //        HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
-// //        for (String field : fields) {
-// //          String value = resultSet.getString(field);
-// //          values.put(field, new StringByteIterator(value));
-// //        }
-// //        result.add(values);
-// //      }
-
-//       if(result != null){
-//         HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
-//         String value = resultSet.getString("field0");
-//         values.put("field0", new StringByteIterator(value));
-//         result.add(values);
-//       }
-
-//       resultSet.close();
-//       return Status.OK;
     } catch (Exception e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);
       return Status.ERROR;
@@ -946,7 +870,7 @@ public class JdbcDBClient extends DB {
     System.out.println("Keys in vttl: " + keys);
     while(keys > recordcount) {
       try { 
-        Thread.sleep(10000);
+        Thread.sleep(1000);
       } catch (InterruptedException e) {
         System.out.println(e);
       }
@@ -971,6 +895,8 @@ public class JdbcDBClient extends DB {
           .build();
       Response response = client.newCall(request).execute();
       if (response.code() != 201) {
+        ResponseBody boi = response.body();
+        boi.close();
         return Status.ERROR;
       }
       ResponseBody boi = response.body();
