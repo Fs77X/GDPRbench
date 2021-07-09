@@ -31,5 +31,7 @@ To do before running commands:
 
 If running into filepointer limit issues do this:
 Run these commands in all terminals running benchmark, middleware and logservice in order for the benchmark to run.
-1. mylimit=100000
-2. sudo prlimit --nofile=$mylimit --pid $$; ulimit -n $mylimit
+1. sudo sysctl fs.nr_open=10000000
+2. sudo sysctl fs.file-max=10000000
+3. mylimit=10000000
+4. sudo prlimit --nofile=$mylimit --pid $$; ulimit -n $mylimit
