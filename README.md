@@ -16,7 +16,7 @@ cd GDPRbench/src/
 mvn clean package
 <start redis or postgres>
 configure workloads/gdpr_{controller|customer|processor|regulator}
-./bin/ycsb load redis -s -P workloads/gdpr_controller
+./bin/ycsb load redis -s -P workloads/gdpr_controller (for redis)
 ./bin/ycsb run redis -s -P workloads/gdpr_controller
 ```
 
