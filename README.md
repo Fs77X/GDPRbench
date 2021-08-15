@@ -18,6 +18,7 @@ mvn clean package
 configure workloads/gdpr_{controller|customer|processor|regulator}
 ./bin/ycsb load redis -s -P workloads/gdpr_controller
 ./bin/ycsb run redis -s -P workloads/gdpr_controller
+./bin/ycsb.sh load jdbc -P ./jdbc/src/main/conf/db.properties -P ./workloads/gdpr_controller -s > load100k10kCont 
 ```
 
 Interested in exploring the research behind this project? Check out our [website](https://gdprbench.org/).

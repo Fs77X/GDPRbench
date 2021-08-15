@@ -273,12 +273,12 @@ fi
 YCSB_ARGS=$(echo "$@" | cut -d' ' -f3-)
 
 # About to run YCSB
-echo "$JAVA_HOME/bin/java -Xms10G -Xmx20G -classpath $CLASSPATH $YCSB_CLASS $YCSB_COMMAND -db $BINDING_CLASS $YCSB_ARGS"
+echo "$JAVA_HOME/bin/java -Xms5G -Xmx10G -classpath $CLASSPATH $YCSB_CLASS $YCSB_COMMAND -db $BINDING_CLASS $YCSB_ARGS"
 
 # Run YCSB
 # Shellcheck reports the following line as needing double quotes to prevent
 # globbing and word splitting.  However, word splitting is the desired effect
 # here.  So, the shellcheck error is disabled for this line.
 # shellcheck disable=SC2086
-"$JAVA_HOME/bin/java" -Xms10G -Xmx20G -classpath "$CLASSPATH" $YCSB_CLASS $YCSB_COMMAND -db $BINDING_CLASS $YCSB_ARGS
+"$JAVA_HOME/bin/java" -Xms5G -Xmx10G -classpath "$CLASSPATH" $YCSB_CLASS $YCSB_COMMAND -db $BINDING_CLASS $YCSB_ARGS
 
