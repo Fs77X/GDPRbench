@@ -627,6 +627,7 @@ public class JdbcDBClient extends DB {
   @Override
   public Status insertTTL(String table, String key,
                          Map<String, ByteIterator> values, int ttl) {
+    System.out.println("inside inserttl");
     return Status.OK;
   }
 }

@@ -245,6 +245,7 @@ public class DBWrapper extends DB {
       long en = System.nanoTime();
       measure("INSERT", res, ist, st, en);
       measurements.reportStatus("INSERT", res);
+      System.out.println("measured time");
       return res;
     }
   }
