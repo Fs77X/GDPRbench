@@ -40,6 +40,8 @@ import okhttp3.RequestBody;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A class that wraps a JDBC compliant database to allow it to be interfaced
@@ -343,10 +345,15 @@ public class JdbcDBClient extends DB {
 
   public Status actualRead(String key) {
     try{
+      Pattern p = Pattern.compile("\\d+");
+      Matcher m = p.matcher(key);
+      while(m.find()) {
+        key = m.group();
+      }
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8000/mget_entry/" + key)
+          .url("http://localhost:8080/mget_entry/" + key)
           .method("GET", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -365,7 +372,7 @@ public class JdbcDBClient extends DB {
   // work on read
   @Override
   public Status read(String tableName, String key, Set<String> fields, Map<String, ByteIterator> result) {
-    System.out.println("we in the read");
+    // System.out.println("we in the read");
     try {
       Status resRead = actualRead(key);
       return Status.OK;
@@ -380,7 +387,7 @@ public class JdbcDBClient extends DB {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8000/getLogs/" + logCount)
+          .url("http://localhost:8080/getLogs/" + logCount)
           .method("GET", null)
           .addHeader("Content-Type", "application/json")
           .build();
@@ -419,9 +426,11 @@ public class JdbcDBClient extends DB {
       id = "[\"" + keymatch.replace("user", "key") + "\"]";
     } else {
       purpose = "[{\"prop\": \"" + propChange(cond) + "\", \"info\": \"" + keymatch + "\"}]";
+      int numid = (int) Math.random() * (40) + 1;
+      id = "[" + "\"" + Integer.toString(numid) + "\"]";
     }
-    System.out.println(id);
-    System.out.println(purpose);
+    // System.out.println(id);
+    // System.out.println(purpose);
     try {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
@@ -429,7 +438,7 @@ public class JdbcDBClient extends DB {
       RequestBody body = RequestBody.create(mediaType, 
           "{\r\n    \"property\": " + purpose + ",\r\n    \"id\": " + id + "\r\n}");
       Request request = new Request.Builder()
-          .url("http://localhost:8000/mget_obj/")
+          .url("http://localhost:8080/mget_obj/")
           .method("POST", body)
           .addHeader("Content-Type", "application/json")
           .build();
@@ -495,7 +504,7 @@ public class JdbcDBClient extends DB {
           .addFormDataPart("gpa", "" + values.get("Data"))
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8000/mmodify_obj/" + key)
+          .url("http://localhost:8080/mmodify_obj/" + key)
           .method("PUT", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -518,7 +527,7 @@ public class JdbcDBClient extends DB {
           .addFormDataPart("info", info)
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8000/mmodify_metaobj/" + key)
+          .url("http://localhost:8080/mmodify_metaobj/" + key)
           .method("PUT", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -590,7 +599,7 @@ public class JdbcDBClient extends DB {
           "\",\r\n    \"changeVal\": \"" + changeVal +
           "\"\r\n}");
       Request request = new Request.Builder()
-          .url("http://localhost:8000/cond_metaObj/")
+          .url("http://localhost:8080/cond_metaObj/")
           .method("PUT", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -737,7 +746,7 @@ public class JdbcDBClient extends DB {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8000/mdelete_UserMetaobj/" + key)
+          .url("http://localhost:8080/mdelete_UserMetaobj/" + key)
           .method("DELETE", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -759,7 +768,7 @@ public class JdbcDBClient extends DB {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8000/mdelete_obj/" + key)
+          .url("http://localhost:8080/mdelete_obj/" + key)
           .method("DELETE", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -791,7 +800,7 @@ public class JdbcDBClient extends DB {
       // System.err.println("Delete Jdbc key "+key+ "result "+ result);
       if (result == 1) {
         Status del = actualDelete(key);
-        Status delmeta = actualDeleteMeta(key);
+        // Status delmeta = actualDeleteMeta(key);
         // System.out.println(del);
         // System.out.println(delmeta);
         return Status.OK;
@@ -841,7 +850,7 @@ public class JdbcDBClient extends DB {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8000/getKeyCount")
+          .url("http://localhost:8080/getKeyCount")
           .method("GET", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -890,7 +899,7 @@ public class JdbcDBClient extends DB {
           .addFormDataPart("gpa", value)
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8000/madd_obj/")
+          .url("http://localhost:8080/madd_obj/")
           .method("POST", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -922,7 +931,7 @@ public class JdbcDBClient extends DB {
           "\",\r\n    \"cat\": \"" + value.getFieldValues().get(4) + 
           "\",\r\n    \"acl\": \"" + value.getFieldValues().get(5) + "\"\r\n}");
       Request request = new Request.Builder()
-          .url("http://localhost:8000/madd_metaobj/" + key)
+          .url("http://localhost:8080/madd_metaobj/" + key)
           .method("POST", body)
           .build();
       Response response = client.newCall(request).execute();

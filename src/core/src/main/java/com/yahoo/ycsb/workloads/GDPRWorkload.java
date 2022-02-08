@@ -893,7 +893,8 @@ public class GDPRWorkload extends Workload {
         doTransactionCheckCompliance(db);
       } 
       if (readlog) {
-        doTransactionReadLog(db);
+        System.out.println("SKIP");
+        // doTransactionReadLog(db);
       }
       isFirst = false;
     }
@@ -1025,9 +1026,9 @@ public class GDPRWorkload extends Workload {
     // match on meta data field passed
     String metadatacond = buildDeterministicValue(keynum, metadatanum, fieldnames.get(metadatanum));
 
-    System.err.println("Read metadata called with cond: " +
-        metadatacond + " Field num: " + fieldnames.get(metadatanum));
-
+    // System.err.println("Read metadata called with cond: " +
+    //     metadatacond + " Field num: " + fieldnames.get(metadatanum));
+    // System.out.println("HERE");
     db.readMeta(table, metadatanum, fieldnames.get(metadatanum), metadatacond
         , new Vector<HashMap<String, ByteIterator>>());
   }
