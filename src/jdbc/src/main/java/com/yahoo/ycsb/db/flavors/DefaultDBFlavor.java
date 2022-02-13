@@ -56,6 +56,8 @@ public class DefaultDBFlavor extends DBFlavor {
 
   @Override
   public String createReadStatement(StatementType readType, String key) {
+    System.out.println("REALLY HERE????");
+    System.out.println("WOOOOW");
     StringBuilder read = new StringBuilder("SELECT * FROM ");
     read.append(readType.getTableName());
     read.append(" WHERE ");
@@ -67,6 +69,12 @@ public class DefaultDBFlavor extends DBFlavor {
 
   @Override
   public String createReadMetaStatement(StatementType readType, String key) {
+    System.out.println("HERE???");
+    System.out.println("HERE???");
+    System.out.println("HERE???");
+    System.out.println("HERE???");
+    System.out.println("HERE???");
+
     StringBuilder read = new StringBuilder("SELECT * FROM ");
     read.append(readType.getTableName());
     read.append(" WHERE ");

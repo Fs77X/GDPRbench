@@ -886,10 +886,10 @@ public class GDPRWorkload extends Workload {
 
     if (isFirst) {
       if (checkcompliance) {
-        doTransactionCheckCompliance(db);
+        // doTransactionCheckCompliance(db);
       } 
       if (readlog) {
-        doTransactionReadLog(db);
+        // doTransactionReadLog(db);
       }
       isFirst = false;
     }
@@ -1034,7 +1034,7 @@ public class GDPRWorkload extends Workload {
 
     System.err.println("Verify conformance called with recordcount "+ count);
 
-    db.verifyTTL(table, count);
+    // db.verifyTTL(table, count);
   }
 
   public void doTransactionReadModifyWrite(DB db) {

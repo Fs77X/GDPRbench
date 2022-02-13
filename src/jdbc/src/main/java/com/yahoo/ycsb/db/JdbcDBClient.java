@@ -337,6 +337,7 @@ public class JdbcDBClient extends DB {
         readStatement = createAndCacheReadStatement(type, key);
       }
       readStatement.setString(1, key);
+      System.err.println("In Read: "+readStatement.toString());
       ResultSet resultSet = readStatement.executeQuery();
       if (!resultSet.next()) {
         resultSet.close();
@@ -349,6 +350,7 @@ public class JdbcDBClient extends DB {
         }
       }
       resultSet.close();
+      System.out.println("read okchamp");
       return Status.OK;
     } catch (SQLException e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);
@@ -390,8 +392,10 @@ public class JdbcDBClient extends DB {
     //TODO: No use for keyMatch whatsoever, so check if without queering for keys this will work.
     try {
       HashSet<String> fields = null;
+      System.out.println("tablename: " + tableName + " keymatch " + keymatch);
       StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(keymatch));
       PreparedStatement readStatement = createAndCacheReadMetaStatement(type, keymatch);
+      System.out.println("readmeta query: " + readStatement.toString());
       ResultSet resultSet = readStatement.executeQuery();
       if (!resultSet.next()) {
         resultSet.close();
@@ -628,6 +632,31 @@ public class JdbcDBClient extends DB {
   public Status insertTTL(String table, String key,
                          Map<String, ByteIterator> values, int ttl) {
     System.out.println("inside inserttl");
+    try{
+      int numFields = values.size();
+      OrderedFieldInfo fieldInfo = getFieldInfo(values);
+      StatementType type = new StatementType(StatementType.Type.INSERT, table,
+          numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
+      PreparedStatement insertStatement = cachedStatements.get(type);
+      if (insertStatement == null) {
+        insertStatement = createAndCacheInsertStatement(type, key);
+      }
+      
+      insertStatement.setString(1, key);
+      int index = 2;
+      for (String value: fieldInfo.getFieldValues()) {
+        insertStatement.setString(index++, value);
+      }
+      System.err.println("In insert: "+insertStatement.toString());
+      int result = insertStatement.executeUpdate();
+      if (result == 1) {
+        return Status.OK;
+      }
+    } catch (SQLException e) {
+      System.err.println("Error in processing delete to table: " + table + e);
+      return Status.ERROR;
+    }
+  
     return Status.OK;
   }
 }

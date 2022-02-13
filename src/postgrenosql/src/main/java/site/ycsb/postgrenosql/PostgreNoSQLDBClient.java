@@ -333,6 +333,10 @@ public class PostgreNoSQLDBClient extends DB {
   }
 
   private String createReadStatement(StatementType readType){
+    System.out.println("HERE OKAYCHAMP WOO");
+    System.out.println("HERE OKAYCHAMP WOO");
+    System.out.println("HERE OKAYCHAMP WOO");
+    System.out.println("HERE OKAYCHAMP WOO");
     StringBuilder read = new StringBuilder("SELECT " + PRIMARY_KEY + " AS " + PRIMARY_KEY);
 
     if (readType.getFields() == null) {
