@@ -27,7 +27,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import com.yahoo.ycsb.db.flavors.DBFlavor;
-
+import java.util.Random;
 import com.fasterxml.jackson.databind.ObjectMapper;
 // import com.fasterxml.jackson.core.type.TypeReference;
 // import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -345,11 +345,15 @@ public class JdbcDBClient extends DB {
 
   public Status actualRead(String key) {
     try{
-      Pattern p = Pattern.compile("\\d+");
-      Matcher m = p.matcher(key);
-      while(m.find()) {
-        key = m.group();
-      }
+      // Pattern p = Pattern.compile("\\d+");
+      // Matcher m = p.matcher(key);
+      // while(m.find()) {
+      //   key = "o" + m.group();
+      // }
+      Random rand = new Random();
+      int keyNum = rand.nextInt((999999 - 10000)) + 10000;
+      key = "o" + keyNum;
+      // 999999 10000 
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
