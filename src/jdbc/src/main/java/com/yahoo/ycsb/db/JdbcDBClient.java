@@ -27,8 +27,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.yahoo.ycsb.db.JSON.Mget_Entry;
-import com.yahoo.ycsb.db.JSON.Mget_Obj;
+import com.yahoo.ycsb.db.JSON.MgetEntry;
+import com.yahoo.ycsb.db.JSON.MgetObj;
 import com.yahoo.ycsb.db.flavors.DBFlavor;
 import java.util.Random;
 
@@ -46,8 +46,8 @@ import okhttp3.RequestBody;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+// import java.util.regex.Matcher;
+// import java.util.regex.Pattern;
 
 /**
  * A class that wraps a JDBC compliant database to allow it to be interfaced
@@ -168,25 +168,39 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  public Mget_Entry createMget_Entry() {
+  public MgetEntry createMgetEntry() {
     try {
       Connection c = getConnection();
-      Statement statement = c.createStatement();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
       int devid = rand.nextInt(2000) + 1;
-      String device_id = devid + "";
-      String query = "SELECT id FROM mall_observation WHERE device_id = \'" + device_id + "\'";
+      String deviceid = devid + "";
+      String query = "SELECT id FROM mall_observation WHERE device_id = \'" + deviceid + "\'";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
-      String id[] = new String[rs.getRow()];
+      String[] id = new String[rs.getRow()];
+      // System.out.println("HELLOO");
+      // System.out.println("HELLOO");
+      // System.out.println("HELLOO");
+      // System.out.println("HELLOO");
+      // System.out.println("HELLOO");
+      // System.out.println("HELLOO");
+      // System.out.println(id.length);
       rs.beforeFirst();
       int counter = 0;
       while (rs.next()) {
-        id[counter] = rs.getString("id");
+        String val = rs.getString("id");
+        id[counter] = val;
         counter = counter + 1;
       }
-      String qkey = id[rand.nextInt(id.length)] + "";
-      return new Mget_Entry(qkey, device_id);
+      if (id.length == 0) {
+        System.out.println("NOT GOOD");
+      }
+      // Random rand2 = new Random();
+      int idx = rand.nextInt(id.length);
+      // System.out.println(idx);
+      String qkey = id[idx] + "";
+      return new MgetEntry(qkey, deviceid);
 
     } catch (Exception e) {
       // TODO Auto-generated catch block
@@ -411,11 +425,12 @@ public class JdbcDBClient extends DB {
       // int keyNum = rand.nextInt((999999 - 10000)) + 10000;
       // key = "o" + keyNum;
       // // 999999 10000
-      Mget_Entry mge = createMget_Entry();
+      MgetEntry mge = createMgetEntry();
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
+      // System.out.println("http://localhost:5344/mget_entry/" + mge.getDeviceId() + "/" + mge.getId());
       Request request = new Request.Builder()
-          .url("http://localhost:5344/mget_entry/" + mge.getDeviceId() + "/" + mge.getId())
+          .url("http://localhost:5344/sieve/mget_entry/" + mge.getDeviceId() + "/" + mge.getId())
           .method("GET", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -485,14 +500,15 @@ public class JdbcDBClient extends DB {
   public Status actualReadMeta(String cond, String keymatch) {
     Random rand = new Random();
     int qid = rand.nextInt(39) + 1;
-    String[] props = new String[]{"objection", "sharing", "purpose"};
+    String[] properties = new String[]{"objection", "sharing", "purpose"};
     String[] propVals = new String[]{"obj", "shr", "purpose"};
     String id = qid + "";
-    int idx = rand.nextInt(props.length);
-    String prop = props[idx];
+    // System.out.println("IN ACTUAL RMD");
+    int idx = rand.nextInt(properties.length);
+    String prop = properties[idx];
     int ival = rand.nextInt(99) + 1;
     String info = propVals[idx]+ival;
-    Mget_Obj mObj = new Mget_Obj(id, prop, info);
+    MgetObj mObj = new MgetObj(id, prop, info);
     ObjectMapper mapper = new ObjectMapper();
     String jsonString = "";
     try {
@@ -510,6 +526,7 @@ public class JdbcDBClient extends DB {
     // }
     // System.out.println(id);
     // System.out.println(purpose);
+    System.out.println(jsonString);
     try {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
@@ -517,11 +534,12 @@ public class JdbcDBClient extends DB {
       RequestBody body = RequestBody.create(mediaType,
           jsonString);
       Request request = new Request.Builder()
-          .url("http://localhost:5344/mget_obj/")
+          .url("http://localhost:5344/sieve/mget_obj/")
           .method("POST", body)
           .addHeader("Content-Type", "application/json")
           .build();
       Response response = client.newCall(request).execute();
+      System.out.println("RESPONSE CODE IN RMD: " + response.code());
       ResponseBody boi = response.body();
       boi.close();
       return Status.OK;
@@ -698,26 +716,26 @@ public class JdbcDBClient extends DB {
 
   public String propChange(String prop) {
     switch (prop) {
-      case "DEC":
-        return "adm";
-      case "USR":
-        return "device_id";
-      case "SRC":
-        return "origin";
-      case "OBJ":
-        return "objection";
-      case "CAT":
-        return "cat";
-      case "ACL":
-        return "acl";
-      case "PUR":
-        return "purpose";
-      case "SHR":
-        return "sharing";
-      case "TTL":
-        return "ttl";
-      default:
-        return "";
+    case "DEC":
+      return "adm";
+    case "USR":
+      return "device_id";
+    case "SRC":
+      return "origin";
+    case "OBJ":
+      return "objection";
+    case "CAT":
+      return "cat";
+    case "ACL":
+      return "acl";
+    case "PUR":
+      return "purpose";
+    case "SHR":
+      return "sharing";
+    case "TTL":
+      return "ttl";
+    default:
+      return "";
     }
   }
 

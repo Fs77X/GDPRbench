@@ -1,9 +1,11 @@
 package com.yahoo.ycsb.db.JSON;
-
-public class Mget_Entry {
+/**
+ * mgetentry
+ */
+public class MgetEntry {
     private String id;
     private String device_id;
-    public Mget_Entry(String id, String device_id){
+    public MgetEntry(String id, String device_id){
         this.id = id;
         this.device_id = device_id;
     }

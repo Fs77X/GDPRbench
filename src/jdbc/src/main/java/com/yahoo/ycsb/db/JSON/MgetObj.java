@@ -1,11 +1,15 @@
 package com.yahoo.ycsb.db.JSON;
 
-public class Mget_Obj {
+/**
+ * mgetobj
+ */
+public class MgetObj {
     private String id;
     private String prop;
     private String info;
     private String query;
-    public Mget_Obj(String id, String prop, String info) {
+
+    public MgetObj(String id, String prop, String info) {
         this.query = "mget_obj";
         this.id = id;
         this.prop = prop;
@@ -16,7 +20,7 @@ public class Mget_Obj {
         return this.id;
     }
 
-    public String getProp(){
+    public String getProp() {
         return this.prop;
     }
 
@@ -27,5 +31,5 @@ public class Mget_Obj {
     public String getQuery() {
         return this.query;
     }
-    
+
 }
