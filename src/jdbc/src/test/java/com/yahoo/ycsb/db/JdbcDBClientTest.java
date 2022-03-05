@@ -244,32 +244,32 @@ public class JdbcDBClientTest {
         }
     }
 
-    @Test
-    public void readTest() {
-        String insertKey = "user0";
-        HashMap<String, ByteIterator> insertMap = insertRow(insertKey);
-        Set<String> readFields = new HashSet<String>();
-        HashMap<String, ByteIterator> readResultMap = new HashMap<String, ByteIterator>();
+    // @Test
+    // public void readTest() {
+    //     String insertKey = "user0";
+    //     HashMap<String, ByteIterator> insertMap = insertRow(insertKey);
+    //     Set<String> readFields = new HashSet<String>();
+    //     HashMap<String, ByteIterator> readResultMap = new HashMap<String, ByteIterator>();
 
-        // Test reading a single field
-        readFields.add("FIELD0");
-        jdbcDBClient.read(TABLE_NAME, insertKey, readFields, readResultMap);
-        assertEquals("Assert that result has correct number of fields", readFields.size(), readResultMap.size());
-        for (String field: readFields) {
-            assertEquals("Assert " + field + " was read correctly", insertMap.get(field).toString(), readResultMap.get(field).toString());
-        }
+    //     // Test reading a single field
+    //     readFields.add("FIELD0");
+    //     jdbcDBClient.read(TABLE_NAME, insertKey, readFields, readResultMap);
+    //     assertEquals("Assert that result has correct number of fields", readFields.size(), readResultMap.size());
+    //     for (String field: readFields) {
+    //         assertEquals("Assert " + field + " was read correctly", insertMap.get(field).toString(), readResultMap.get(field).toString());
+    //     }
 
-        readResultMap = new HashMap<String, ByteIterator>();
+    //     readResultMap = new HashMap<String, ByteIterator>();
 
-        // Test reading all fields
-        readFields.add("FIELD1");
-        readFields.add("FIELD2");
-        jdbcDBClient.read(TABLE_NAME, insertKey, readFields, readResultMap);
-        assertEquals("Assert that result has correct number of fields", readFields.size(), readResultMap.size());
-        for (String field: readFields) {
-            assertEquals("Assert " + field + " was read correctly", insertMap.get(field).toString(), readResultMap.get(field).toString());
-        }
-    }
+    //     // Test reading all fields
+    //     readFields.add("FIELD1");
+    //     readFields.add("FIELD2");
+    //     jdbcDBClient.read(TABLE_NAME, insertKey, readFields, readResultMap);
+    //     assertEquals("Assert that result has correct number of fields", readFields.size(), readResultMap.size());
+    //     for (String field: readFields) {
+    //         assertEquals("Assert " + field + " was read correctly", insertMap.get(field).toString(), readResultMap.get(field).toString());
+    //     }
+    // }
 
     @Test
     public void deleteTest() {

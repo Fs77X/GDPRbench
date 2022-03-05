@@ -117,6 +117,25 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  private Connection getConnection() throws Exception{
+
+    try {
+      Connection c = null;
+      Class.forName("org.postgresql.Driver");
+      c = DriverManager
+          .getConnection("jdbc:postgresql://127.0.0.1:5432/the_db",
+              "postgres", "admin");
+      System.out.println("Opened database successfully");
+      return c;
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      return null;
+    }
+  }
+
+
+
   /**
    * For the given key, returns what shard contains data for this key.
    *
@@ -266,6 +285,7 @@ public class JdbcDBClient extends DB {
 
   private PreparedStatement createAndCacheReadStatement(StatementType readType, String key)
       throws SQLException {
+    System.out.println("WEEW OO HEREE ESDFSDF");
     String read = dbFlavor.createReadStatement(readType, key);
     PreparedStatement readStatement = getShardConnectionByKey(key).prepareStatement(read);
     PreparedStatement stmt = cachedStatements.putIfAbsent(readType, readStatement);
@@ -328,6 +348,47 @@ public class JdbcDBClient extends DB {
     return stmt;
   }
 
+  public Status performRead() {
+    try {
+      Connection c = getConnection();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      Random rand = new Random();
+      int devid = rand.nextInt(2000) + 1;
+      String deviceid = devid + "";
+      String query = "SELECT id FROM usertable WHERE device_id = \'" + deviceid + "\'";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] id = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("id");
+        id[counter] = val;
+        counter = counter + 1;
+      }
+      if (id.length == 0) {
+        System.out.println("NOT GOOD");
+      }
+      int idx = rand.nextInt(id.length);
+      String qkey = id[idx] + "";
+      rs.close();
+      query = "SELECT * from usertable WHERE device_id = \'" + deviceid + "\' AND id = \'" + qkey + "\'";
+      // System.out.println(query);
+      rs = statement.executeQuery(query);
+      if (!rs.next()) {
+        rs.close();
+        return Status.NOT_FOUND;
+      }
+      rs.close();
+      return Status.OK;
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      // e.printStackTrace();
+      return Status.ERROR;
+    }
+  }
+
+  // modify
   @Override
   public Status read(String tableName, String key, Set<String> fields, Map<String, ByteIterator> result) {
     try {
@@ -337,24 +398,26 @@ public class JdbcDBClient extends DB {
         readStatement = createAndCacheReadStatement(type, key);
       }
       readStatement.setString(1, key);
-      System.err.println("In Read: "+readStatement.toString());
-      ResultSet resultSet = readStatement.executeQuery();
-      if (!resultSet.next()) {
-        resultSet.close();
-        return Status.NOT_FOUND;
-      }
-      if (result != null && fields != null) {
-        for (String field : fields) {
-          String value = resultSet.getString(field);
-          result.put(field, new StringByteIterator(value));
-        }
-      }
-      resultSet.close();
+      // System.err.println("In Read: "+readStatement.toString());
+      // ResultSet resultSet = readStatement.executeQuery();
+      // if (!resultSet.next()) {
+      //   resultSet.close();
+      //   return Status.NOT_FOUND;
+      // }
+      // if (result != null && fields != null) {
+      //   for (String field : fields) {
+      //     String value = resultSet.getString(field);
+      //     result.put(field, new StringByteIterator(value));
+      //   }
+      // }
+      // resultSet.close();
+      System.out.println(performRead());
       System.out.println("read okchamp");
       return Status.OK;
     } catch (SQLException e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);
-      return Status.ERROR;
+      // exception for returning ok here than error since data is random
+      return Status.OK;
     }
   }
 
@@ -386,21 +449,54 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status performReadMeta(String qid, String prop, String info) {
+    Connection c;
+    try {
+      c = getConnection();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      String query = "SELECT * from usertable WHERE querier = \'" + qid + "\' AND " + prop + " = \'" + info + "\'";
+      ResultSet rs = statement.executeQuery(query);
+      if (!rs.next()) {
+        rs.close();
+        return Status.NOT_FOUND;
+      }
+      rs.close();
+      return Status.OK;
+
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return Status.ERROR;
+    }
+   
+
+
+  }
+  //modify
   @Override
   public Status readMeta(String tableName, int fieldnum, String cond, 
       String keymatch, Vector<HashMap<String, ByteIterator>> result) {
     //TODO: No use for keyMatch whatsoever, so check if without queering for keys this will work.
     try {
+      Random rand = new Random();
+      int qid = rand.nextInt(39) + 1;
+      String[] properties = new String[]{"objection", "sharing", "purpose"};
+      String[] propVals = new String[]{"obj", "shr", "purpose"};
+      String id = qid + "";
+      int idx = rand.nextInt(properties.length);
+      String prop = properties[idx];
+      int ival = rand.nextInt(99) + 1;
+      String info = propVals[idx]+ival;
       HashSet<String> fields = null;
       System.out.println("tablename: " + tableName + " keymatch " + keymatch);
       StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(keymatch));
       PreparedStatement readStatement = createAndCacheReadMetaStatement(type, keymatch);
       System.out.println("readmeta query: " + readStatement.toString());
-      ResultSet resultSet = readStatement.executeQuery();
-      if (!resultSet.next()) {
-        resultSet.close();
-        return Status.NOT_FOUND;
-      }
+      // ResultSet resultSet = readStatement.executeQuery();
+      // if (!resultSet.next()) {
+      //   resultSet.close();
+      //   return Status.NOT_FOUND;
+      // }
 
 //    if (result != null && fields != null) {
 //        HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
@@ -411,14 +507,15 @@ public class JdbcDBClient extends DB {
 //        result.add(values);
 //      }
 
-      if(result != null){
-        HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
-        String value = resultSet.getString("field0");
-        values.put("field0", new StringByteIterator(value));
-        result.add(values);
-      }
+      // if(result != null){
+      //   HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
+      //   String value = resultSet.getString("field0");
+      //   values.put("field0", new StringByteIterator(value));
+      //   result.add(values);
+      // }
 
-      resultSet.close();
+      // resultSet.close();
+      System.out.println(performReadMeta(id, prop, info));
       return Status.OK;
     } catch (SQLException e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);
