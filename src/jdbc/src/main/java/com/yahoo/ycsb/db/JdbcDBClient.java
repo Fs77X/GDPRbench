@@ -26,9 +26,15 @@ import java.sql.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import com.yahoo.ycsb.db.JSON.Mget_Entry;
+import com.yahoo.ycsb.db.JSON.Mget_Obj;
 import com.yahoo.ycsb.db.flavors.DBFlavor;
 import java.util.Random;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.Connection;
 // import com.fasterxml.jackson.core.type.TypeReference;
 // import com.fasterxml.jackson.databind.DeserializationFeature;
 
@@ -107,8 +113,10 @@ public class JdbcDBClient extends DB {
   private static final String DEFAULT_PROP = "";
   private ConcurrentMap<StatementType, PreparedStatement> cachedStatements;
   private long numRowsInBatch = 0;
-  /** DB flavor defines DB-specific syntax and behavior for the
-   * particular database. Current database flavors are: {default, phoenix} */
+  /**
+   * DB flavor defines DB-specific syntax and behavior for the
+   * particular database. Current database flavors are: {default, phoenix}
+   */
   private DBFlavor dbFlavor;
 
   /**
@@ -143,6 +151,50 @@ public class JdbcDBClient extends DB {
     return ret;
   }
 
+  private Connection getConnection() throws Exception{
+
+    try {
+      Connection c = null;
+      Class.forName("org.postgresql.Driver");
+      c = DriverManager
+          .getConnection("jdbc:postgresql://127.0.0.1:5432/sieve",
+              "sieve", "");
+      System.out.println("Opened database successfully");
+      return c;
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      return null;
+    }
+  }
+
+  public Mget_Entry createMget_Entry() {
+    try {
+      Connection c = getConnection();
+      Statement statement = c.createStatement();
+      Random rand = new Random();
+      int devid = rand.nextInt(2000) + 1;
+      String device_id = devid + "";
+      String query = "SELECT id FROM mall_observation WHERE device_id = \'" + device_id + "\'";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String id[] = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        id[counter] = rs.getString("id");
+        counter = counter + 1;
+      }
+      String qkey = id[rand.nextInt(id.length)] + "";
+      return new Mget_Entry(qkey, device_id);
+
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   /**
    * For the given key, returns Connection object that holds connection to the
    * shard that contains this key.
@@ -163,7 +215,9 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  /** Returns parsed int value from the properties if set, otherwise returns -1. */
+  /**
+   * Returns parsed int value from the properties if set, otherwise returns -1.
+   */
   private static int getIntProperty(Properties props, String key) throws DBException {
     String valueStr = props.getProperty(key);
     if (valueStr != null) {
@@ -177,7 +231,10 @@ public class JdbcDBClient extends DB {
     return -1;
   }
 
-  /** Returns parsed boolean value from the properties if set, otherwise returns defaultVal. */
+  /**
+   * Returns parsed boolean value from the properties if set, otherwise returns
+   * defaultVal.
+   */
   private static boolean getBoolProperty(Properties props, String key, boolean defaultVal) {
     String valueStr = props.getProperty(key);
     if (valueStr != null) {
@@ -344,34 +401,36 @@ public class JdbcDBClient extends DB {
   }
 
   public Status actualRead(String key) {
-    try{
+    try {
       // Pattern p = Pattern.compile("\\d+");
       // Matcher m = p.matcher(key);
       // while(m.find()) {
-      //   key = "o" + m.group();
+      // key = "o" + m.group();
       // }
-      Random rand = new Random();
-      int keyNum = rand.nextInt((999999 - 10000)) + 10000;
-      key = "o" + keyNum;
-      // 999999 10000 
+      // Random rand = new Random();
+      // int keyNum = rand.nextInt((999999 - 10000)) + 10000;
+      // key = "o" + keyNum;
+      // // 999999 10000
+      Mget_Entry mge = createMget_Entry();
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mget_entry/" + key)
+          .url("http://localhost:5344/mget_entry/" + mge.getDeviceId() + "/" + mge.getId())
           .method("GET", null)
           .build();
       Response response = client.newCall(request).execute();
+      System.out.println("response code in mget_entry: " + response.code());
       ResponseBody boi = response.body();
       boi.close();
-      // we have found that sometimes data gets deleted or expires before it can be read due to ttl
+      // we have found that sometimes data gets deleted or expires before it can be
+      // read due to ttl
       return Status.OK;
-    } catch(Exception e) {
+    } catch (Exception e) {
       System.out.println(e);
       return Status.ERROR;
     }
-    
-  }
 
+  }
 
   // work on read
   @Override
@@ -387,7 +446,7 @@ public class JdbcDBClient extends DB {
   }
 
   public Status getLog(String logCount) {
-    try{
+    try {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
@@ -399,19 +458,19 @@ public class JdbcDBClient extends DB {
       ResponseBody boi = response.body();
       ObjectMapper mapper = new ObjectMapper();
       List<String> logList = mapper.readValue(boi.string(), List.class);
-      for (String log: logList) {
+      for (String log : logList) {
         System.out.println(log);
       }
       boi.close();
       return Status.OK;
-    } catch(Exception e) {
+    } catch (Exception e) {
       System.out.println(e);
       return Status.ERROR;
     }
   }
 
   @Override
-  public Status readLog(String table, int logcount){
+  public Status readLog(String table, int logcount) {
     try {
       System.out.println(logcount);
       Status res = getLog(String.valueOf(logcount));
@@ -424,25 +483,41 @@ public class JdbcDBClient extends DB {
   }
 
   public Status actualReadMeta(String cond, String keymatch) {
-    String id = "[]";
-    String purpose = "[]";
-    if (cond.equals("USR")) {
-      id = "[\"" + keymatch.replace("user", "key") + "\"]";
-    } else {
-      purpose = "[{\"prop\": \"" + propChange(cond) + "\", \"info\": \"" + keymatch + "\"}]";
-      int numid = (int) Math.random() * (40) + 1;
-      id = "[" + "\"" + Integer.toString(numid) + "\"]";
+    Random rand = new Random();
+    int qid = rand.nextInt(39) + 1;
+    String[] props = new String[]{"objection", "sharing", "purpose"};
+    String[] propVals = new String[]{"obj", "shr", "purpose"};
+    String id = qid + "";
+    int idx = rand.nextInt(props.length);
+    String prop = props[idx];
+    int ival = rand.nextInt(99) + 1;
+    String info = propVals[idx]+ival;
+    Mget_Obj mObj = new Mget_Obj(id, prop, info);
+    ObjectMapper mapper = new ObjectMapper();
+    String jsonString = "";
+    try {
+      jsonString = mapper.writeValueAsString(mObj);
+    } catch (JsonProcessingException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
     }
+    // if (cond.equals("USR")) {
+    //   id = "[\"" + keymatch.replace("user", "key") + "\"]";
+    // } else {
+    //   purpose = "[{\"prop\": \"" + propChange(cond) + "\", \"info\": \"" + keymatch + "\"}]";
+    //   int numid = (int) Math.random() * (40) + 1;
+    //   id = "[" + "\"" + Integer.toString(numid) + "\"]";
+    // }
     // System.out.println(id);
     // System.out.println(purpose);
     try {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       MediaType mediaType = MediaType.parse("application/json");
-      RequestBody body = RequestBody.create(mediaType, 
-          "{\r\n    \"property\": " + purpose + ",\r\n    \"id\": " + id + "\r\n}");
+      RequestBody body = RequestBody.create(mediaType,
+          jsonString);
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mget_obj/")
+          .url("http://localhost:5344/mget_obj/")
           .method("POST", body)
           .addHeader("Content-Type", "application/json")
           .build();
@@ -457,9 +532,10 @@ public class JdbcDBClient extends DB {
   }
 
   @Override
-  public Status readMeta(String tableName, int fieldnum, String cond, 
+  public Status readMeta(String tableName, int fieldnum, String cond,
       String keymatch, Vector<HashMap<String, ByteIterator>> result) {
-    //TODO: No use for keyMatch whatsoever, so check if without queering for keys this will work.
+    // TODO: No use for keyMatch whatsoever, so check if without queering for keys
+    // this will work.
     try {
       return actualReadMeta(cond, keymatch);
     } catch (Exception e) {
@@ -470,7 +546,7 @@ public class JdbcDBClient extends DB {
 
   @Override
   public Status scan(String tableName, String startKey, int recordcount, Set<String> fields,
-                     Vector<HashMap<String, ByteIterator>> result) {
+      Vector<HashMap<String, ByteIterator>> result) {
     // System.out.println("we in the scan");
     try {
       StatementType type = new StatementType(StatementType.Type.SCAN, tableName, 1, "", getShardIndexByKey(startKey));
@@ -548,38 +624,38 @@ public class JdbcDBClient extends DB {
   @Override
   public Status update(String tableName, String key, Map<String, ByteIterator> values) {
     try {
-      System.out.println("Key in update "+key);
+      System.out.println("Key in update " + key);
       System.out.println("Values in update" + values);
       Status updateObj = actualUpdate(key, values);
       if (!updateObj.isOk()) {
         return Status.ERROR;
       }
-      for(Map.Entry m:values.entrySet()){  
+      for (Map.Entry m : values.entrySet()) {
         if (!m.getKey().equals("USR")) {
           Status updateMeta = updateIndividualMeta(key, propChange("" + m.getKey()), "" + m.getValue());
           if (!updateMeta.isOk()) {
             return Status.ERROR;
           }
         }
-      }  
+      }
       return Status.OK;
       // int numFields = values.size();
       // OrderedFieldInfo fieldInfo = getFieldInfo(values);
       // // System.out.println("fieldInfo: " + fieldInfo.getFieldValues().get(0));
       // StatementType type = new StatementType(StatementType.Type.UPDATE, tableName,
-      //     numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
+      // numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
       // PreparedStatement updateStatement = cachedStatements.get(type);
       // if (updateStatement == null) {
-      //   updateStatement = createAndCacheUpdateStatement(type, key);
+      // updateStatement = createAndCacheUpdateStatement(type, key);
       // }
       // int index = 1;
       // for (String value: fieldInfo.getFieldValues()) {
-      //   updateStatement.setString(index++, value);
+      // updateStatement.setString(index++, value);
       // }
       // updateStatement.setString(index, key);
       // int result = updateStatement.executeUpdate();
       // if (result == 1) {
-      //   return Status.OK;
+      // return Status.OK;
       // }
       // return Status.UNEXPECTED_STATE;
     } catch (Exception e) {
@@ -591,17 +667,17 @@ public class JdbcDBClient extends DB {
 
   public Status actualupdateMeta(String condProp, String condVal,
       String changeProp, String changeVal) {
-    //mmodcond_metaObj
-    try{
+    // mmodcond_metaObj
+    try {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       MediaType mediaType = MediaType.parse("application/json");
-      RequestBody body = RequestBody.create(mediaType, 
+      RequestBody body = RequestBody.create(mediaType,
           "{\r\n    \"condProp\":\"" + condProp +
-          "\",\r\n    \"condVal\": \"" + condVal + 
-          "\",\r\n    \"changeProp\": \"" + changeProp +
-          "\",\r\n    \"changeVal\": \"" + changeVal +
-          "\"\r\n}");
+              "\",\r\n    \"condVal\": \"" + condVal +
+              "\",\r\n    \"changeProp\": \"" + changeProp +
+              "\",\r\n    \"changeVal\": \"" + changeVal +
+              "\"\r\n}");
       Request request = new Request.Builder()
           .url("http://localhost:8080/cond_metaObj/")
           .method("PUT", body)
@@ -620,35 +696,35 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  public String propChange(String prop){
-    switch(prop) {
-    case "DEC":
-      return "adm";
-    case "USR":
-      return "id";
-    case "SRC":
-      return "origin";
-    case "OBJ":
-      return "objection";
-    case "CAT":
-      return "cat";
-    case "ACL":
-      return "acl";
-    case "PUR":
-      return "purpose";
-    case "SHR":
-      return "sharing";
-    case "TTL":
-      return "TTL";
-    default:
-      return "";
+  public String propChange(String prop) {
+    switch (prop) {
+      case "DEC":
+        return "adm";
+      case "USR":
+        return "device_id";
+      case "SRC":
+        return "origin";
+      case "OBJ":
+        return "objection";
+      case "CAT":
+        return "cat";
+      case "ACL":
+        return "acl";
+      case "PUR":
+        return "purpose";
+      case "SHR":
+        return "sharing";
+      case "TTL":
+        return "ttl";
+      default:
+        return "";
     }
   }
 
   @Override
-  public Status updateMeta(String table, int fieldnum, String condition, 
+  public Status updateMeta(String table, int fieldnum, String condition,
       String keymatch, String fieldname, String metadatavalue, String condProp) {
-    try{
+    try {
       // just quit because that shouldn't be allowed unless we're changing usernames
       // also USR isn't considered metadata in our case
       if (fieldname.equals("USR") || fieldname.equals("Data")) {
@@ -659,17 +735,18 @@ public class JdbcDBClient extends DB {
       String changeProp = propChange(fieldname);
       String changeVal = metadatavalue;
       // System.out.println("condProp: " + condProp + " condVal " + condition
-      //     + " changeProp " + fieldname + " changeVal " + metadatavalue);
+      // + " changeProp " + fieldname + " changeVal " + metadatavalue);
       StatementType type = new StatementType(StatementType.Type.UPDATE, table,
           1, "", getShardIndexByKey(keymatch));
       PreparedStatement updateStatement = createAndCacheUpdateMetaStatement(type, keymatch);
-      //updateStatement.setString(1,keymatch);
+      // updateStatement.setString(1,keymatch);
       int result = updateStatement.executeUpdate();
       Status res = actualupdateMeta(condProp, condVal, changeProp, changeVal);
       // System.out.println(res);
-      // System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
+      // System.err.println("UpdateMeta statement "+updateStatement+" Result
+      // "+result);
       return Status.OK;
-    } catch(SQLException e) {
+    } catch (SQLException e) {
       System.err.println("Error in processing update to table: " + table + e);
       e.printStackTrace();
       return Status.ERROR;
@@ -687,10 +764,10 @@ public class JdbcDBClient extends DB {
       if (insertStatement == null) {
         insertStatement = createAndCacheInsertStatement(type, key);
       }
-      //System.err.println("In insert: "+insertStatement.toString());
+      // System.err.println("In insert: "+insertStatement.toString());
       insertStatement.setString(1, key);
       int index = 2;
-      for (String value: fieldInfo.getFieldValues()) {
+      for (String value : fieldInfo.getFieldValues()) {
         insertStatement.setString(index++, value);
       }
       // Using the batch insert API
@@ -702,8 +779,9 @@ public class JdbcDBClient extends DB {
           if (++numRowsInBatch % batchSize == 0) {
             int[] results = insertStatement.executeBatch();
             for (int r : results) {
-              // Acceptable values are 1 and SUCCESS_NO_INFO (-2) from reWriteBatchedInserts=true
-              if (r != 1 && r != -2) { 
+              // Acceptable values are 1 and SUCCESS_NO_INFO (-2) from
+              // reWriteBatchedInserts=true
+              if (r != 1 && r != -2) {
                 return Status.ERROR;
               }
             }
@@ -712,7 +790,8 @@ public class JdbcDBClient extends DB {
               getShardConnectionByKey(key).commit();
             }
             return Status.OK;
-          } // else, the default value of -1 or a nonsense. Treat it as an infinitely large batch.
+          } // else, the default value of -1 or a nonsense. Treat it as an infinitely large
+            // batch.
         } // else, we let the batch accumulate
         // Added element to the batch, potentially committing the batch too.
         return Status.BATCHED_OK;
@@ -800,7 +879,7 @@ public class JdbcDBClient extends DB {
       deleteStatement.setString(1, key);
       // System.out.println("delete Obj");
       int result = deleteStatement.executeUpdate();
-      result = 1; //bypass postgres failure
+      result = 1; // bypass postgres failure
       // System.err.println("Delete Jdbc key "+key+ "result "+ result);
       if (result == 1) {
         Status del = actualDelete(key);
@@ -819,11 +898,11 @@ public class JdbcDBClient extends DB {
   @Override
   public Status deleteMeta(String table, int fieldnum, String condition, String keymatch) {
     // System.out.println("we in the deleteMeta");
-    try{
+    try {
       StatementType type = new StatementType(StatementType.Type.DELETE, table, 1, "", getShardIndexByKey(keymatch));
       PreparedStatement deleteStatement = createAndCacheDeleteMetaStatement(type, keymatch);
       int result = deleteStatement.executeUpdate();
-      //System.err.println("DeleteMeta Jdbc key "+keymatch+ "result "+ result);
+      // System.err.println("DeleteMeta Jdbc key "+keymatch+ "result "+ result);
       return Status.OK;
     } catch (SQLException e) {
       System.err.println("Error in processing delete to table: " + table + e);
@@ -850,7 +929,7 @@ public class JdbcDBClient extends DB {
   }
 
   public long getKeys() {
-    try{
+    try {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
@@ -872,8 +951,9 @@ public class JdbcDBClient extends DB {
       System.out.println(e);
       return -1;
     }
-    
+
   }
+
   @Override
   public Status verifyTTL(String table, long recordcount) {
     System.out.println("we in the verifyttl");
@@ -881,8 +961,8 @@ public class JdbcDBClient extends DB {
     long keys = getKeys();
     recordcount++;
     System.out.println("Keys in vttl: " + keys);
-    while(keys > recordcount) {
-      try { 
+    while (keys > recordcount) {
+      try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
         System.out.println(e);
@@ -918,21 +998,21 @@ public class JdbcDBClient extends DB {
     } catch (Exception e) {
       System.err.println(e);
       return Status.ERROR;
-    } 
+    }
   }
 
   private Status insertMeta(String key, OrderedFieldInfo value) {
-    try{
+    try {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       MediaType mediaType = MediaType.parse("application/json");
       RequestBody body = RequestBody.create(mediaType, "{\r\n    \"TTL\":\"" + value.getFieldValues().get(9) +
-          "\",\r\n    \"purpose\": \"" + value.getFieldValues().get(7) + 
+          "\",\r\n    \"purpose\": \"" + value.getFieldValues().get(7) +
           "\",\r\n    \"adm\": \"" + value.getFieldValues().get(0) +
           "\",\r\n    \"origin\": \"" + value.getFieldValues().get(2) +
           "\",\r\n    \"objection\": \"" + value.getFieldValues().get(3) +
-          "\",\r\n    \"sharing\": \"" + value.getFieldValues().get(8) + 
-          "\",\r\n    \"cat\": \"" + value.getFieldValues().get(4) + 
+          "\",\r\n    \"sharing\": \"" + value.getFieldValues().get(8) +
+          "\",\r\n    \"cat\": \"" + value.getFieldValues().get(4) +
           "\",\r\n    \"acl\": \"" + value.getFieldValues().get(5) + "\"\r\n}");
       Request request = new Request.Builder()
           .url("http://localhost:8080/madd_metaobj/" + key)
@@ -954,12 +1034,12 @@ public class JdbcDBClient extends DB {
 
   @Override
   public Status insertTTL(String table, String key,
-                         Map<String, ByteIterator> values, int ttl) {
+      Map<String, ByteIterator> values, int ttl) {
     // System.out.println(table + " " + key);
     // System.out.println(ttl);
     // System.out.println(values);
     // create a client
-    try{
+    try {
       OrderedFieldInfo payload = getFieldInfo(values);
       // System.out.println(payload.getFieldValues().get(6));
       Status insertStatus = insertEntry(key, payload.getFieldValues().get(6), payload.getFieldValues().get(1));
@@ -971,24 +1051,24 @@ public class JdbcDBClient extends DB {
         return Status.ERROR;
       }
       // OkHttpClient client = new OkHttpClient().newBuilder()
-      //     .build();
+      // .build();
       // MediaType mediaType = MediaType.parse("text/plain");
       // RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-      //     .addFormDataPart("id", key)
-      //     .addFormDataPart("name", "Bol")
-      //     .addFormDataPart("gpa", payload.getFieldValues().get(6))
-      //     .build();
+      // .addFormDataPart("id", key)
+      // .addFormDataPart("name", "Bol")
+      // .addFormDataPart("gpa", payload.getFieldValues().get(6))
+      // .build();
       // Request request = new Request.Builder()
-      //     .url("http://localhost:8000/madd_obj/")
-      //     .method("POST", body)
-      //     .build();
+      // .url("http://localhost:8000/madd_obj/")
+      // .method("POST", body)
+      // .build();
       // Response response = client.newCall(request).execute();
       // System.out.println(response.code());
       // if (response.code() != 201) {
-      //   return Status.ERROR;
+      // return Status.ERROR;
       // }
       return Status.OK;
-    } catch(Exception e) {
+    } catch (Exception e) {
       System.out.println(e);
       return Status.ERROR;
     }
