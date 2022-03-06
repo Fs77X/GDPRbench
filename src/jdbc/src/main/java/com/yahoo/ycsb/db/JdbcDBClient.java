@@ -173,21 +173,25 @@ public class JdbcDBClient extends DB {
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      int devid = rand.nextInt(2000) + 1;
-      String deviceid = devid + "";
-      String query = "SELECT id FROM mall_observation WHERE device_id = \'" + deviceid + "\'";
+      String query = "SELECT DISTINCT device_id FROM mall_observation";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
-      String[] id = new String[rs.getRow()];
-      // System.out.println("HELLOO");
-      // System.out.println("HELLOO");
-      // System.out.println("HELLOO");
-      // System.out.println("HELLOO");
-      // System.out.println("HELLOO");
-      // System.out.println("HELLOO");
-      // System.out.println(id.length);
+      String[] devid = new String[rs.getRow()];
       rs.beforeFirst();
       int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("device_id");
+        devid[counter] = val;
+        counter = counter + 1;
+      }
+      String deviceid = devid[rand.nextInt(counter)];
+      query = "SELECT id FROM mall_observation WHERE device_id = \'" + deviceid + "\'";
+      rs = statement.executeQuery(query);
+      rs.last();
+      
+      String[] id = new String[rs.getRow()];
+      rs.beforeFirst();
+      counter = 0;
       while (rs.next()) {
         String val = rs.getString("id");
         id[counter] = val;
@@ -200,6 +204,9 @@ public class JdbcDBClient extends DB {
       int idx = rand.nextInt(id.length);
       // System.out.println(idx);
       String qkey = id[idx] + "";
+      rs.close();
+      statement.close();
+      c.close();
       return new MgetEntry(qkey, deviceid);
 
     } catch (Exception e) {
@@ -517,6 +524,7 @@ public class JdbcDBClient extends DB {
       // TODO Auto-generated catch block
       e1.printStackTrace();
     }
+    System.out.println(jsonString);
     // if (cond.equals("USR")) {
     //   id = "[\"" + keymatch.replace("user", "key") + "\"]";
     // } else {
@@ -526,7 +534,6 @@ public class JdbcDBClient extends DB {
     // }
     // System.out.println(id);
     // System.out.println(purpose);
-    System.out.println(jsonString);
     try {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
@@ -594,15 +601,26 @@ public class JdbcDBClient extends DB {
 
   public Status actualUpdate(String key, Map<String, ByteIterator> values) {
     try {
+      Random rand = new Random();
+      MgetEntry mge = createMgetEntry();
+      String prop = "shop_name";
+      String info = "store " + (rand.nextInt(99) + 1);
+      MgetObj mObj = new MgetObj(mge.getDeviceId(), prop, info);
+      ObjectMapper mapper = new ObjectMapper();
+      String jsonString = "";
+      try {
+        jsonString = mapper.writeValueAsString(mObj);
+      } catch (JsonProcessingException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
-      MediaType mediaType = MediaType.parse("text/plain");
-      RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-          .addFormDataPart("name", key)
-          .addFormDataPart("gpa", "" + values.get("Data"))
-          .build();
+      MediaType mediaType = MediaType.parse("application/json");
+      RequestBody body = RequestBody.create(mediaType,
+          jsonString);
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mmodify_obj/" + key)
+          .url("http://localhost:5344/sieve/mmodify_obj/" + mge.getDeviceId() + "/" + mge.getId())
           .method("PUT", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -625,7 +643,7 @@ public class JdbcDBClient extends DB {
           .addFormDataPart("info", info)
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mmodify_metaobj/" + key)
+          .url("http://localhost:5344/sieve/mmodify_metaobj/" + key)
           .method("PUT", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -648,14 +666,14 @@ public class JdbcDBClient extends DB {
       if (!updateObj.isOk()) {
         return Status.ERROR;
       }
-      for (Map.Entry m : values.entrySet()) {
-        if (!m.getKey().equals("USR")) {
-          Status updateMeta = updateIndividualMeta(key, propChange("" + m.getKey()), "" + m.getValue());
-          if (!updateMeta.isOk()) {
-            return Status.ERROR;
-          }
-        }
-      }
+      // for (Map.Entry m : values.entrySet()) {
+      //   if (!m.getKey().equals("USR")) {
+      //     Status updateMeta = updateIndividualMeta(key, propChange("" + m.getKey()), "" + m.getValue());
+      //     if (!updateMeta.isOk()) {
+      //       return Status.ERROR;
+      //     }
+      //   }
+      // }
       return Status.OK;
       // int numFields = values.size();
       // OrderedFieldInfo fieldInfo = getFieldInfo(values);
@@ -687,17 +705,24 @@ public class JdbcDBClient extends DB {
       String changeProp, String changeVal) {
     // mmodcond_metaObj
     try {
+      Random rand = new Random();
+      MgetEntry mge = createMgetEntry();
+      changeVal = "" + (rand.nextInt(39) + 1);
+      MgetObj mObj = new MgetObj(mge.getDeviceId(), condProp, changeVal);
+      ObjectMapper mapper = new ObjectMapper();
+      String jsonString = "";
+      try {
+        jsonString = mapper.writeValueAsString(mObj);
+      } catch (JsonProcessingException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       MediaType mediaType = MediaType.parse("application/json");
-      RequestBody body = RequestBody.create(mediaType,
-          "{\r\n    \"condProp\":\"" + condProp +
-              "\",\r\n    \"condVal\": \"" + condVal +
-              "\",\r\n    \"changeProp\": \"" + changeProp +
-              "\",\r\n    \"changeVal\": \"" + changeVal +
-              "\"\r\n}");
+      RequestBody body = RequestBody.create(mediaType, jsonString);
       Request request = new Request.Builder()
-          .url("http://localhost:8080/cond_metaObj/")
+          .url("http://localhost:5344/sieve/mmodify_metaobj/" + mge.getDeviceId() + "/" + mge.getId())
           .method("PUT", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -758,7 +783,7 @@ public class JdbcDBClient extends DB {
           1, "", getShardIndexByKey(keymatch));
       PreparedStatement updateStatement = createAndCacheUpdateMetaStatement(type, keymatch);
       // updateStatement.setString(1,keymatch);
-      int result = updateStatement.executeUpdate();
+      // int result = updateStatement.executeUpdate();
       Status res = actualupdateMeta(condProp, condVal, changeProp, changeVal);
       // System.out.println(res);
       // System.err.println("UpdateMeta statement "+updateStatement+" Result
@@ -864,12 +889,14 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  // modify
   public Status actualDelete(String key) {
     try {
+      MgetEntry mge = createMgetEntry();
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mdelete_obj/" + key)
+          .url("http://localhost:5344/sieve/mdelete_obj/" + mge.getDeviceId() + "/" + mge.getId())
           .method("DELETE", null)
           .build();
       Response response = client.newCall(request).execute();
