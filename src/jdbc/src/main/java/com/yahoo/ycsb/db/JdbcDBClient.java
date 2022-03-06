@@ -353,14 +353,24 @@ public class JdbcDBClient extends DB {
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      int devid = rand.nextInt(2000) + 1;
-      String deviceid = devid + "";
-      String query = "SELECT id FROM usertable WHERE device_id = \'" + deviceid + "\'";
+      String query = "SELECT DISTINCT device_id FROM mall_observation";
       ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] devid = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("device_id");
+        devid[counter] = val;
+        counter = counter + 1;
+      }
+      String deviceid = devid[rand.nextInt(counter)];
+      query = "SELECT id FROM usertable WHERE device_id = \'" + deviceid + "\'";
+      rs = statement.executeQuery(query);
       rs.last();
       String[] id = new String[rs.getRow()];
       rs.beforeFirst();
-      int counter = 0;
+      counter = 0;
       while (rs.next()) {
         String val = rs.getString("id");
         id[counter] = val;
@@ -461,6 +471,8 @@ public class JdbcDBClient extends DB {
         return Status.NOT_FOUND;
       }
       rs.close();
+      statement.close();
+      c.close();
       return Status.OK;
 
     } catch (Exception e) {
