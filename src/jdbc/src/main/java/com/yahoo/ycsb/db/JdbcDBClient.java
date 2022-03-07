@@ -437,7 +437,7 @@ public class JdbcDBClient extends DB {
           .build();
       // System.out.println("http://localhost:5344/mget_entry/" + mge.getDeviceId() + "/" + mge.getId());
       Request request = new Request.Builder()
-          .url("http://localhost:5344/sieve/mget_entry/" + mge.getDeviceId() + "/" + mge.getId())
+          .url("http://localhost:5344/sieve/mget_objUSR/" + mge.getDeviceId())
           .method("GET", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -505,26 +505,27 @@ public class JdbcDBClient extends DB {
   }
 
   public Status actualReadMeta(String cond, String keymatch) {
-    Random rand = new Random();
-    int qid = rand.nextInt(39) + 1;
-    String[] properties = new String[]{"objection", "sharing", "purpose"};
-    String[] propVals = new String[]{"obj", "shr", "purpose"};
-    String id = qid + "";
-    // System.out.println("IN ACTUAL RMD");
-    int idx = rand.nextInt(properties.length);
-    String prop = properties[idx];
-    int ival = rand.nextInt(99) + 1;
-    String info = propVals[idx]+ival;
-    MgetObj mObj = new MgetObj(id, prop, info);
-    ObjectMapper mapper = new ObjectMapper();
-    String jsonString = "";
-    try {
-      jsonString = mapper.writeValueAsString(mObj);
-    } catch (JsonProcessingException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-    System.out.println(jsonString);
+    MgetEntry mge = createMgetEntry();
+    // Random rand = new Random();
+    // int qid = rand.nextInt(39) + 1;
+    // String[] properties = new String[]{"objection", "sharing", "purpose"};
+    // String[] propVals = new String[]{"obj", "shr", "purpose"};
+    // String id = qid + "";
+    // // System.out.println("IN ACTUAL RMD");
+    // int idx = rand.nextInt(properties.length);
+    // String prop = properties[idx];
+    // int ival = rand.nextInt(99) + 1;
+    // String info = propVals[idx]+ival;
+    // MgetObj mObj = new MgetObj(id, prop, info);
+    // ObjectMapper mapper = new ObjectMapper();
+    // String jsonString = "";
+    // try {
+    //   jsonString = mapper.writeValueAsString(mObj);
+    // } catch (JsonProcessingException e1) {
+    //   // TODO Auto-generated catch block
+    //   e1.printStackTrace();
+    // }
+    // System.out.println(jsonString);
     // if (cond.equals("USR")) {
     //   id = "[\"" + keymatch.replace("user", "key") + "\"]";
     // } else {
@@ -537,13 +538,12 @@ public class JdbcDBClient extends DB {
     try {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
-      MediaType mediaType = MediaType.parse("application/json");
-      RequestBody body = RequestBody.create(mediaType,
-          jsonString);
+      // MediaType mediaType = MediaType.parse("application/json");
+      // RequestBody body = RequestBody.create(mediaType,
+      //     jsonString);
       Request request = new Request.Builder()
-          .url("http://localhost:5344/sieve/mget_obj/")
-          .method("POST", body)
-          .addHeader("Content-Type", "application/json")
+          .url("http://localhost:5344/sieve/mget_metaEntry/" + mge.getDeviceId() + "/" + mge.getId())
+          .method("GET", null)
           .build();
       Response response = client.newCall(request).execute();
       System.out.println("RESPONSE CODE IN RMD: " + response.code());
