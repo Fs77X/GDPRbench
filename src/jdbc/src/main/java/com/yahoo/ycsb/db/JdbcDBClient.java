@@ -1062,16 +1062,22 @@ public class JdbcDBClient extends DB {
 
   private Status insertEntry(String key, String value, String name) {
     try {
+      MaddObj newObj = generateData();
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
-      MediaType mediaType = MediaType.parse("text/plain");
-      RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-          .addFormDataPart("id", key)
-          .addFormDataPart("name", name)
-          .addFormDataPart("gpa", value)
-          .build();
+      MediaType mediaType = MediaType.parse("application/json");
+      ObjectMapper mapper = new ObjectMapper();
+      String jsonString = "";
+      try {
+        jsonString = mapper.writeValueAsString(newObj);
+      } catch (JsonProcessingException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+      System.out.println(jsonString);
+      RequestBody body = RequestBody.create(mediaType, jsonString);
       Request request = new Request.Builder()
-          .url("http://localhost:8080/madd_obj/")
+          .url("http://localhost:5344/sieve/madd_obj/" + newObj.getMallD().getDeviceID())
           .method("POST", body)
           .build();
       Response response = client.newCall(request).execute();
