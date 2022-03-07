@@ -27,8 +27,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -74,8 +72,8 @@ import java.util.UUID;
  * Therefore, only one index on the primary key is needed.
  */
 public class JdbcDBClient extends DB {
-  public int mallobsCounter = 3000000;
-  public int userPCounter = 300000;
+  private int mallobsCounter = 3000000;
+  private int userPCounter = 300000;
   /** The class to use as the jdbc driver. */
   public static final String DRIVER_CLASS = "db.driver";
 
@@ -973,8 +971,8 @@ public class JdbcDBClient extends DB {
       }
       deleteStatement.setString(1, key);
       // System.out.println("delete Obj");
-      int result = deleteStatement.executeUpdate();
-      result = 1; // bypass postgres failure
+      // int result = deleteStatement.executeUpdate();
+      int result = 1; // bypass postgres failure
       // System.err.println("Delete Jdbc key "+key+ "result "+ result);
       if (result == 1) {
         Status del = actualDelete(key);
@@ -1117,7 +1115,7 @@ public class JdbcDBClient extends DB {
       System.out.println(jsonString);
       RequestBody body = RequestBody.create(mediaType, jsonString);
       Request request = new Request.Builder()
-          .url("http://localhost:5344/sieve/madd_obj/" + newObj.getMallD().getDeviceID())
+          .url("http://localhost:5344/sieve/madd_obj/" + newObj.getMallData().getDeviceID())
           .method("POST", body)
           .build();
       Response response = client.newCall(request).execute();

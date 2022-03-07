@@ -7,10 +7,10 @@ public class MaddObj {
         this.mallData = mallData;
         this.metaData = metaData;
     }
-    public MallData getMallD() {
+    public MallData getMallData() {
         return this.mallData;
     }
-    public MetaData getMetaD() {
+    public MetaData getMetaData() {
         return this.metaData;
     }
     

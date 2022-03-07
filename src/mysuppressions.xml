@@ -25,5 +25,11 @@
     <suppress files="Span\.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="MgetObj\.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="MgetEntry\.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="MaddObj\.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="MallData\.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="MetaData\.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="MmetaController\.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="JdbcDBClient\.java" checks="[a-zA-Z0-9]*"/>
+    
 
 </suppressions>
