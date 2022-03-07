@@ -1,0 +1,3917 @@
+/usr/bin/java  -classpath /home/farquad/Documents/gdprsearch/GDPRbench/src/conf:/home/farquad/Documents/gdprsearch/GDPRbench/src/core/target/core-0.16.0-SNAPSHOT.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/core/target/dependency/HdrHistogram-2.1.4.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/core/target/dependency/htrace-core4-4.2.0-incubating.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/src/main/conf:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/jdbc-binding-0.16.0-SNAPSHOT.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/checker-qual-3.5.0.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/commons-collections-3.2.1.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/commons-lang-2.4.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/commons-pool-1.5.4.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/geronimo-jms_1.1_spec-1.1.1.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/geronimo-jta_1.1_spec-1.1.1.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/jackson-annotations-2.12.3.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/jackson-core-2.10.2.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/jackson-databind-2.10.2.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/okhttp-3.11.0.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/okio-1.14.0.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/openjpa-jdbc-2.1.1.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/openjpa-kernel-2.1.1.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/openjpa-lib-2.1.1.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/postgresql-42.2.20.jar:/home/farquad/Documents/gdprsearch/GDPRbench/src/jdbc/target/dependency/serp-1.13.1.jar com.yahoo.ycsb.Client -t -db com.yahoo.ycsb.db.JdbcDBClient -P ./jdbc/src/main/conf/db.properties -P ./workloads/gdpr_customer -s
+Adding shard node URL: jdbc:postgresql://127.0.0.1:5432/the_db
+Using shards: 1, batchSize:-1, fetchSize: -1
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec0' WHERE device_id = '1072' AND id = 'o1007251'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 21' WHERE device_id = '1063' AND id = 'o1026601'
+WEEW OO HEREE ESDFSDF
+REALLY HERE????
+WOOOOW
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 83' WHERE device_id = '2294' AND id = 'o1002422'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr2' WHERE device_id = '1514' AND id = 'o1030177'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 26' WHERE device_id = '2254' AND id = 'o1001020'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl6' WHERE device_id = '690' AND id = 'o1026316'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 7' WHERE device_id = '2223' AND id = 'o1000845'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 13' WHERE device_id = '2402' AND id = 'o1019464'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 79' WHERE device_id = '2583' AND id = 'o1012318'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec1' WHERE device_id = '1497' AND id = 'o1017406'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj73' WHERE device_id = '359' AND id = 'o1023783'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user4182' WHERE device_id = '1043' AND id = 'o1007168'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 87' WHERE device_id = '858' AND id = 'o1007076'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl7' WHERE device_id = '2384' AND id = 'o1002133'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 48' WHERE device_id = '2127' AND id = 'o1000077'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'cat7' WHERE device_id = '783' AND id = 'o102046'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 19' WHERE device_id = '667' AND id = 'o1006368'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 43' WHERE device_id = '1758' AND id = 'o1018292'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user1642' WHERE device_id = '858' AND id = 'o1007076'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj75' WHERE device_id = '2501' AND id = 'o1020699'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 97' WHERE device_id = '1589' AND id = 'o1030343'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 55' WHERE device_id = '2210' AND id = 'o1001652'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 28' WHERE device_id = '1650' AND id = 'o1033170'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 39' WHERE device_id = '710' AND id = 'o101576'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 58' WHERE device_id = '670' AND id = 'o1026545'
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 32' WHERE device_id = '853' AND id = 'o1026770'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 2' WHERE device_id = '2641' AND id = 'o1002562'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec1' WHERE device_id = '1139' AND id = 'o1016777'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 47' WHERE device_id = '2077' AND id = 'o1019173'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'src5' WHERE device_id = '646' AND id = 'o1026273'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl4' WHERE device_id = '2635' AND id = 'o1003080'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 86' WHERE device_id = '1059' AND id = 'o1027758'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '24000' WHERE device_id = '1995' AND id = 'o1019100'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 97' WHERE device_id = '1156' AND id = 'o1028401'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'cat9' WHERE device_id = '2230' AND id = 'o1019862'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec0' WHERE device_id = '945' AND id = 'o1007577'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 64' WHERE device_id = '1133' AND id = 'o1007967'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 40' WHERE device_id = '1877' AND id = 'o1033361'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '16000' WHERE device_id = '1758' AND id = 'o1018292'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 4' WHERE device_id = '1650' AND id = 'o1018479'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 92' WHERE device_id = '917' AND id = 'o1007675'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj55' WHERE device_id = '650' AND id = 'o1026357'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec0' WHERE device_id = '2663' AND id = 'o1003851'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr9' WHERE device_id = '2346' AND id = 'o1011728'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'cat2' WHERE device_id = '1205' AND id = 'o1028956'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = '24000' WHERE device_id = '2084' AND id = 'o1010695'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr9' WHERE device_id = '1929' AND id = 'o1019340'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'src8' WHERE device_id = '1734' AND id = 'o1017996'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj31' WHERE device_id = '1874' AND id = 'o1009973'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'user2396' WHERE device_id = '2648' AND id = 'o1004261'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 75' WHERE device_id = '135' AND id = 'o1004623'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 89' WHERE device_id = '754' AND id = 'o101969'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 73' WHERE device_id = '2067' AND id = 'o1018804'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 18' WHERE device_id = '2384' AND id = 'o1001239'
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl8' WHERE device_id = '1956' AND id = 'o1010533'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 13' WHERE device_id = '1451' AND id = 'o1017019'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 26' WHERE device_id = '1924' AND id = 'o1000129'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec0' WHERE device_id = '2555' AND id = 'o1002785'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 42' WHERE device_id = '1210' AND id = 'o1029202'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj52' WHERE device_id = '2667' AND id = 'o1002610'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec1' WHERE device_id = '1734' AND id = 'o1009575'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 29' WHERE device_id = '2339' AND id = 'o1001673'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 66' WHERE device_id = '2487' AND id = 'o1012437'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'cat3' WHERE device_id = '2634' AND id = 'o1012772'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 10' WHERE device_id = '417' AND id = 'o1024243'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj88' WHERE device_id = '459' AND id = 'o1024603'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 89' WHERE device_id = '1268' AND id = 'o1008517'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr8' WHERE device_id = '2008' AND id = 'o1018721'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'cat0' WHERE device_id = '1790' AND id = 'o1010140'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 85' WHERE device_id = '1387' AND id = 'o1017463'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 7' WHERE device_id = '2013' AND id = 'o1010782'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 52' WHERE device_id = '1418' AND id = 'o1031672'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 31' WHERE device_id = '1502' AND id = 'o1030989'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user2797' WHERE device_id = '1775' AND id = 'o1010178'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'src0' WHERE device_id = '887' AND id = 'o1027760'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 18' WHERE device_id = '1860' AND id = 'o1017875'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '14000' WHERE device_id = '1685' AND id = 'o1010387'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 40' WHERE device_id = '2210' AND id = 'o1002302'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec0' WHERE device_id = '1508' AND id = 'o1030157'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 97' WHERE device_id = '1727' AND id = 'o1031937'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj97' WHERE device_id = '2366' AND id = 'o1001241'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 96' WHERE device_id = '1184' AND id = 'o1008305'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 73' WHERE device_id = '723' AND id = 'o1014596'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 80' WHERE device_id = '1780' AND id = 'o1009821'
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 78' WHERE device_id = '2404' AND id = 'o1019946'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 20' WHERE device_id = '1322' AND id = 'o1029019'
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl4' WHERE device_id = '1629' AND id = 'o1018251'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 95' WHERE device_id = '2059' AND id = 'o1018876'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'user3135' WHERE device_id = '1933' AND id = 'o1011132'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 53' WHERE device_id = '1749' AND id = 'o1032929'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 4' WHERE device_id = '1209' AND id = 'o1029389'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl0' WHERE device_id = '278' AND id = 'o1014282'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 16' WHERE device_id = '2024' AND id = 'o1010703'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 92' WHERE device_id = '1474' AND id = 'o1031558'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 80' WHERE device_id = '455' AND id = 'o1023710'
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 92' WHERE device_id = '1364' AND id = 'o1017022'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 89' WHERE device_id = '2468' AND id = 'o1012660'
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 91' WHERE device_id = '2411' AND id = 'o1000600'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 5' WHERE device_id = '1172' AND id = 'o1029400'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl5' WHERE device_id = '1610' AND id = 'o1009273'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 80' WHERE device_id = '407' AND id = 'o1023800'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'user4068' WHERE device_id = '1514' AND id = 'o1030177'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 57' WHERE device_id = '1660' AND id = 'o1032478'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 67' WHERE device_id = '501' AND id = 'o1024082'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user747' WHERE device_id = '884' AND id = 'o1026577'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 26' WHERE device_id = '288' AND id = 'o100784'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 71' WHERE device_id = '1535' AND id = 'o1017689'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 56' WHERE device_id = '2615' AND id = 'o1003708'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr9' WHERE device_id = '2311' AND id = 'o1011678'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 89' WHERE device_id = '1533' AND id = 'o1030764'
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'src9' WHERE device_id = '1589' AND id = 'o1009465'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 89' WHERE device_id = '1889' AND id = 'o1010788'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'cat7' WHERE device_id = '1122' AND id = 'o1028611'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec0' WHERE device_id = '919' AND id = 'o1015401'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 81' WHERE device_id = '1589' AND id = 'o1009006'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '22000' WHERE device_id = '832' AND id = 'o103007'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 91' WHERE device_id = '1694' AND id = 'o1009938'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl6' WHERE device_id = '670' AND id = 'o1015246'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec1' WHERE device_id = '575' AND id = 'o1025168'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 4' WHERE device_id = '2282' AND id = 'o1012040'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 68' WHERE device_id = '1364' AND id = 'o1017026'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 14' WHERE device_id = '1184' AND id = 'o1008305'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 37' WHERE device_id = '2663' AND id = 'o1002881'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'user9152' WHERE device_id = '995' AND id = 'o102582'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 88' WHERE device_id = '2210' AND id = 'o1000664'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 98' WHERE device_id = '1966' AND id = 'o1018733'
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 28' WHERE device_id = '1180' AND id = 'o103257'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 5' WHERE device_id = '278' AND id = 'o1014285'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj36' WHERE device_id = '893' AND id = 'o1027767'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 10' WHERE device_id = '492' AND id = 'o1005664'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 24' WHERE device_id = '2092' AND id = 'o1000391'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj21' WHERE device_id = '1598' AND id = 'o1009417'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl2' WHERE device_id = '1651' AND id = 'o1032036'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 70' WHERE device_id = '2024' AND id = 'o1010703'
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 80' WHERE device_id = '653' AND id = 'o10283'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 77' WHERE device_id = '1282' AND id = 'o1016154'
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr4' WHERE device_id = '1364' AND id = 'o1017022'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 63' WHERE device_id = '2170' AND id = 'o1000519'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'cat7' WHERE device_id = '1474' AND id = 'o1031551'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 81' WHERE device_id = '832' AND id = 'o1015781'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 15' WHERE device_id = '1418' AND id = 'o1008709'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 55' WHERE device_id = '2196' AND id = 'o1011359'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl7' WHERE device_id = '819' AND id = 'o1027438'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 86' WHERE device_id = '1318' AND id = 'o1007798'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 33' WHERE device_id = '1791' AND id = 'o1009685'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 81' WHERE device_id = '748' AND id = 'o1015319'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 14' WHERE device_id = '840' AND id = 'o102424'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 50' WHERE device_id = '2018' AND id = 'o1019025'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec1' WHERE device_id = '2415' AND id = 'o1019658'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 36' WHERE device_id = '1589' AND id = 'o1030343'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl7' WHERE device_id = '1097' AND id = 'o1028910'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 36' WHERE device_id = '1878' AND id = 'o1018328'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl2' WHERE device_id = '498' AND id = 'o101192'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr3' WHERE device_id = '2342' AND id = 'o1012125'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 1' WHERE device_id = '1924' AND id = 'o1000129'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 26' WHERE device_id = '1926' AND id = 'o1000387'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 10' WHERE device_id = '2246' AND id = 'o1000673'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec1' WHERE device_id = '501' AND id = 'o1005548'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec1' WHERE device_id = '431' AND id = 'o1005971'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 86' WHERE device_id = '1318' AND id = 'o1028431'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl6' WHERE device_id = '1000' AND id = 'o1027457'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec0' WHERE device_id = '618' AND id = 'o101519'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 85' WHERE device_id = '1685' AND id = 'o1009693'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '24000' WHERE device_id = '1561' AND id = 'o1009466'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = '18000' WHERE device_id = '1208' AND id = 'o1029751'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr1' WHERE device_id = '2173' AND id = 'o1019519'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 63' WHERE device_id = '742' AND id = 'o101853'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl1' WHERE device_id = '2046' AND id = 'o1010621'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec1' WHERE device_id = '305' AND id = 'o1024573'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 4' WHERE device_id = '723' AND id = 'o1014596'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'src9' WHERE device_id = '1063' AND id = 'o1026601'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 88' WHERE device_id = '572' AND id = 'o10068'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 76' WHERE device_id = '483' AND id = 'o1006053'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec1' WHERE device_id = '1034' AND id = 'o102673'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 35' WHERE device_id = '2555' AND id = 'o1012988'
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 76' WHERE device_id = '901' AND id = 'o1026806'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 35' WHERE device_id = '2557' AND id = 'o1004264'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 14' WHERE device_id = '2223' AND id = 'o1000922'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr1' WHERE device_id = '1322' AND id = 'o1007920'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 78' WHERE device_id = '1511' AND id = 'o1009117'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec0' WHERE device_id = '2670' AND id = 'o1004173'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj37' WHERE device_id = '559' AND id = 'o1026395'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr8' WHERE device_id = '600' AND id = 'o1025890'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj79' WHERE device_id = '1564' AND id = 'o1008771'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'src7' WHERE device_id = '1727' AND id = 'o1032389'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 45' WHERE device_id = '2314' AND id = 'o1019605'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 36' WHERE device_id = '480' AND id = 'o101561'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'cat9' WHERE device_id = '1879' AND id = 'o1031975'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 29' WHERE device_id = '887' AND id = 'o1027761'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 68' WHERE device_id = '1088' AND id = 'o1029163'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec0' WHERE device_id = '785' AND id = 'o1006178'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 81' WHERE device_id = '2538' AND id = 'o1003012'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 33' WHERE device_id = '945' AND id = 'o1026860'
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl6' WHERE device_id = '2230' AND id = 'o1001912'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 66' WHERE device_id = '1470' AND id = 'o1009370'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 56' WHERE device_id = '1418' AND id = 'o1009354'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'cat0' WHERE device_id = '884' AND id = 'o1026570'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj10' WHERE device_id = '586' AND id = 'o101775'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 93' WHERE device_id = '403' AND id = 'o1024541'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 19' WHERE device_id = '1401' AND id = 'o1030636'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 66' WHERE device_id = '1275' AND id = 'o1028627'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 87' WHERE device_id = '1047' AND id = 'o1026755'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 21' WHERE device_id = '2018' AND id = 'o1019025'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec0' WHERE device_id = '452' AND id = 'o1005588'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 10' WHERE device_id = '905' AND id = 'o1015771'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 12' WHERE device_id = '2411' AND id = 'o1000602'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr7' WHERE device_id = '2501' AND id = 'o1012576'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = '1000000' WHERE device_id = '2528' AND id = 'o1012630'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl5' WHERE device_id = '431' AND id = 'o1005974'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr4' WHERE device_id = '869' AND id = 'o102745'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 39' WHERE device_id = '690' AND id = 'o102250'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'src9' WHERE device_id = '2598' AND id = 'o1003017'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user5474' WHERE device_id = '2195' AND id = 'o1001805'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 82' WHERE device_id = '2253' AND id = 'o1019409'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = '1000000' WHERE device_id = '404' AND id = 'o1005219'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '10000' WHERE device_id = '2442' AND id = 'o1012256'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl7' WHERE device_id = '1969' AND id = 'o1010817'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 87' WHERE device_id = '615' AND id = 'o1014640'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 50' WHERE device_id = '2644' AND id = 'o1003854'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj69' WHERE device_id = '606' AND id = 'o1006128'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 81' WHERE device_id = '1412' AND id = 'o1030506'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user5347' WHERE device_id = '613' AND id = 'o102037'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 81' WHERE device_id = '1322' AND id = 'o1029490'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 47' WHERE device_id = '2324' AND id = 'o1011317'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr1' WHERE device_id = '2311' AND id = 'o1002276'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl9' WHERE device_id = '2019' AND id = 'o1010990'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 87' WHERE device_id = '1817' AND id = 'o1033326'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 12' WHERE device_id = '365' AND id = 'o1024465'
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj11' WHERE device_id = '2105' AND id = 'o1000282'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl7' WHERE device_id = '819' AND id = 'o1015630'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'cat6' WHERE device_id = '878' AND id = 'o1015834'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'cat0' WHERE device_id = '795' AND id = 'o1025516'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'src9' WHERE device_id = '1059' AND id = 'o1028028'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 37' WHERE device_id = '1387' AND id = 'o1030721'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = '30' WHERE device_id = '601' AND id = 'o1014997'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 55' WHERE device_id = '2560' AND id = 'o1003930'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec0' WHERE device_id = '1830' AND id = 'o1032181'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'cat9' WHERE device_id = '455' AND id = 'o1014424'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'user4106' WHERE device_id = '2561' AND id = 'o1003426'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec1' WHERE device_id = '2459' AND id = 'o1020719'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 26' WHERE device_id = '1189' AND id = 'o1029184'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'src9' WHERE device_id = '2621' AND id = 'o1012221'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = '20000' WHERE device_id = '1956' AND id = 'o1011130'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 44' WHERE device_id = '723' AND id = 'o1025047'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 5' WHERE device_id = '1058' AND id = 'o1007010'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 14' WHERE device_id = '2110' AND id = 'o1018889'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '20000' WHERE device_id = '2246' AND id = 'o1002298'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr3' WHERE device_id = '2468' AND id = 'o1020476'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 55' WHERE device_id = '1650' AND id = 'o1017830'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl0' WHERE device_id = '2661' AND id = 'o1012268'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 5' WHERE device_id = '2526' AND id = 'o1020776'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'cat9' WHERE device_id = '2459' AND id = 'o1020719'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr5' WHERE device_id = '946' AND id = 'o1016117'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj88' WHERE device_id = '2579' AND id = 'o1020259'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 44' WHERE device_id = '1830' AND id = 'o1010196'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'user8390' WHERE device_id = '1316' AND id = 'o103193'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 75' WHERE device_id = '2659' AND id = 'o1003591'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 15' WHERE device_id = '893' AND id = 'o1007217'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr6' WHERE device_id = '1639' AND id = 'o1033102'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 94' WHERE device_id = '1181' AND id = 'o1029187'
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 12' WHERE device_id = '1995' AND id = 'o1019102'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 92' WHERE device_id = '785' AND id = 'o1006170'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 98' WHERE device_id = '645' AND id = 'o1025934'
+Opened database successfully
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 33' WHERE device_id = '1387' AND id = 'o1017469'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec1' WHERE device_id = '1817' AND id = 'o1009600'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec1' WHERE device_id = '583' AND id = 'o1014914'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = '1000000' WHERE device_id = '1775' AND id = 'o1033315'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 24' WHERE device_id = '1377' AND id = 'o1008867'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 61' WHERE device_id = '1830' AND id = 'o1018526'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'cat7' WHERE device_id = '1237' AND id = 'o1029609'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '16000' WHERE device_id = '2637' AND id = 'o1012481'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user4927' WHERE device_id = '2459' AND id = 'o1020719'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 45' WHERE device_id = '2463' AND id = 'o1020670'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl0' WHERE device_id = '2183' AND id = 'o1019781'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 55' WHERE device_id = '2265' AND id = 'o1019456'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 70' WHERE device_id = '1460' AND id = 'o1017164'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 33' WHERE device_id = '359' AND id = 'o1023789'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec0' WHERE device_id = '1205' AND id = 'o1016345'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 34' WHERE device_id = '2661' AND id = 'o1012268'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr2' WHERE device_id = '1791' AND id = 'o1017937'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl1' WHERE device_id = '1085' AND id = 'o1016535'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj85' WHERE device_id = '1732' AND id = 'o1010365'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr5' WHERE device_id = '1184' AND id = 'o1007957'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 46' WHERE device_id = '822' AND id = 'o1027470'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '18000' WHERE device_id = '1511' AND id = 'o1031095'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = '22000' WHERE device_id = '1377' AND id = 'o1009331'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 1' WHERE device_id = '1879' AND id = 'o1032808'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 40' WHERE device_id = '1732' AND id = 'o1032837'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'src0' WHERE device_id = '523' AND id = 'o1014246'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 89' WHERE device_id = '2376' AND id = 'o1000629'
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user1365' WHERE device_id = '1063' AND id = 'o1026601'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl4' WHERE device_id = '532' AND id = 'o1022986'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl8' WHERE device_id = '2196' AND id = 'o1011359'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 81' WHERE device_id = '2644' AND id = 'o1020343'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 35' WHERE device_id = '897' AND id = 'o103041'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl4' WHERE device_id = '2555' AND id = 'o1012456'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 10' WHERE device_id = '2659' AND id = 'o1003229'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 55' WHERE device_id = '1368' AND id = 'o1030114'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl1' WHERE device_id = '2526' AND id = 'o1020775'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 28' WHERE device_id = '371' AND id = 'o100704'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 1' WHERE device_id = '2604' AND id = 'o1020925'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'cat1' WHERE device_id = '2438' AND id = 'o1002723'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 46' WHERE device_id = '1545' AND id = 'o1031914'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'cat4' WHERE device_id = '1474' AND id = 'o1031552'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr6' WHERE device_id = '572' AND id = 'o10068'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'ads'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl6' WHERE device_id = '646' AND id = 'o1010'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 25' WHERE device_id = '575' AND id = 'o1014703'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '30' WHERE device_id = '2125' AND id = 'o1000266'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 16' WHERE device_id = '1202' AND id = 'o1029533'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'src4' WHERE device_id = '2644' AND id = 'o1012566'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '20000' WHERE device_id = '1504' AND id = 'o1017277'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr4' WHERE device_id = '1790' AND id = 'o1010067'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj56' WHERE device_id = '1878' AND id = 'o1010347'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj7' WHERE device_id = '2457' AND id = 'o1003462'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 65' WHERE device_id = '2167' AND id = 'o1020048'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 77' WHERE device_id = '1470' AND id = 'o1009371'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 94' WHERE device_id = '2314' AND id = 'o1001621'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'dec1' WHERE device_id = '2495' AND id = 'o1020876'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec1' WHERE device_id = '1139' AND id = 'o1008401'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 35' WHERE device_id = '1579' AND id = 'o1008712'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = '10000' WHERE device_id = '701' AND id = 'o1014697'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl4' WHERE device_id = '1992' AND id = 'o1011212'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 70' WHERE device_id = '1646' AND id = 'o1033224'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'user6079' WHERE device_id = '1579' AND id = 'o1008712'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 32' WHERE device_id = '946' AND id = 'o1016117'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'src8' WHERE device_id = '2131' AND id = 'o1018770'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 38' WHERE device_id = '802' AND id = 'o10177'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = '1000000' WHERE device_id = '797' AND id = 'o1024704'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr7' WHERE device_id = '284' AND id = 'o1014494'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl3' WHERE device_id = '518' AND id = 'o1023390'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 23' WHERE device_id = '1209' AND id = 'o1016906'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 3' WHERE device_id = '618' AND id = 'o101518'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 64' WHERE device_id = '1497' AND id = 'o1008743'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'user2779' WHERE device_id = '371' AND id = 'o1023713'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 60' WHERE device_id = '2092' AND id = 'o1011175'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 16' WHERE device_id = '995' AND id = 'o102580'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'acl4' WHERE device_id = '2196' AND id = 'o1011359'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 47' WHERE device_id = '1133' AND id = 'o1007967'
+Opened database successfully
+Opened database successfully
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj78' WHERE device_id = '1210' AND id = 'o1029472'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 14' WHERE device_id = '2620' AND id = 'o1012393'
+Opened database successfully
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 10' WHERE device_id = '2539' AND id = 'o1020669'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 27' WHERE device_id = '1694' AND id = 'o1032379'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user743' WHERE device_id = '650' AND id = 'o10053'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 4' WHERE device_id = '1191' AND id = 'o1028706'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 48' WHERE device_id = '1127' AND id = 'o1029553'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr9' WHERE device_id = '2282' AND id = 'o1001701'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj65' WHERE device_id = '1205' AND id = 'o1028957'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 45' WHERE device_id = '1172' AND id = 'o1029783'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj41' WHERE device_id = '878' AND id = 'o1027342'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 32' WHERE device_id = '792' AND id = 'o1006527'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 22' WHERE device_id = '459' AND id = 'o1024601'
+Opened database successfully
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 64' WHERE device_id = '523' AND id = 'o1014247'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 96' WHERE device_id = '1773' AND id = 'o1018295'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 50' WHERE device_id = '2560' AND id = 'o1012366'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 43' WHERE device_id = '1670' AND id = 'o1032598'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 27' WHERE device_id = '1651' AND id = 'o1032467'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'src8' WHERE device_id = '716' AND id = 'o1014708'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 28' WHERE device_id = '2666' AND id = 'o1012858'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj45' WHERE device_id = '1172' AND id = 'o1029400'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = '24000' WHERE device_id = '1067' AND id = 'o102531'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 56' WHERE device_id = '575' AND id = 'o1014880'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr9' WHERE device_id = '2210' AND id = 'o1000551'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 22' WHERE device_id = '1403' AND id = 'o1030976'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 66' WHERE device_id = '2110' AND id = 'o1011242'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl7' WHERE device_id = '2124' AND id = 'o1018643'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random5'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr8' WHERE device_id = '2667' AND id = 'o1002611'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 1' WHERE device_id = '2423' AND id = 'o1003390'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 59' WHERE device_id = '560' AND id = 'o1014837'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'acl2' WHERE device_id = '2314' AND id = 'o1001987'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user3062' WHERE device_id = '1496' AND id = 'o1031888'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 57' WHERE device_id = '2494' AND id = 'o1020322'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'src5' WHERE device_id = '2003' AND id = 'o1000508'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random2'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 12' WHERE device_id = '483' AND id = 'o1006053'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'src4' WHERE device_id = '1051' AND id = 'o102683'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 7' WHERE device_id = '1889' AND id = 'o1000484'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'backup'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'src5' WHERE device_id = '277' AND id = 'o1005530'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 70' WHERE device_id = '1562' AND id = 'o1030222'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'src7' WHERE device_id = '2583' AND id = 'o1002449'
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'obj57' WHERE device_id = '2253' AND id = 'o1019409'
+booboo
+Status [name=ERROR, description=The operation failed.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'cat1' WHERE device_id = '1191' AND id = 'o1008239'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'cat3' WHERE device_id = '2468' AND id = 'o1012661'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 21' WHERE device_id = '1543' AND id = 'o1030749'
+Opened database successfully
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 45' WHERE device_id = '803' AND id = 'o1025647'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 15' WHERE device_id = '2177' AND id = 'o1020181'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random1'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'src3' WHERE device_id = '10000' AND id = 'o1012256'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 3' WHERE device_id = '748' AND id = 'o1015315'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 64' WHERE device_id = '2125' AND id = 'o1000269'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 51' WHERE device_id = '1598' AND id = 'o1017478'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'user3361' WHERE device_id = '2459' AND id = 'o1020719'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 99' WHERE device_id = '2550' AND id = 'o1012285'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 98' WHERE device_id = '1051' AND id = 'o102681'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'shr9' WHERE device_id = '1127' AND id = 'o1029550'
+booboo
+Status [name=ERROR, description=The operation failed.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 16' WHERE device_id = '1021' AND id = 'o1016126'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 27' WHERE device_id = '2095' AND id = 'o1018925'
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random3'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'shr7' WHERE device_id = '1059' AND id = 'o1027935'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET device_id = 'src9' WHERE device_id = '2468' AND id = 'o1020476'
+booboo
+Status [name=ERROR, description=The operation failed.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'msg'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+read okchamp
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'obj97' WHERE device_id = '1841' AND id = 'o1018610'
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 35' WHERE device_id = '1878' AND id = 'o1018099'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 57' WHERE device_id = '2167' AND id = 'o1020041'
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = '2fa'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+Opened database successfully
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random6'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET shop_name = 'store 32' WHERE device_id = '1610' AND id = 'o1009299'
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'dec1' WHERE device_id = '945' AND id = 'o1028005'
+Status [name=OK, description=The operation completed successfully.]
+tablename: usertable keymatch key*
+readmeta query: SELECT * FROM usertable WHERE field0 = 'random4'
+Opened database successfully
+Status [name=OK, description=The operation completed successfully.]
+IN UPDATE
+IN UPDATE
+IN UPDATE
+Opened database successfully
+UPDATE usertable SET purpose = 'cat7' WHERE device_id = '1944' AND id = 'o1000174'
+Status [name=OK, description=The operation completed successfully.]
+[OVERALL], RunTime(ms), 12303
+[OVERALL], Throughput(ops/sec), 81.28098837681866
+[TOTAL_GCS_G1_Young_Generation], Count, 6
+[TOTAL_GC_TIME_G1_Young_Generation], Time(ms), 23
+[TOTAL_GC_TIME_%_G1_Young_Generation], Time(%), 0.18694627326668292
+[TOTAL_GCS_G1_Old_Generation], Count, 0
+[TOTAL_GC_TIME_G1_Old_Generation], Time(ms), 0
+[TOTAL_GC_TIME_%_G1_Old_Generation], Time(%), 0.0
+[TOTAL_GCs], Count, 6
+[TOTAL_GC_TIME], Time(ms), 23
+[TOTAL_GC_TIME_%], Time(%), 0.18694627326668292
+[READ], Operations, 181
+[READ], AverageLatency(us), 9949.82320441989
+[READ], MinLatency(us), 7156
+[READ], MaxLatency(us), 31199
+[READ], 95thPercentileLatency(us), 13167
+[READ], 99thPercentileLatency(us), 19231
+[READ], Return=OK, 181
+[READMETA], Operations, 204
+[READMETA], AverageLatency(us), 10704.450980392157
+[READMETA], MinLatency(us), 6980
+[READMETA], MaxLatency(us), 22991
+[READMETA], 95thPercentileLatency(us), 12951
+[READMETA], 99thPercentileLatency(us), 16479
+[READMETA], Return=OK, 204
+[DELETE], Operations, 213
+[DELETE], AverageLatency(us), 13445.539906103286
+[DELETE], MinLatency(us), 9096
+[DELETE], MaxLatency(us), 26271
+[DELETE], 95thPercentileLatency(us), 18751
+[DELETE], 99thPercentileLatency(us), 21615
+[DELETE], Return=OK, 213
+[CLEANUP], Operations, 1
+[CLEANUP], AverageLatency(us), 67.0
+[CLEANUP], MinLatency(us), 67
+[CLEANUP], MaxLatency(us), 67
+[CLEANUP], 95thPercentileLatency(us), 67
+[CLEANUP], 99thPercentileLatency(us), 67
+[UPDATE], Operations, 214
+[UPDATE], AverageLatency(us), 13792.224299065421
+[UPDATE], MinLatency(us), 8944
+[UPDATE], MaxLatency(us), 40703
+[UPDATE], 95thPercentileLatency(us), 19151
+[UPDATE], 99thPercentileLatency(us), 24095
+[UPDATE], Return=OK, 214
+[UPDATEMETA], Operations, 188
+[UPDATEMETA], AverageLatency(us), 12243.127659574468
+[UPDATEMETA], MinLatency(us), 6924
+[UPDATEMETA], MaxLatency(us), 41279
+[UPDATEMETA], 95thPercentileLatency(us), 17903
+[UPDATEMETA], 99thPercentileLatency(us), 25967
+[UPDATEMETA], Return=OK, 188

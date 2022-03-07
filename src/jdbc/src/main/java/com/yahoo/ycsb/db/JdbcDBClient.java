@@ -365,30 +365,30 @@ public class JdbcDBClient extends DB {
         counter = counter + 1;
       }
       String deviceid = devid[rand.nextInt(counter)];
-      query = "SELECT id FROM usertable WHERE device_id = \'" + deviceid + "\'";
+      query = "SELECT * FROM usertable WHERE device_id = \'" + deviceid + "\'";
       rs = statement.executeQuery(query);
-      rs.last();
-      String[] id = new String[rs.getRow()];
-      rs.beforeFirst();
-      counter = 0;
-      while (rs.next()) {
-        String val = rs.getString("id");
-        id[counter] = val;
-        counter = counter + 1;
-      }
-      if (id.length == 0) {
-        System.out.println("NOT GOOD");
-      }
-      int idx = rand.nextInt(id.length);
-      String qkey = id[idx] + "";
-      rs.close();
-      query = "SELECT * from usertable WHERE device_id = \'" + deviceid + "\' AND id = \'" + qkey + "\'";
-      // System.out.println(query);
-      rs = statement.executeQuery(query);
-      if (!rs.next()) {
-        rs.close();
-        return Status.NOT_FOUND;
-      }
+      // rs.last();
+      // String[] id = new String[rs.getRow()];
+      // rs.beforeFirst();
+      // counter = 0;
+      // while (rs.next()) {
+      //   String val = rs.getString("id");
+      //   id[counter] = val;
+      //   counter = counter + 1;
+      // }
+      // if (id.length == 0) {
+      //   System.out.println("NOT GOOD");
+      // }
+      // int idx = rand.nextInt(id.length);
+      // String qkey = id[idx] + "";
+      // rs.close();
+      // query = "SELECT * from usertable WHERE device_id = \'" + deviceid + "\' AND id = \'" + qkey + "\'";
+      // // System.out.println(query);
+      // rs = statement.executeQuery(query);
+      // if (!rs.next()) {
+      //   rs.close();
+      //   return Status.NOT_FOUND;
+      // }
       rs.close();
       return Status.OK;
     } catch (Exception e) {
@@ -459,15 +459,47 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  public Status performReadMeta(String qid, String prop, String info) {
+  public Status performReadMeta() {
     Connection c;
     try {
       c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-      String query = "SELECT * from usertable WHERE querier = \'" + qid + "\' AND " + prop + " = \'" + info + "\'";
+      Random rand = new Random();
+      String query = "SELECT DISTINCT device_id FROM usertable";
       ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] devid = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("device_id");
+        devid[counter] = val;
+        counter = counter + 1;
+      }
+      String deviceid = devid[rand.nextInt(counter)];
+      query = "SELECT id FROM usertable WHERE device_id = \'" + deviceid + "\'";
+      rs = statement.executeQuery(query);
+      rs.last();
+      String[] id = new String[rs.getRow()];
+      rs.beforeFirst();
+      counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("id");
+        id[counter] = val;
+        counter = counter + 1;
+      }
+      if (id.length == 0) {
+        System.out.println("NOT GOOD");
+      }
+      int idx = rand.nextInt(id.length);
+      String qkey = id[idx] + "";
+      query = "SELECT * from usertable WHERE device_id = \'" + deviceid + "\' AND id = \'" + qkey + "\'";
+      // System.out.println(query);
+      rs = statement.executeQuery(query);
       if (!rs.next()) {
         rs.close();
+        statement.close();
+      c.close();
         return Status.NOT_FOUND;
       }
       rs.close();
@@ -490,15 +522,15 @@ public class JdbcDBClient extends DB {
       String keymatch, Vector<HashMap<String, ByteIterator>> result) {
     //TODO: No use for keyMatch whatsoever, so check if without queering for keys this will work.
     try {
-      Random rand = new Random();
-      int qid = rand.nextInt(39) + 1;
-      String[] properties = new String[]{"objection", "sharing", "purpose"};
-      String[] propVals = new String[]{"obj", "shr", "purpose"};
-      String id = qid + "";
-      int idx = rand.nextInt(properties.length);
-      String prop = properties[idx];
-      int ival = rand.nextInt(99) + 1;
-      String info = propVals[idx]+ival;
+      // Random rand = new Random();
+      // int qid = rand.nextInt(39) + 1;
+      // String[] properties = new String[]{"objection", "sharing", "purpose"};
+      // String[] propVals = new String[]{"obj", "shr", "purpose"};
+      // String id = qid + "";
+      // int idx = rand.nextInt(properties.length);
+      // String prop = properties[idx];
+      // int ival = rand.nextInt(99) + 1;
+      // String info = propVals[idx]+ival;
       HashSet<String> fields = null;
       System.out.println("tablename: " + tableName + " keymatch " + keymatch);
       StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(keymatch));
@@ -527,7 +559,7 @@ public class JdbcDBClient extends DB {
       // }
 
       // resultSet.close();
-      System.out.println(performReadMeta(id, prop, info));
+      System.out.println(performReadMeta());
       return Status.OK;
     } catch (SQLException e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);

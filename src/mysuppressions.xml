@@ -23,5 +23,6 @@
     <suppress files="TraceScope\.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="Sampler\.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="Span\.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="JdbcDBClient\.java" checks="[a-zA-Z0-9]*"/>
 
 </suppressions>
