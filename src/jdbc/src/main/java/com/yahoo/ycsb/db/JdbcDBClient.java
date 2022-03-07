@@ -26,7 +26,15 @@ import java.sql.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.sql.Date;
+import java.sql.Timestamp;
 
+import com.yahoo.ycsb.db.JSON.MaddObj;
+import com.yahoo.ycsb.db.JSON.MallData;
+import com.yahoo.ycsb.db.JSON.MetaData;
 import com.yahoo.ycsb.db.JSON.MgetEntry;
 import com.yahoo.ycsb.db.JSON.MgetObj;
 import com.yahoo.ycsb.db.flavors.DBFlavor;
@@ -45,6 +53,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
+import java.util.UUID;
 
 // import java.util.regex.Matcher;
 // import java.util.regex.Pattern;
@@ -64,7 +73,8 @@ import okhttp3.ResponseBody;
  * Therefore, only one index on the primary key is needed.
  */
 public class JdbcDBClient extends DB {
-
+  public int mallobsCounter = 3000000;
+  public int userPCounter = 300000;
   /** The class to use as the jdbc driver. */
   public static final String DRIVER_CLASS = "db.driver";
 
@@ -1017,6 +1027,39 @@ public class JdbcDBClient extends DB {
     return Status.OK;
   }
 
+  public MaddObj generateData() {
+    // mallData
+    String mdId = "o" + mallobsCounter;
+    mallobsCounter = mallobsCounter + 1;
+    Random rand = new Random();
+    String shopName = "store " + (rand.nextInt(99) + 1);
+    long now = System.currentTimeMillis();
+    Time obs_time = new Time(now);
+    Date obs_date = new Date(now);
+    String[] userInterest = {"", "shoes", "fastfood", "cars", "planes"};
+    String uInterest = userInterest[rand.nextInt(userInterest.length)];
+    int device_id =  rand.nextInt(2000) + 1;
+    MallData mallData = new MallData(mdId, shopName, obs_date, obs_time, uInterest, device_id);
+
+    // metadata
+    int ttl = (int)now + rand.nextInt(300000) + 100000;
+    int polid = userPCounter;
+    userPCounter = userPCounter + 1;
+    String uuid = UUID.randomUUID().toString();
+    int q = rand.nextInt(100) + 1;
+    String querier = q + "";
+    String purpose = (rand.nextInt(100) + 1) + "";
+    String origin = (rand.nextInt(100) + 1) + "";
+    String objection = (rand.nextInt(100) + 1) + "";
+    String sharing = (rand.nextInt(100) + 1) + "";
+    String enforcement = "allow";
+    Timestamp ts = new Timestamp(now);
+    String timeStamp = ts.toString();
+    String key = mdId;
+    MetaData mData = new MetaData(polid, uuid, querier, purpose, ttl, origin, objection, sharing, enforcement, timeStamp, device_id, key);
+    return new MaddObj(mallData, mData);
+  }
+
   private Status insertEntry(String key, String value, String name) {
     try {
       OkHttpClient client = new OkHttpClient().newBuilder()
@@ -1091,10 +1134,10 @@ public class JdbcDBClient extends DB {
       if (insertStatus == null || !insertStatus.isOk()) {
         return Status.ERROR;
       }
-      Status metaStatus = insertMeta(key, payload);
-      if (metaStatus == null || !metaStatus.isOk()) {
-        return Status.ERROR;
-      }
+      // Status metaStatus = insertMeta(key, payload);
+      // if (metaStatus == null || !metaStatus.isOk()) {
+      //   return Status.ERROR;
+      // }
       // OkHttpClient client = new OkHttpClient().newBuilder()
       // .build();
       // MediaType mediaType = MediaType.parse("text/plain");
