@@ -353,7 +353,7 @@ public class JdbcDBClient extends DB {
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      String query = "SELECT DISTINCT device_id FROM mall_observation";
+      String query = "SELECT DISTINCT device_id FROM usertable";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
       String[] devid = new String[rs.getRow()];
@@ -393,7 +393,7 @@ public class JdbcDBClient extends DB {
       return Status.OK;
     } catch (Exception e) {
       // TODO Auto-generated catch block
-      // e.printStackTrace();
+      e.printStackTrace();
       return Status.ERROR;
     }
   }
@@ -564,6 +564,60 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status performUpdate(String prop, String info) {
+    System.out.println("IN UPDATE");
+    System.out.println("IN UPDATE");
+    try {
+      System.out.println("IN UPDATE");
+      Connection c = getConnection();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      Random rand = new Random();
+      String query = "SELECT DISTINCT device_id FROM usertable";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] devid = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("device_id");
+        devid[counter] = val;
+        counter = counter + 1;
+      }
+      String deviceid = devid[rand.nextInt(counter)];
+      query = "SELECT id FROM usertable WHERE device_id = \'" + deviceid + "\'";
+      rs = statement.executeQuery(query);
+      rs.last();
+      String[] id = new String[rs.getRow()];
+      rs.beforeFirst();
+      counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("id");
+        id[counter] = val;
+        counter = counter + 1;
+      }
+      if (id.length == 0) {
+        System.out.println("NOT GOOD");
+      }
+      int idx = rand.nextInt(id.length);
+      String qkey = id[idx] + "";
+      query = "UPDATE usertable SET " + prop + " = \'" + info + "\' " + "WHERE device_id = \'" + 
+        deviceid + "\' AND id = \'" + qkey + "\'";
+      System.out.println(query);
+      int res = statement.executeUpdate(query);
+      rs.close();
+      statement.close();
+      c.close();
+      if (res != 0) {
+        return Status.OK;
+      } else {
+        return Status.ERROR;
+      }
+    } catch(Exception e) {
+      System.out.println("booboo");
+      // e.printStackTrace();
+      return Status.ERROR;
+    }
+  }
   @Override
   public Status update(String tableName, String key, Map<String, ByteIterator> values) {
     try {
@@ -581,28 +635,59 @@ public class JdbcDBClient extends DB {
         updateStatement.setString(index++, value);
       }
       updateStatement.setString(index, key);
-      int result = updateStatement.executeUpdate();
-      if (result == 1) {
-        return Status.OK;
-      }
-      return Status.UNEXPECTED_STATE;
+      // int result = updateStatement.executeUpdate();
+      // if (result == 1) {
+      //   return Status.OK;
+      // }
+      Random rand = new Random();
+      String prop = "shop_name";
+      String info = "store " + (rand.nextInt(99) + 1);
+      return performUpdate(prop, info);
+      // return Status.UNEXPECTED_STATE;
     } catch (SQLException e) {
       System.err.println("Error in processing update to table: " + tableName + e);
       e.printStackTrace();
       return Status.ERROR;
     }
   }
+  public String propChange(String prop) {
+    switch (prop) {
+    case "DEC":
+      return "adm";
+    case "USR":
+      return "device_id";
+    case "SRC":
+      return "origin";
+    case "OBJ":
+      return "objection";
+    case "CAT":
+      return "cat";
+    case "ACL":
+      return "acl";
+    case "PUR":
+      return "purpose";
+    case "SHR":
+      return "sharing";
+    case "TTL":
+      return "ttl";
+    default:
+      return "";
+    }
+  }
 
   @Override
   public Status updateMeta(String table, int fieldnum, String condition, 
-      String keymatch, String fieldname, String metadatavalue) {
+      String keymatch, String fieldname, String metadatavalue, String condProp) {
     try{
       StatementType type = new StatementType(StatementType.Type.UPDATE, table,
           1, "", getShardIndexByKey(keymatch));
       //System.out.println(type.getFieldString());
       PreparedStatement updateStatement = createAndCacheUpdateMetaStatement(type, keymatch);
       //updateStatement.setString(1,keymatch);
-      int result = updateStatement.executeUpdate();
+      // int result = updateStatement.executeUpdate();
+      condProp = propChange(condProp);
+      String changeVal = metadatavalue;
+      System.out.println(performUpdate(condProp, changeVal));
       //System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
       return Status.OK;
     } catch(SQLException e) {
@@ -681,6 +766,58 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status performDelete() {
+    try {
+      Connection c = getConnection();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      Random rand = new Random();
+      String query = "SELECT DISTINCT device_id FROM usertable";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] devid = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("device_id");
+        devid[counter] = val;
+        counter = counter + 1;
+      }
+      String deviceid = devid[rand.nextInt(counter)];
+      query = "SELECT id FROM usertable WHERE device_id = \'" + deviceid + "\'";
+      rs = statement.executeQuery(query);
+      rs.last();
+      String[] id = new String[rs.getRow()];
+      rs.beforeFirst();
+      counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("id");
+        id[counter] = val;
+        counter = counter + 1;
+      }
+      if (id.length == 0) {
+        System.out.println("NOT GOOD");
+      }
+      int idx = rand.nextInt(id.length);
+      String qkey = id[idx] + "";
+      rs.close();
+      query = "DELETE from usertable WHERE device_id = \'" + deviceid + "\' AND id = \'" + qkey + "\'";
+      // System.out.println(query);
+      int res = statement.executeUpdate(query);
+      if (res != 0) {
+        rs.close();
+        return Status.OK;
+      }
+      rs.close();
+      statement.close();
+      c.close();
+      return Status.ERROR;
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return Status.ERROR;
+    }
+  }
+
   @Override
   public Status delete(String tableName, String key) {
     try {
@@ -690,12 +827,12 @@ public class JdbcDBClient extends DB {
         deleteStatement = createAndCacheDeleteStatement(type, key);
       }
       deleteStatement.setString(1, key);
-      int result = deleteStatement.executeUpdate();
+      // int result = deleteStatement.executeUpdate();
       //System.err.println("Delete Jdbc key "+key+ "result "+ result);
-      if (result == 1) {
-        return Status.OK;
-      }
-      return Status.UNEXPECTED_STATE;
+      // if (result == 1) {
+      //   return Status.OK;
+      // }
+      return performDelete();
     } catch (SQLException e) {
       System.err.println("Error in processing delete to table: " + tableName + e);
       return Status.ERROR;

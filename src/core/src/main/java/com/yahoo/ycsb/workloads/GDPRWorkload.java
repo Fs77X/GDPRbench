@@ -1125,7 +1125,7 @@ public class GDPRWorkload extends Workload {
     //System.err.println("Update metadata called with cond: "+ metadatacond +
     //                   " value: " + metadatavalue + " metadatanum " + metadatanum);
     
-    db.updateMeta(table, metadatanum, metadatacond, "key*", fieldkey, metadatavalue);
+    db.updateMeta(table, metadatanum, metadatacond, "key*", fieldkey, metadatavalue, fieldnames.get(metadatanum));
   }
 
   public void doTransactionUpdate(DB db) {

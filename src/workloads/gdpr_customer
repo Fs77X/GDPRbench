@@ -39,18 +39,20 @@ shrcount=10
 srccount=10
 catcount=10
 
-readproportion=0.5
-readmetapurposeproportion=0.5
-readmetauserproportion=0
-updateproportion=0
-updatemetapurposeproportion=0
-updatemetauserproportion=0
-deleteproportion=0
+readmetapurposeproportion=0.1
+readmetauserproportion=0.1
+
+# done
+readproportion=0.2
+updatemetapurposeproportion=0.1
+updatemetauserproportion=0.1
+deleteproportion=0.2
 deletemetapurposeproportion=0
 deletemetauserproportion=0
 scanproportion=0
 insertproportion=0
 insertorder=ordered
+updateproportion=0.2
 
 requestdistribution=zipfian
 
