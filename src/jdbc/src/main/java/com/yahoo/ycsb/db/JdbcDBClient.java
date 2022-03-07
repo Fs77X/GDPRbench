@@ -37,6 +37,7 @@ import com.yahoo.ycsb.db.JSON.MallData;
 import com.yahoo.ycsb.db.JSON.MetaData;
 import com.yahoo.ycsb.db.JSON.MgetEntry;
 import com.yahoo.ycsb.db.JSON.MgetObj;
+import com.yahoo.ycsb.db.JSON.MmetaController;
 import com.yahoo.ycsb.db.flavors.DBFlavor;
 import java.util.Random;
 
@@ -711,28 +712,67 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public MmetaController generateMMController() {
+    try {
+      Connection c = getConnection();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      Random rand = new Random();
+      String[] meta = {"purpose", "sharing", "origin"};
+      String selectedMeta = meta[rand.nextInt(meta.length)];
+      String query = "SELECT DISTINCT querier, " + selectedMeta + " FROM user_policy";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] querier = new String[rs.getRow()];
+      String[] condVal = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String q = rs.getString("querier");
+        querier[counter] = q;
+        condVal[counter] = rs.getString(selectedMeta);
+        counter = counter + 1;
+      }
+      String pickedQ = querier[rand.nextInt(querier.length)];
+      String info = condVal[rand.nextInt(condVal.length)];
+      int val = rand.nextInt(100) + 1;
+      String changeVal = val + "";
+      rs.close();
+      statement.close();
+      c.close();
+      return new MmetaController(selectedMeta, info, pickedQ, changeVal);
+
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return null;
+    }
+
+  }
+
   public Status actualupdateMeta(String condProp, String condVal,
       String changeProp, String changeVal) {
     // mmodcond_metaObj
     try {
-      Random rand = new Random();
-      MgetEntry mge = createMgetEntry();
-      changeVal = "" + (rand.nextInt(39) + 1);
-      MgetObj mObj = new MgetObj(mge.getDeviceId(), condProp, changeVal);
+      // Random rand = new Random();
+      // MgetEntry mge = createMgetEntry();
+      // changeVal = "" + (rand.nextInt(39) + 1);
+      // MgetObj mObj = new MgetObj(mge.getDeviceId(), condProp, changeVal);
+      MmetaController mc = generateMMController();
       ObjectMapper mapper = new ObjectMapper();
       String jsonString = "";
       try {
-        jsonString = mapper.writeValueAsString(mObj);
+        jsonString = mapper.writeValueAsString(mc);
       } catch (JsonProcessingException e1) {
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
+      System.out.println(jsonString);
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       MediaType mediaType = MediaType.parse("application/json");
       RequestBody body = RequestBody.create(mediaType, jsonString);
       Request request = new Request.Builder()
-          .url("http://localhost:5344/sieve/mmodify_metaobj/" + mge.getDeviceId() + "/" + mge.getId())
+          .url("http://localhost:5344/sieve/mmodify_metaController")
           .method("PUT", body)
           .build();
       Response response = client.newCall(request).execute();
