@@ -23,6 +23,7 @@ import com.yahoo.ycsb.Status;
 import com.yahoo.ycsb.StringByteIterator;
 import java.io.*;
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -43,7 +44,7 @@ import com.yahoo.ycsb.db.flavors.DBFlavor;
  * Therefore, only one index on the primary key is needed.
  */
 public class JdbcDBClient extends DB {
-
+  private int mallobsCounter = 3000000;
   /** The class to use as the jdbc driver. */
   public static final String DRIVER_CLASS = "db.driver";
 
@@ -347,7 +348,7 @@ public class JdbcDBClient extends DB {
     }
     return stmt;
   }
-
+//MARK
   public Status performRead() {
     try {
       Connection c = getConnection();
@@ -565,43 +566,32 @@ public class JdbcDBClient extends DB {
   }
 
   public Status performUpdate(String prop, String info) {
-    System.out.println("IN UPDATE");
-    System.out.println("IN UPDATE");
     try {
       System.out.println("IN UPDATE");
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      String query = "SELECT DISTINCT device_id FROM usertable";
+      String[] meta = {"purpose", "sharing", "origin"};
+      String selectedMeta = meta[rand.nextInt(meta.length)];
+      String query = "SELECT DISTINCT querier, " + selectedMeta + " FROM usertable";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
-      String[] devid = new String[rs.getRow()];
+      String[] querier = new String[rs.getRow()];
+      String[] condVal = new String[rs.getRow()];
       rs.beforeFirst();
       int counter = 0;
       while (rs.next()) {
-        String val = rs.getString("device_id");
-        devid[counter] = val;
+        String q = rs.getString("querier");
+        querier[counter] = q;
+        condVal[counter] = rs.getString(selectedMeta);
         counter = counter + 1;
       }
-      String deviceid = devid[rand.nextInt(counter)];
-      query = "SELECT id FROM usertable WHERE device_id = \'" + deviceid + "\'";
-      rs = statement.executeQuery(query);
-      rs.last();
-      String[] id = new String[rs.getRow()];
-      rs.beforeFirst();
-      counter = 0;
-      while (rs.next()) {
-        String val = rs.getString("id");
-        id[counter] = val;
-        counter = counter + 1;
-      }
-      if (id.length == 0) {
-        System.out.println("NOT GOOD");
-      }
-      int idx = rand.nextInt(id.length);
-      String qkey = id[idx] + "";
-      query = "UPDATE usertable SET " + prop + " = \'" + info + "\' " + "WHERE device_id = \'" + 
-        deviceid + "\' AND id = \'" + qkey + "\'";
+      int idx = rand.nextInt(querier.length);
+      String pickedQ = querier[idx];
+      info = condVal[idx];
+      int val = rand.nextInt(100) + 1;
+      String changeVal = val + "";
+      query = "UPDATE usertable SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\'";
       System.out.println(query);
       int res = statement.executeUpdate(query);
       rs.close();
@@ -610,11 +600,12 @@ public class JdbcDBClient extends DB {
       if (res != 0) {
         return Status.OK;
       } else {
+        System.out.println(query);
+        System.out.println("FAIL");
         return Status.ERROR;
       }
     } catch(Exception e) {
-      System.out.println("booboo");
-      // e.printStackTrace();
+      e.printStackTrace();
       return Status.ERROR;
     }
   }
@@ -687,6 +678,7 @@ public class JdbcDBClient extends DB {
       // int result = updateStatement.executeUpdate();
       condProp = propChange(condProp);
       String changeVal = metadatavalue;
+      System.out.println("PERFORM UPDATEMETA");
       System.out.println(performUpdate(condProp, changeVal));
       //System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
       return Status.OK;
@@ -874,6 +866,37 @@ public class JdbcDBClient extends DB {
     return Status.OK;
   }
 
+  public MaddObj generateData() {
+    // mallData
+    String mdId = "o" + mallobsCounter;
+    mallobsCounter = mallobsCounter + 1;
+    Random rand = new Random();
+    String shopName = "store " + (rand.nextInt(99) + 1);
+    long now = System.currentTimeMillis();
+    Time obs_time = new Time(now);
+    Date obs_date = new Date(now);
+    String[] userInterest = {"", "shoes", "fastfood", "cars", "planes"};
+    String uInterest = userInterest[rand.nextInt(userInterest.length)];
+    int device_id =  rand.nextInt(2000) + 1;
+    MallData mallData = new MallData(mdId, shopName, obs_date, obs_time, uInterest, device_id);
+
+    // metadata
+    int ttl = (int)now + rand.nextInt(300000) + 100000;
+    String uuid = UUID.randomUUID().toString();
+    int q = rand.nextInt(100) + 1;
+    String querier = q + "";
+    String purpose = (rand.nextInt(100) + 1) + "";
+    String origin = (rand.nextInt(100) + 1) + "";
+    String objection = (rand.nextInt(100) + 1) + "";
+    String sharing = (rand.nextInt(100) + 1) + "";
+    String enforcement = "allow";
+    Timestamp ts = new Timestamp(now);
+    String timeStamp = ts.toString();
+    String key = mdId;
+    MetaData mData = new MetaData(uuid, querier, purpose, ttl, origin, objection, sharing, enforcement, timeStamp, device_id, key);
+    return new MaddObj(mallData, mData);
+  }
+
   @Override
   public Status insertTTL(String table, String key,
                          Map<String, ByteIterator> values, int ttl) {
@@ -881,25 +904,46 @@ public class JdbcDBClient extends DB {
     try{
       int numFields = values.size();
       OrderedFieldInfo fieldInfo = getFieldInfo(values);
-      StatementType type = new StatementType(StatementType.Type.INSERT, table,
-          numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
-      PreparedStatement insertStatement = cachedStatements.get(type);
-      if (insertStatement == null) {
-        insertStatement = createAndCacheInsertStatement(type, key);
-      }
+      MaddObj newObj = generateData();
+      Connection c = getConnection();
+      Statement statement = c.createStatement();
+      StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
+      sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at) VALUES(");
+      sb.append("\'").append(newObj.getMallData().getId()).append("\', ");
+      sb.append("\'").append(newObj.getMallData().getShopName()).append("\', ");
+      sb.append("\'").append(newObj.getMallData().getObsDate()).append("\', ");
+      sb.append("\'").append(newObj.getMallData().getObsTime()).append("\', ");
+      sb.append("\'").append(newObj.getMallData().getUserInterest()).append("\', ");
+      sb.append("\'").append(newObj.getMallData().getDeviceID()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getTtl()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getOrigin()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
+      statement.executeUpdate(sb.toString());
       
-      insertStatement.setString(1, key);
-      int index = 2;
-      for (String value: fieldInfo.getFieldValues()) {
-        insertStatement.setString(index++, value);
-      }
-      System.err.println("In insert: "+insertStatement.toString());
-      int result = insertStatement.executeUpdate();
-      if (result == 1) {
-        return Status.OK;
-      }
-    } catch (SQLException e) {
-      System.err.println("Error in processing delete to table: " + table + e);
+      // StatementType type = new StatementType(StatementType.Type.INSERT, table,
+      //     numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
+      // PreparedStatement insertStatement = cachedStatements.get(type);
+      // if (insertStatement == null) {
+      //   insertStatement = createAndCacheInsertStatement(type, key);
+      // }
+      
+      // insertStatement.setString(1, key);
+      // int index = 2;
+      // for (String value: fieldInfo.getFieldValues()) {
+      //   insertStatement.setString(index++, value);
+      // }
+      // System.err.println("In insert: "+insertStatement.toString());
+      // int result = insertStatement.executeUpdate();
+      // if (result == 1) {
+      //   return Status.OK;
+      // }
+    } catch (Exception e) {
+      System.err.println("Error in processing insert to table: " + table + e);
       return Status.ERROR;
     }
   
