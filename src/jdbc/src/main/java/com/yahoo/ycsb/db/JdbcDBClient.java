@@ -730,8 +730,9 @@ public class JdbcDBClient extends DB {
         condVal[counter] = rs.getString(selectedMeta);
         counter = counter + 1;
       }
-      String pickedQ = querier[rand.nextInt(querier.length)];
-      String info = condVal[rand.nextInt(condVal.length)];
+      int idx = rand.nextInt(querier.length);
+      String pickedQ = querier[idx];
+      String info = condVal[idx];
       int val = rand.nextInt(100) + 1;
       String changeVal = val + "";
       rs.close();
