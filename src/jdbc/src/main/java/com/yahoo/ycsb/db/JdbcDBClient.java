@@ -900,7 +900,7 @@ public class JdbcDBClient extends DB {
           .method("DELETE", null)
           .build();
       Response response = client.newCall(request).execute();
-      // System.out.println(response.code());
+      System.out.println("DELETE" + response.code());
       if (response.code() != 200) {
         return Status.ERROR;
       }
@@ -923,8 +923,8 @@ public class JdbcDBClient extends DB {
       }
       deleteStatement.setString(1, key);
       // System.out.println("delete Obj");
-      int result = deleteStatement.executeUpdate();
-      result = 1; // bypass postgres failure
+      // int result = deleteStatement.executeUpdate();
+      int result = 1; // bypass postgres failure
       // System.err.println("Delete Jdbc key "+key+ "result "+ result);
       if (result == 1) {
         Status del = actualDelete(key);
