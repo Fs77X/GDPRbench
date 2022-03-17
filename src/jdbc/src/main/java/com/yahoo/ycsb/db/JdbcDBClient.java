@@ -506,15 +506,14 @@ public class JdbcDBClient extends DB {
 
   public Status actualReadMeta(String cond, String keymatch) {
     Random rand = new Random();
-    int qid = rand.nextInt(39) + 1;
-    String[] properties = new String[]{"objection", "sharing", "purpose"};
-    String[] propVals = new String[]{"obj", "shr", "purpose"};
+    int[] multqid  = new int[]{7, 5, 9, 12};
+    int qid = multqid[rand.nextInt(multqid.length)];
     String id = qid + "";
     // System.out.println("IN ACTUAL RMD");
-    int idx = rand.nextInt(properties.length);
-    String prop = properties[idx];
-    int ival = rand.nextInt(99) + 1;
-    String info = propVals[idx]+ival;
+    String prop = "purpose";
+    int[] purposes  = new int[]{5, 16};
+    int ival = purposes[rand.nextInt(purposes.length)];
+    String info = "" + ival;
     MgetObj mObj = new MgetObj(id, prop, info);
     ObjectMapper mapper = new ObjectMapper();
     String jsonString = "";
