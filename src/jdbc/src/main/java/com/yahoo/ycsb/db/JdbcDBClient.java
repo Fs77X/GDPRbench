@@ -491,14 +491,14 @@ public class JdbcDBClient extends DB {
     //TODO: No use for keyMatch whatsoever, so check if without queering for keys this will work.
     try {
       Random rand = new Random();
-      int qid = rand.nextInt(39) + 1;
-      String[] properties = new String[]{"objection", "sharing", "purpose"};
-      String[] propVals = new String[]{"obj", "shr", "purpose"};
+      int[] multqid  = new int[]{7, 5, 9, 12};
+      int qid = multqid[rand.nextInt(multqid.length)];
       String id = qid + "";
-      int idx = rand.nextInt(properties.length);
-      String prop = properties[idx];
-      int ival = rand.nextInt(99) + 1;
-      String info = propVals[idx]+ival;
+      // System.out.println("IN ACTUAL RMD");
+      String prop = "purpose";
+      int[] purposes  = new int[]{5, 16};
+      int ival = purposes[rand.nextInt(purposes.length)];
+      String info = "" + ival;
       HashSet<String> fields = null;
       System.out.println("tablename: " + tableName + " keymatch " + keymatch);
       StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(keymatch));
