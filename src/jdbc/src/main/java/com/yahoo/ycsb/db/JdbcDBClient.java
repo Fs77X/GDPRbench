@@ -40,8 +40,8 @@ import okhttp3.RequestBody;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+// import java.util.regex.Matcher;
+// import java.util.regex.Pattern;
 
 /**
  * A class that wraps a JDBC compliant database to allow it to be interfaced
@@ -357,7 +357,7 @@ public class JdbcDBClient extends DB {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mget_entry/" + key)
+          .url("http://localhost:8000/mget_entry/" + key)
           .method("GET", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -391,7 +391,7 @@ public class JdbcDBClient extends DB {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/getLogs/" + logCount)
+          .url("http://localhost:8000/getLogs/" + logCount)
           .method("GET", null)
           .addHeader("Content-Type", "application/json")
           .build();
@@ -442,7 +442,7 @@ public class JdbcDBClient extends DB {
       RequestBody body = RequestBody.create(mediaType, 
           "{\r\n    \"property\": " + purpose + ",\r\n    \"id\": " + id + "\r\n}");
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mget_obj/")
+          .url("http://localhost:8000/mget_obj/")
           .method("POST", body)
           .addHeader("Content-Type", "application/json")
           .build();
@@ -508,7 +508,7 @@ public class JdbcDBClient extends DB {
           .addFormDataPart("gpa", "" + values.get("Data"))
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mmodify_obj/" + key)
+          .url("http://localhost:8000/mmodify_obj/" + key)
           .method("PUT", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -531,7 +531,7 @@ public class JdbcDBClient extends DB {
           .addFormDataPart("info", info)
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mmodify_metaobj/" + key)
+          .url("http://localhost:8000/mmodify_metaobj/" + key)
           .method("PUT", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -603,7 +603,7 @@ public class JdbcDBClient extends DB {
           "\",\r\n    \"changeVal\": \"" + changeVal +
           "\"\r\n}");
       Request request = new Request.Builder()
-          .url("http://localhost:8080/cond_metaObj/")
+          .url("http://localhost:8000/cond_metaObj/")
           .method("PUT", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -664,7 +664,7 @@ public class JdbcDBClient extends DB {
           1, "", getShardIndexByKey(keymatch));
       PreparedStatement updateStatement = createAndCacheUpdateMetaStatement(type, keymatch);
       //updateStatement.setString(1,keymatch);
-      int result = updateStatement.executeUpdate();
+      // int result = updateStatement.executeUpdate();
       Status res = actualupdateMeta(condProp, condVal, changeProp, changeVal);
       // System.out.println(res);
       // System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
@@ -750,7 +750,7 @@ public class JdbcDBClient extends DB {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mdelete_UserMetaobj/" + key)
+          .url("http://localhost:8000/mdelete_UserMetaobj/" + key)
           .method("DELETE", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -772,7 +772,7 @@ public class JdbcDBClient extends DB {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/mdelete_obj/" + key)
+          .url("http://localhost:8000/mdelete_obj/" + key)
           .method("DELETE", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -799,14 +799,16 @@ public class JdbcDBClient extends DB {
       }
       deleteStatement.setString(1, key);
       // System.out.println("delete Obj");
-      int result = deleteStatement.executeUpdate();
-      result = 1; //bypass postgres failure
+      int result = 1;
+      // result = 1; //bypass postgres failure
       // System.err.println("Delete Jdbc key "+key+ "result "+ result);
       if (result == 1) {
         Status del = actualDelete(key);
-        // Status delmeta = actualDeleteMeta(key);
-        // System.out.println(del);
-        // System.out.println(delmeta);
+        Status delmeta = actualDeleteMeta(key);
+        System.out.println("DEL");
+        System.out.println(del);
+        System.out.println("DELMETA");
+        System.out.println(delmeta);
         return Status.OK;
       }
       return Status.UNEXPECTED_STATE;
@@ -854,7 +856,7 @@ public class JdbcDBClient extends DB {
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/getKeyCount")
+          .url("http://localhost:8000/getKeyCount")
           .method("GET", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -894,6 +896,7 @@ public class JdbcDBClient extends DB {
 
   private Status insertEntry(String key, String value, String name) {
     try {
+      System.out.println("WHATS GOIN ON");
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       MediaType mediaType = MediaType.parse("text/plain");
@@ -903,7 +906,7 @@ public class JdbcDBClient extends DB {
           .addFormDataPart("gpa", value)
           .build();
       Request request = new Request.Builder()
-          .url("http://localhost:8080/madd_obj/")
+          .url("http://localhost:8000/madd_obj/")
           .method("POST", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -923,6 +926,7 @@ public class JdbcDBClient extends DB {
 
   private Status insertMeta(String key, OrderedFieldInfo value) {
     try{
+      System.out.println("IM OVA HERE");
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       MediaType mediaType = MediaType.parse("application/json");
@@ -935,7 +939,7 @@ public class JdbcDBClient extends DB {
           "\",\r\n    \"cat\": \"" + value.getFieldValues().get(4) + 
           "\",\r\n    \"acl\": \"" + value.getFieldValues().get(5) + "\"\r\n}");
       Request request = new Request.Builder()
-          .url("http://localhost:8080/madd_metaobj/" + key)
+          .url("http://localhost:8000/madd_metaobj/" + key)
           .method("POST", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -955,9 +959,9 @@ public class JdbcDBClient extends DB {
   @Override
   public Status insertTTL(String table, String key,
                          Map<String, ByteIterator> values, int ttl) {
-    // System.out.println(table + " " + key);
-    // System.out.println(ttl);
-    // System.out.println(values);
+    System.out.println(table + " " + key);
+    System.out.println(ttl);
+    System.out.println(values);
     // create a client
     try{
       OrderedFieldInfo payload = getFieldInfo(values);
