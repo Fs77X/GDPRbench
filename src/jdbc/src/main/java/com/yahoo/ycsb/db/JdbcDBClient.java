@@ -591,7 +591,7 @@ public class JdbcDBClient extends DB {
       info = condVal[idx];
       int val = rand.nextInt(100) + 1;
       String changeVal = val + "";
-      query = "UPDATE usertable SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\'";
+      query = "UPDATE usertable SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\' AND tomb = 0";
       System.out.println(query);
       int res = statement.executeUpdate(query);
       rs.close();
@@ -792,7 +792,7 @@ public class JdbcDBClient extends DB {
       int idx = rand.nextInt(id.length);
       String qkey = id[idx] + "";
       rs.close();
-      query = "DELETE from usertable WHERE device_id = \'" + deviceid + "\' AND id = \'" + qkey + "\'";
+      query = "UPDATE usertable SET tomb = 1 WHERE device_id = \'" + deviceid + "\' AND id = \'" + qkey + "\'";
       // System.out.println(query);
       int res = statement.executeUpdate(query);
       if (res != 0) {
@@ -908,7 +908,7 @@ public class JdbcDBClient extends DB {
       Connection c = getConnection();
       Statement statement = c.createStatement();
       StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
-      sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at) VALUES(");
+      sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at, tomb) VALUES(");
       sb.append("\'").append(newObj.getMallData().getId()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getShopName()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getObsDate()).append("\', ");
@@ -922,7 +922,8 @@ public class JdbcDBClient extends DB {
       sb.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
       sb.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
       sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
+      sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\', ");
+      sb.append("\'").append(0).append("\')");
       statement.executeUpdate(sb.toString());
       
       // StatementType type = new StatementType(StatementType.Type.INSERT, table,

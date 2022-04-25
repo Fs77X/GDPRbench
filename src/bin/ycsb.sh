@@ -282,3 +282,4 @@ echo "$JAVA_HOME/bin/java $JAVA_OPTS -classpath $CLASSPATH $YCSB_CLASS $YCSB_COM
 # shellcheck disable=SC2086
 "$JAVA_HOME/bin/java" $JAVA_OPTS -classpath "$CLASSPATH" $YCSB_CLASS $YCSB_COMMAND -db $BINDING_CLASS $YCSB_ARGS
 
+# time psql -U admin -d the_db -c 'vacuum verbose usertable'
