@@ -878,19 +878,19 @@ public class JdbcDBClient extends DB {
   }
   @Override
   public Status verifyTTL(String table, long recordcount) {
-    System.out.println("we in the verifyttl");
-    System.out.println(table + " " + recordcount);
-    long keys = getKeys();
-    recordcount++;
-    System.out.println("Keys in vttl: " + keys);
-    while(keys > recordcount) {
-      try { 
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        System.out.println(e);
-      }
-      keys = getKeys();
-    }
+    // System.out.println("we in the verifyttl");
+    // System.out.println(table + " " + recordcount);
+    // long keys = getKeys();
+    // recordcount++;
+    // System.out.println("Keys in vttl: " + keys);
+    // while(keys > recordcount) {
+    //   try { 
+    //     Thread.sleep(1000);
+    //   } catch (InterruptedException e) {
+    //     System.out.println(e);
+    //   }
+    //   keys = getKeys();
+    // }
     return Status.OK;
   }
 
