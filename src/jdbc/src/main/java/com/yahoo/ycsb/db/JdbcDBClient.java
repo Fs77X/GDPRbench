@@ -1000,7 +1000,7 @@ public class JdbcDBClient extends DB {
     Random rand = new Random();
     String shopName = "store " + (rand.nextInt(99) + 1);
     long now = System.currentTimeMillis();
-    System.out.println("now " + now);
+    // System.out.println("now " + now);
     Time obs_time = new Time(now);
     Date obs_date = new Date(now);
     String[] userInterest = {"", "shoes", "fastfood", "cars", "planes"};
@@ -1011,8 +1011,8 @@ public class JdbcDBClient extends DB {
     // metadata
     Instant instant = Instant.ofEpochMilli(now);
     long res = instant.getEpochSecond();
-    int ttl = (int)res + rand.nextInt(100) + 10;
-    System.out.println("TTL " + ttl);
+    int ttl = (int)res + rand.nextInt(1000) + 30;
+    // System.out.println("TTL " + ttl);
     String uuid = UUID.randomUUID().toString();
     int q = rand.nextInt(100) + 1;
     String querier = q + "";
