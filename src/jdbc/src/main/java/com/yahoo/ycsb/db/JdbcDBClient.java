@@ -23,6 +23,7 @@ import com.yahoo.ycsb.Status;
 import com.yahoo.ycsb.StringByteIterator;
 import java.io.*;
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -58,7 +59,10 @@ import okhttp3.ResponseBody;
  * Therefore, only one index on the primary key is needed.
  */
 public class JdbcDBClient extends DB {
-
+  private int mallobsCounter = 3000000;
+  private int iter = 0;
+  public OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
   /** The class to use as the jdbc driver. */
   public static final String DRIVER_CLASS = "db.driver";
 
@@ -894,16 +898,50 @@ public class JdbcDBClient extends DB {
     return Status.OK;
   }
 
-  private Status insertEntry(String key, String value, String name) {
+  public MaddObj generateData() {
+    // mallData
+    String mdId = "o" + mallobsCounter;
+    mallobsCounter = mallobsCounter + 1;
+    Random rand = new Random();
+    String shopName = "store " + (rand.nextInt(99) + 1);
+    long now = System.currentTimeMillis();
+    Time obs_time = new Time(now);
+    Date obs_date = new Date(now);
+    String[] userInterest = {"", "shoes", "fastfood", "cars", "planes"};
+    String uInterest = userInterest[rand.nextInt(userInterest.length)];
+    int device_id =  rand.nextInt(2000) + 1;
+    MallData mallData = new MallData(mdId, shopName, obs_date, obs_time, uInterest, device_id);
+
+    // metadata
+    int ttl = (int)now + rand.nextInt(300000) + 100000;
+    String uuid = UUID.randomUUID().toString();
+    int q = rand.nextInt(100) + 1;
+    String querier = q + "";
+    String purpose = (rand.nextInt(100) + 1) + "";
+    String origin = (rand.nextInt(100) + 1) + "";
+    String objection = (rand.nextInt(100) + 1) + "";
+    String sharing = (rand.nextInt(100) + 1) + "";
+    String enforcement = "allow";
+    Timestamp ts = new Timestamp(now);
+    String timeStamp = ts.toString();
+    String key = mdId;
+    MetaData mData = new MetaData(uuid, querier, purpose, ttl, origin, objection, sharing, enforcement, timeStamp, device_id, key);
+    return new MaddObj(mallData, mData);
+  }
+
+  private Status insertEntry(MallData md) {
     try {
-      System.out.println("WHATS GOIN ON");
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
+      // System.out.println("WHATS GOIN ON");
+      // String date = md.getObsDate().toString();
+      // System.out.println(date);
       MediaType mediaType = MediaType.parse("text/plain");
       RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-          .addFormDataPart("id", key)
-          .addFormDataPart("name", name)
-          .addFormDataPart("gpa", value)
+          .addFormDataPart("id", md.getId())
+          .addFormDataPart("shop_name", md.getShopName())
+          .addFormDataPart("obs_date", md.getObsDate().toString())
+          .addFormDataPart("obs_time", md.getObsTime().toString())
+          .addFormDataPart("user_interest", md.getUserInterest())
+          .addFormDataPart("device_id", md.getDeviceID().toString())
           .build();
       Request request = new Request.Builder()
           .url("http://localhost:8000/madd_obj/")
@@ -924,22 +962,20 @@ public class JdbcDBClient extends DB {
     } 
   }
 
-  private Status insertMeta(String key, OrderedFieldInfo value) {
+  private Status insertMeta(MetaData meta) {
     try{
-      System.out.println("IM OVA HERE");
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
+      // System.out.println("IM OVA HERE");
       MediaType mediaType = MediaType.parse("application/json");
-      RequestBody body = RequestBody.create(mediaType, "{\r\n    \"TTL\":\"" + value.getFieldValues().get(9) +
-          "\",\r\n    \"purpose\": \"" + value.getFieldValues().get(7) + 
-          "\",\r\n    \"adm\": \"" + value.getFieldValues().get(0) +
-          "\",\r\n    \"origin\": \"" + value.getFieldValues().get(2) +
-          "\",\r\n    \"objection\": \"" + value.getFieldValues().get(3) +
-          "\",\r\n    \"sharing\": \"" + value.getFieldValues().get(8) + 
-          "\",\r\n    \"cat\": \"" + value.getFieldValues().get(4) + 
-          "\",\r\n    \"acl\": \"" + value.getFieldValues().get(5) + "\"\r\n}");
+      RequestBody body = RequestBody.create(mediaType, "{\r\n    \"TTL\":\"" + meta.getTtl() +
+          "\",\r\n    \"purpose\": \"" + meta.getPurpose() + 
+          "\",\r\n    \"origin\": \"" + meta.getOrigin() +
+          "\",\r\n    \"objection\": \"" + meta.getObjection() +
+          "\",\r\n    \"sharing\": \"" + meta.getSharing() + 
+          "\",\r\n    \"enforcement_action\": \"" + meta.getEnforcementAction() + 
+          "\",\r\n    \"inserted_at\": \"" + meta.getInsertedAt() + 
+          "\",\r\n    \"Querier\": \"" + meta.getQuerier() + "\"\r\n}");
       Request request = new Request.Builder()
-          .url("http://localhost:8000/madd_metaobj/" + key)
+          .url("http://localhost:8000/madd_metaobj/" + meta.getKey())
           .method("POST", body)
           .build();
       Response response = client.newCall(request).execute();
@@ -959,18 +995,27 @@ public class JdbcDBClient extends DB {
   @Override
   public Status insertTTL(String table, String key,
                          Map<String, ByteIterator> values, int ttl) {
-    System.out.println(table + " " + key);
-    System.out.println(ttl);
-    System.out.println(values);
+    // System.out.println(table + " " + key);
+    // System.out.println(ttl);
+    // System.out.println(values);
     // create a client
+    MaddObj GenData = generateData();
+    MallData md = GenData.getMallData();
+    MetaData meta = GenData.getMetaData();
+    if (iter > 16276 && iter < 16280) {
+      System.out.println("iteration: " + iter);
+      System.out.println(md);
+      System.out.println(meta);
+    }
+    iter++;
     try{
       OrderedFieldInfo payload = getFieldInfo(values);
       // System.out.println(payload.getFieldValues().get(6));
-      Status insertStatus = insertEntry(key, payload.getFieldValues().get(6), payload.getFieldValues().get(1));
+      Status insertStatus = insertEntry(GenData.getMallData());
       if (insertStatus == null || !insertStatus.isOk()) {
         return Status.ERROR;
       }
-      Status metaStatus = insertMeta(key, payload);
+      Status metaStatus = insertMeta(GenData.getMetaData());
       if (metaStatus == null || !metaStatus.isOk()) {
         return Status.ERROR;
       }
