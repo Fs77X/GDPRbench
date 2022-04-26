@@ -24,6 +24,7 @@ import com.yahoo.ycsb.StringByteIterator;
 import java.io.*;
 import java.sql.*;
 import java.sql.Date;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -593,18 +594,42 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  public Status actualupdateMeta(String condProp, String condVal,
-      String changeProp, String changeVal) {
+  public Status actualupdateMeta() {
     //mmodcond_metaObj
     try{
+      System.out.println("IN UPDATE");
+      Connection c = getConnectionUP();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      Random rand = new Random();
+      String[] meta = {"purpose", "sharing", "origin"};
+      String selectedMeta = meta[rand.nextInt(meta.length)];
+      String query = "SELECT DISTINCT querier, " + selectedMeta + " FROM user_policy";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] querier = new String[rs.getRow()];
+      String[] condVal = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String q = rs.getString("querier");
+        querier[counter] = q;
+        condVal[counter] = rs.getString(selectedMeta);
+        counter = counter + 1;
+      }
+      int idx = rand.nextInt(querier.length);
+      String pickedQ = querier[idx];
+      String info = condVal[idx];
+      int val = rand.nextInt(100) + 1;
+      String changeVal = val + "";
       OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
       MediaType mediaType = MediaType.parse("application/json");
       RequestBody body = RequestBody.create(mediaType, 
-          "{\r\n    \"condProp\":\"" + condProp +
-          "\",\r\n    \"condVal\": \"" + condVal + 
-          "\",\r\n    \"changeProp\": \"" + changeProp +
+          "{\r\n    \"condProp\":\"" + selectedMeta +
+          "\",\r\n    \"condVal\": \"" + info + 
+          "\",\r\n    \"changeProp\": \"" + selectedMeta +
           "\",\r\n    \"changeVal\": \"" + changeVal +
+          "\",\r\n    \"querier\": \"" + pickedQ +
           "\"\r\n}");
       Request request = new Request.Builder()
           .url("http://localhost:8000/cond_metaObj/")
@@ -669,7 +694,7 @@ public class JdbcDBClient extends DB {
       PreparedStatement updateStatement = createAndCacheUpdateMetaStatement(type, keymatch);
       //updateStatement.setString(1,keymatch);
       // int result = updateStatement.executeUpdate();
-      Status res = actualupdateMeta(condProp, condVal, changeProp, changeVal);
+      Status res = actualupdateMeta();
       // System.out.println(res);
       // System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
       return Status.OK;
@@ -771,6 +796,75 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  private Connection getConnectionUP() throws Exception{
+
+    try {
+      Connection c = null;
+      Class.forName("org.postgresql.Driver");
+      c = DriverManager
+          .getConnection("jdbc:postgresql://127.0.0.1:5432/upolicy",
+              "postgres", "admin");
+      System.out.println("Opened database successfully");
+      return c;
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      return null;
+    }
+  }
+
+  private Connection getConnectionData() throws Exception{
+
+    try {
+      Connection c = null;
+      Class.forName("org.postgresql.Driver");
+      c = DriverManager
+          .getConnection("jdbc:postgresql://127.0.0.1:5432/the_db",
+              "postgres", "admin");
+      System.out.println("Opened database successfully");
+      return c;
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      return null;
+    }
+  }
+
+  public String getRandomKey() {
+    try{
+      Connection c = getConnectionData();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      Random rand = new Random();
+      String query = "SELECT id FROM mall_observation";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] id = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("id");
+        id[counter] = val;
+        counter = counter + 1;
+      }
+      if (id.length == 0) {
+        System.out.println("NOT GOOD");
+      }
+      int idx = rand.nextInt(id.length);
+      String qkey = id[idx] + "";
+      rs.close();
+      statement.close();
+      c.close();
+      return qkey;
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println(e);
+      return null;
+      
+    }
+    
+
+  }
+
   public Status actualDelete(String key) {
     try {
       OkHttpClient client = new OkHttpClient().newBuilder()
@@ -807,6 +901,7 @@ public class JdbcDBClient extends DB {
       // result = 1; //bypass postgres failure
       // System.err.println("Delete Jdbc key "+key+ "result "+ result);
       if (result == 1) {
+        key = getRandomKey();
         Status del = actualDelete(key);
         Status delmeta = actualDeleteMeta(key);
         System.out.println("DEL");
@@ -905,6 +1000,7 @@ public class JdbcDBClient extends DB {
     Random rand = new Random();
     String shopName = "store " + (rand.nextInt(99) + 1);
     long now = System.currentTimeMillis();
+    System.out.println("now " + now);
     Time obs_time = new Time(now);
     Date obs_date = new Date(now);
     String[] userInterest = {"", "shoes", "fastfood", "cars", "planes"};
@@ -913,7 +1009,10 @@ public class JdbcDBClient extends DB {
     MallData mallData = new MallData(mdId, shopName, obs_date, obs_time, uInterest, device_id);
 
     // metadata
-    int ttl = (int)now + rand.nextInt(300000) + 100000;
+    Instant instant = Instant.ofEpochMilli(now);
+    long res = instant.getEpochSecond();
+    int ttl = (int)res + rand.nextInt(100) + 10;
+    System.out.println("TTL " + ttl);
     String uuid = UUID.randomUUID().toString();
     int q = rand.nextInt(100) + 1;
     String querier = q + "";
