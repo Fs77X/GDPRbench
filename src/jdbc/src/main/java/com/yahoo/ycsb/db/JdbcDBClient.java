@@ -801,11 +801,12 @@ public class JdbcDBClient extends DB {
         return Status.OK;
       }
       rs.close();
-      query = "VACUUM usertable";
+      query = "VACUUM FULL usertable";
       // System.out.println(query);
       res = statement.executeUpdate(query);
       if (res != 0) {
         rs.close();
+        System.out.println("VACUUM FAIL");
         return Status.OK;
       }
       rs.close();
