@@ -126,7 +126,7 @@ public class JdbcDBClient extends DB {
       c = DriverManager
           .getConnection("jdbc:postgresql://127.0.0.1:5432/the_db",
               "postgres", "admin");
-      System.out.println("Opened database successfully");
+      // System.out.println("Opened database successfully");
       return c;
     } catch (Exception e) {
       e.printStackTrace();
@@ -763,24 +763,24 @@ public class JdbcDBClient extends DB {
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      String query = "SELECT DISTINCT device_id FROM usertable";
+      // String query = "SELECT DISTINCT device_id FROM usertable";
+      // ResultSet rs = statement.executeQuery(query);
+      // rs.last();
+      // String[] devid = new String[rs.getRow()];
+      // rs.beforeFirst();
+      // int counter = 0;
+      // while (rs.next()) {
+      //   String val = rs.getString("device_id");
+      //   devid[counter] = val;
+      //   counter = counter + 1;
+      // }
+      // String deviceid = devid[rand.nextInt(counter)];
+      String query = "SELECT id FROM usertable";
       ResultSet rs = statement.executeQuery(query);
-      rs.last();
-      String[] devid = new String[rs.getRow()];
-      rs.beforeFirst();
-      int counter = 0;
-      while (rs.next()) {
-        String val = rs.getString("device_id");
-        devid[counter] = val;
-        counter = counter + 1;
-      }
-      String deviceid = devid[rand.nextInt(counter)];
-      query = "SELECT id FROM usertable WHERE device_id = \'" + deviceid + "\'";
-      rs = statement.executeQuery(query);
       rs.last();
       String[] id = new String[rs.getRow()];
       rs.beforeFirst();
-      counter = 0;
+      int counter = 0;
       while (rs.next()) {
         String val = rs.getString("id");
         id[counter] = val;
@@ -792,7 +792,7 @@ public class JdbcDBClient extends DB {
       int idx = rand.nextInt(id.length);
       String qkey = id[idx] + "";
       rs.close();
-      query = "UPDATE usertable SET tomb = 1 WHERE device_id = \'" + deviceid + "\' AND id = \'" + qkey + "\'";
+      query = "UPDATE usertable SET tomb = 1 WHERE id = \'" + qkey + "\'";
       // System.out.println(query);
       int res = statement.executeUpdate(query);
       if (res != 0) {
@@ -881,7 +881,7 @@ public class JdbcDBClient extends DB {
     MallData mallData = new MallData(mdId, shopName, obs_date, obs_time, uInterest, device_id);
 
     // metadata
-    int ttl = (int)now + rand.nextInt(300000) + 100000;
+    int ttl = (int)now + rand.nextInt(4000) + 30;
     String uuid = UUID.randomUUID().toString();
     int q = rand.nextInt(100) + 1;
     String querier = q + "";
@@ -900,7 +900,7 @@ public class JdbcDBClient extends DB {
   @Override
   public Status insertTTL(String table, String key,
                          Map<String, ByteIterator> values, int ttl) {
-    System.out.println("inside inserttl");
+    // System.out.println("inside inserttl");
     try{
       int numFields = values.size();
       OrderedFieldInfo fieldInfo = getFieldInfo(values);
