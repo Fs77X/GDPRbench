@@ -24,6 +24,7 @@ import com.yahoo.ycsb.StringByteIterator;
 import java.io.*;
 import java.sql.*;
 import java.sql.Date;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -602,6 +603,7 @@ public class JdbcDBClient extends DB {
       } else {
         System.out.println(query);
         System.out.println("FAIL");
+        System.out.println(res);
         return Status.ERROR;
       }
     } catch(Exception e) {
@@ -881,7 +883,10 @@ public class JdbcDBClient extends DB {
     MallData mallData = new MallData(mdId, shopName, obs_date, obs_time, uInterest, device_id);
 
     // metadata
-    int ttl = (int)now + rand.nextInt(4000) + 30;
+    
+    Instant instant = Instant.ofEpochMilli(now);
+    long res = instant.getEpochSecond();
+    int ttl = (int)res + rand.nextInt(4000) + 30;
     String uuid = UUID.randomUUID().toString();
     int q = rand.nextInt(100) + 1;
     String querier = q + "";
@@ -925,6 +930,7 @@ public class JdbcDBClient extends DB {
       sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\', ");
       sb.append("\'").append(0).append("\')");
       statement.executeUpdate(sb.toString());
+      // System.out.println(sb.toString());
       
       // StatementType type = new StatementType(StatementType.Type.INSERT, table,
       //     numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
