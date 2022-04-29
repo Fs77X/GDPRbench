@@ -574,7 +574,7 @@ public class JdbcDBClient extends DB {
       Random rand = new Random();
       String[] meta = {"purpose", "sharing", "origin"};
       String selectedMeta = meta[rand.nextInt(meta.length)];
-      String query = "SELECT DISTINCT querier, " + selectedMeta + " FROM usertable";
+      String query = "SELECT DISTINCT querier, " + selectedMeta + " FROM user_policy";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
       String[] querier = new String[rs.getRow()];
@@ -592,7 +592,7 @@ public class JdbcDBClient extends DB {
       info = condVal[idx];
       int val = rand.nextInt(100) + 1;
       String changeVal = val + "";
-      query = "UPDATE usertable SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\'";
+      query = "UPDATE user_policy SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\'";
       System.out.println(query);
       int res = statement.executeUpdate(query);
       rs.close();
@@ -776,7 +776,7 @@ public class JdbcDBClient extends DB {
       //   counter = counter + 1;
       // }
       // String deviceid = devid[rand.nextInt(counter)];
-      String query = "SELECT id FROM usertable";
+      String query = "SELECT id FROM mall_observation";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
       String[] id = new String[rs.getRow()];
@@ -793,23 +793,28 @@ public class JdbcDBClient extends DB {
       int idx = rand.nextInt(id.length);
       String qkey = id[idx] + "";
       rs.close();
-      query = "DELETE from usertable WHERE id = \'" + qkey + "\'";
+      query = "DELETE from mall_observation WHERE id = \'" + qkey + "\'";
       // System.out.println(query);
       int res = statement.executeUpdate(query);
-      if (res != 0) {
-        rs.close();
-        return Status.OK;
+      if (res < 0) {
+        System.out.println("ERR DELETING data for: " + qkey);
+        return Status.ERROR;
       }
-      rs.close();
-      query = "VACUUM FULL usertable";
+      query = "DELETE from user_policy WHERE id = \'" + qkey + "\'";
       // System.out.println(query);
       res = statement.executeUpdate(query);
-      if (res != 0) {
-        rs.close();
-        System.out.println("VACUUM FAIL");
-        return Status.OK;
+      if (res < 0) {
+        System.out.println("ERR DELETING METADA for: " + qkey);
+        return Status.ERROR;
       }
-      rs.close();
+      // query = "VACUUM FULL usertable";
+      // // System.out.println(query);
+      // res = statement.executeUpdate(query);
+      // if (res != 0) {
+      //   rs.close();
+      //   System.out.println("VACUUM FAIL");
+      //   return Status.OK;
+      // }
       statement.close();
       c.close();
       return Status.ERROR;
@@ -919,24 +924,39 @@ public class JdbcDBClient extends DB {
       MaddObj newObj = generateData();
       Connection c = getConnection();
       Statement statement = c.createStatement();
-      StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
-      sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at) VALUES(");
+      StringBuilder sb = new StringBuilder("INSERT INTO mall_observation(id, shop_name, obs_date, obs_time, ");
+      sb.append("user_interest, device_id) VALUES(");
       sb.append("\'").append(newObj.getMallData().getId()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getShopName()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getObsDate()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getObsTime()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getUserInterest()).append("\', ");
-      sb.append("\'").append(newObj.getMallData().getDeviceID()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getTtl()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getOrigin()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
+      sb.append("\'").append(newObj.getMallData().getDeviceID()).append("\')");
       statement.executeUpdate(sb.toString());
+      StringBuilder sbM = new StringBuilder("INSERT INTO user_policy(id, purpose, querier, ttl, origin, objection, sharing");
+      sbM.append(", enforcement_action, inserted_at) VALUES(");
+      sbM.append("\'").append(newObj.getMallData().getId()).append("\', ");
+      sbM.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
+      sbM.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
+      sbM.append("\'").append(newObj.getMetaData().getTtl()).append("\', ");
+      sbM.append("\'").append(newObj.getMetaData().getOrigin()).append("\', ");
+      sbM.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
+      sbM.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
+      sbM.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
+      sbM.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
+      statement.executeUpdate(sbM.toString());
+      statement.close();
+      c.close();
       
+      //, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at
+      // sb.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getTtl()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getOrigin()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
       // StatementType type = new StatementType(StatementType.Type.INSERT, table,
       //     numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
       // PreparedStatement insertStatement = cachedStatements.get(type);
