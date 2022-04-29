@@ -1011,7 +1011,7 @@ public class JdbcDBClient extends DB {
     // metadata
     Instant instant = Instant.ofEpochMilli(now);
     long res = instant.getEpochSecond();
-    int ttl = (int)res + rand.nextInt(1000) + 30;
+    int ttl = (int)res + rand.nextInt(4000) + 30;
     // System.out.println("TTL " + ttl);
     String uuid = UUID.randomUUID().toString();
     int q = rand.nextInt(100) + 1;
