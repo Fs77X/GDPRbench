@@ -797,6 +797,7 @@ public class JdbcDBClient extends DB {
       // System.out.println(query);
       int res = statement.executeUpdate(query);
       if (res < 0) {
+        System.out.println(res);
         System.out.println("ERR DELETING data for: " + qkey);
         return Status.ERROR;
       }
@@ -804,6 +805,7 @@ public class JdbcDBClient extends DB {
       // System.out.println(query);
       res = statement.executeUpdate(query);
       if (res < 0) {
+        System.out.println(res);
         System.out.println("ERR DELETING METADA for: " + qkey);
         return Status.ERROR;
       }
@@ -817,7 +819,7 @@ public class JdbcDBClient extends DB {
       // }
       statement.close();
       c.close();
-      return Status.ERROR;
+      return Status.OK;
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
