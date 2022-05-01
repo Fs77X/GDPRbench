@@ -125,7 +125,7 @@ public class JdbcDBClient extends DB {
       Connection c = null;
       Class.forName("org.postgresql.Driver");
       c = DriverManager
-          .getConnection("jdbc:postgresql://127.0.0.1:5432/the_db",
+          .getConnection("jdbc:postgresql://127.0.0.1:5432/the_encdb",
               "postgres", "admin");
       // System.out.println("Opened database successfully");
       return c;
@@ -574,7 +574,7 @@ public class JdbcDBClient extends DB {
       Random rand = new Random();
       String[] meta = {"purpose", "sharing", "origin"};
       String selectedMeta = meta[rand.nextInt(meta.length)];
-      String query = "SELECT DISTINCT querier, " + selectedMeta + " FROM usertable";
+      String query = "SELECT DISTINCT PGP_SYM_DECRYPT(querier::bytea, \'key\') as querier, " + "PGP_SYM_DECRYPT(" + selectedMeta + "::bytea, \'key\') as " + selectedMeta + " FROM usertable";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
       String[] querier = new String[rs.getRow()];
@@ -592,13 +592,12 @@ public class JdbcDBClient extends DB {
       info = condVal[idx];
       int val = rand.nextInt(100) + 1;
       String changeVal = val + "";
-      query = "UPDATE usertable SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\'";
-      System.out.println(query);
+      query = "UPDATE usertable SET " + selectedMeta + " = PGP_SYM_ENCRYPT(\'" + changeVal + "\', \'key\')::text WHERE " + "((PGP_SYM_DECRYPT(" + selectedMeta + "::bytea, \'key\') LIKE(\'%" + info + "%\'))) AND ((PGP_SYM_DECRYPT(querier::bytea, 'key') LIKE(\'%" + pickedQ + "%\')))";
       int res = statement.executeUpdate(query);
       rs.close();
       statement.close();
       c.close();
-      if (res != 0) {
+      if (res >= 0) {
         return Status.OK;
       } else {
         System.out.println(query);
@@ -801,15 +800,15 @@ public class JdbcDBClient extends DB {
         return Status.OK;
       }
       rs.close();
-      query = "VACUUM FULL usertable";
-      // System.out.println(query);
-      res = statement.executeUpdate(query);
-      if (res != 0) {
-        rs.close();
-        System.out.println("VACUUM FAIL");
-        return Status.OK;
-      }
-      rs.close();
+      // query = "VACUUM FULL usertable";
+      // // System.out.println(query);
+      // res = statement.executeUpdate(query);
+      // if (res != 0) {
+      //   rs.close();
+      //   System.out.println("VACUUM FAIL");
+      //   return Status.OK;
+      // }
+      // rs.close();
       statement.close();
       c.close();
       return Status.ERROR;
@@ -922,19 +921,20 @@ public class JdbcDBClient extends DB {
       StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
       sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at) VALUES(");
       sb.append("\'").append(newObj.getMallData().getId()).append("\', ");
-      sb.append("\'").append(newObj.getMallData().getShopName()).append("\', ");
-      sb.append("\'").append(newObj.getMallData().getObsDate()).append("\', ");
-      sb.append("\'").append(newObj.getMallData().getObsTime()).append("\', ");
-      sb.append("\'").append(newObj.getMallData().getUserInterest()).append("\', ");
-      sb.append("\'").append(newObj.getMallData().getDeviceID()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getTtl()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getOrigin()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMallData().getShopName()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMallData().getObsDate()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMallData().getObsTime()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMallData().getUserInterest()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMallData().getDeviceID()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMetaData().getQuerier()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMetaData().getPurpose()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMetaData().getTtl()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMetaData().getOrigin()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMetaData().getObjection()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMetaData().getSharing()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMetaData().getEnforcementAction()).append("\', \'").append("key\')::text, ");
+      sb.append("PGP_SYM_ENCRYPT(\'").append(newObj.getMetaData().getInsertedAt()).append("\', \'").append("key\')::text)");
+      // System.out.println(sb.toString());
       statement.executeUpdate(sb.toString());
       
       // StatementType type = new StatementType(StatementType.Type.INSERT, table,
