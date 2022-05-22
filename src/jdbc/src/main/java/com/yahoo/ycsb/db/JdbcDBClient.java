@@ -598,7 +598,7 @@ public class JdbcDBClient extends DB {
       rs.close();
       statement.close();
       c.close();
-      if (res != 0) {
+      if (res >= 0) {
         return Status.OK;
       } else {
         System.out.println(query);
