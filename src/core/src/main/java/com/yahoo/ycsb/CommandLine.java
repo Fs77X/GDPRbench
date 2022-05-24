@@ -245,7 +245,7 @@ public final class CommandLine {
     if (tokens.length != 2) {
       System.out.println("Error: syntax is \"delete keyname\"");
     } else {
-      Status ret = db.delete(table, tokens[1]);
+      Status ret = db.delete(table, tokens[1], false, false, false);
       System.out.println("Return result: " + ret.getName());
     }
   }

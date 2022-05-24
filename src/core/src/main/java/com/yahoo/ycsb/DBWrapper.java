@@ -237,11 +237,11 @@ public class DBWrapper extends DB {
   }
 
   public Status insertTTL(String table, String key,
-                       Map<String, ByteIterator> values, int ttl) {
+                       Map<String, ByteIterator> values, int ttl, Boolean tomb) {
     try (final TraceScope span = tracer.newScope(scopeStringInsert)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.insertTTL(table, key, values, ttl);
+      Status res = db.insertTTL(table, key, values, ttl, tomb);
       long en = System.nanoTime();
       measure("INSERT", res, ist, st, en);
       measurements.reportStatus("INSERT", res);
@@ -257,11 +257,11 @@ public class DBWrapper extends DB {
    * @param key The record key of the record to delete.
    * @return The result of the operation.
    */
-  public Status delete(String table, String key) {
+  public Status delete(String table, String key, Boolean vacuum, Boolean vacfull, Boolean tomb) {
     try (final TraceScope span = tracer.newScope(scopeStringDelete)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.delete(table, key);
+      Status res = db.delete(table, key, vacuum, vacfull, tomb);
       long en = System.nanoTime();
       measure("DELETE", res, ist, st, en);
       measurements.reportStatus("DELETE", res);

@@ -128,16 +128,17 @@ public abstract class DB {
    * @return The result of the operation.
    */
   public abstract Status insert(String table, String key, Map<String, ByteIterator> values);
-  public abstract Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl);
+  public abstract Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl, Boolean tomb);
 
   /**
    * Delete a record from the database.
    *
    * @param table The name of the table
    * @param key The record key of the record to delete.
+ * @param vacuum
    * @return The result of the operation.
    */
-  public abstract Status delete(String table, String key);
+  public abstract Status delete(String table, String key, Boolean vacuum, Boolean vacfull, Boolean tombstone);
   public abstract Status deleteMeta(String table, int fieldnum, String cond, String keymatch);
 
   public abstract Status verifyTTL(String table, long recordcount);

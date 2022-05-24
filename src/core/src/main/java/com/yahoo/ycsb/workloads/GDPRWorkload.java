@@ -217,6 +217,24 @@ public class GDPRWorkload extends Workload {
 
   public static final String CATEGORY_COUNT_PROPERTY_DEFAULT = "10";
 
+  public static final String VACUUM_PROPERTY = "vacuum";
+
+  public Boolean vacuum;
+
+  public static final String VACUUM_DEFAULT = "false";
+
+  public static final String VACFULL_PROPERTY = "vacuum_full";
+
+  public static final String VACFULL_DEFAULT = "false";
+
+  public Boolean vacfull;
+
+  public static final String TOMB_PROPERTY = "tomb";
+
+  public static final String TOMB_DEFAULT = "false";
+
+  public Boolean tomb;
+
   /**
    * The name of the property for deciding whether to check all returned
    * data against the formation template to ensure data integrity.
@@ -560,6 +578,10 @@ public class GDPRWorkload extends Workload {
 
     dataintegrity = Boolean.parseBoolean(
         p.getProperty(DATA_INTEGRITY_PROPERTY, DATA_INTEGRITY_PROPERTY_DEFAULT));
+
+    vacuum = Boolean.parseBoolean(p.getProperty(VACUUM_PROPERTY,VACUUM_DEFAULT));
+    vacfull = Boolean.parseBoolean(p.getProperty(VACFULL_PROPERTY,VACFULL_DEFAULT));
+    tomb = Boolean.parseBoolean(p.getProperty(TOMB_PROPERTY,TOMB_DEFAULT));
     // Confirm that fieldlengthgenerator returns a constant if data
     // integrity check requested.
     if (dataintegrity && !(p.getProperty(
@@ -843,7 +865,7 @@ public class GDPRWorkload extends Workload {
     Status status;
     int numOfRetries = 0;
     do {
-      status = db.insertTTL(table, dbkey, values, ttl);
+      status = db.insertTTL(table, dbkey, values, ttl, tomb);
       if (null != status && status.isOk()) {
         break;
       }
@@ -1154,8 +1176,8 @@ public class GDPRWorkload extends Workload {
     String keyname = buildKeyName(keynum);
     
     //System.err.println("Transaction delete called for: "+ keyname);
-    
-    db.delete(table, keyname);
+    System.out.println("VAAAAC" + vacuum);
+    db.delete(table, keyname, vacuum, vacfull, tomb);
   }
 
   public void doTransactionDeleteMeta(DB db, int metadatanum) {
@@ -1179,7 +1201,7 @@ public class GDPRWorkload extends Workload {
 
       int ttl = buildTTLValue(keynum);
       HashMap<String, ByteIterator> values = buildValues(keynum, dbkey);
-      db.insertTTL(table, dbkey, values, ttl);
+      db.insertTTL(table, dbkey, values, ttl, tomb);
     } finally {
       transactioninsertkeysequence.acknowledge(keynum);
     }
@@ -1224,6 +1246,7 @@ public class GDPRWorkload extends Workload {
         p.getProperty(SCAN_PROPORTION_PROPERTY, SCAN_PROPORTION_PROPERTY_DEFAULT));
     final double readmodifywriteproportion = Double.parseDouble(p.getProperty(
         READMODIFYWRITE_PROPORTION_PROPERTY, READMODIFYWRITE_PROPORTION_PROPERTY_DEFAULT));
+    // public final 
 
     final DiscreteGenerator operationchooser = new DiscreteGenerator();
     if (readproportion > 0) {

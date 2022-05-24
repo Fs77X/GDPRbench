@@ -880,7 +880,7 @@ public class TimeSeriesWorkload extends Workload {
          .append(timestampKey + tagPairDelimiter + startTimestamp);  
     }
     
-    db.delete(table, buf.toString());
+    db.delete(table, buf.toString(), false, false, false);
   }
   
   /**

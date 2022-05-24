@@ -759,8 +759,10 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  public Status performDelete() {
+  public Status performDelete(Boolean vacuum, Boolean vacfull, Boolean tomb) {
     try {
+      System.out.println("PERFORM DELETE");
+      System.out.println(vacuum);
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
@@ -801,18 +803,30 @@ public class JdbcDBClient extends DB {
         return Status.OK;
       }
       rs.close();
-      query = "VACUUM FULL usertable";
-      // System.out.println(query);
-      res = statement.executeUpdate(query);
-      if (res != 0) {
-        rs.close();
-        System.out.println("VACUUM FAIL");
-        return Status.OK;
+      System.out.println("HERE HERE HERE");
+      System.out.println("VACUUM IS: " + vacuum);
+      System.out.println("HERE HERE HERE");
+      System.out.println("HERE HERE HERE");
+      if (vacuum) {
+        query = "VACUUM usertable";
+        res = statement.executeUpdate(query);
+        if (res < 0) {
+          System.out.println("VACUUM FAIL");
+          return Status.ERROR;
+        }
       }
-      rs.close();
+      if (vacfull) {
+        query = "VACUUM FULL usertable";
+        res = statement.executeUpdate(query);
+        if (res < 0) {
+          System.out.println("VACUUM FULL FAIL");
+          return Status.ERROR;
+        }
+      }
+      // System.out.println(query);
       statement.close();
       c.close();
-      return Status.ERROR;
+      return Status.OK;
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -821,9 +835,9 @@ public class JdbcDBClient extends DB {
   }
 
   @Override
-  public Status delete(String tableName, String key) {
+  public Status delete(String table, String key, Boolean vacuum, Boolean vacfull, Boolean tomb) {
     try {
-      StatementType type = new StatementType(StatementType.Type.DELETE, tableName, 1, "", getShardIndexByKey(key));
+      StatementType type = new StatementType(StatementType.Type.DELETE, table, 1, "", getShardIndexByKey(key));
       PreparedStatement deleteStatement = cachedStatements.get(type);
       if (deleteStatement == null) {
         deleteStatement = createAndCacheDeleteStatement(type, key);
@@ -834,12 +848,19 @@ public class JdbcDBClient extends DB {
       // if (result == 1) {
       //   return Status.OK;
       // }
-      return performDelete();
+      System.out.println("DELETEEE");
+      System.out.println(vacuum);
+      return performDelete(vacuum, vacfull, tomb);
     } catch (SQLException e) {
-      System.err.println("Error in processing delete to table: " + tableName + e);
+      System.err.println("Error in processing delete to table: " + table + e);
       return Status.ERROR;
     }
   }
+
+  // @Override
+  // public Status delete(String tableName, String key, Boolean vacuum) {
+    
+  // }
 
   @Override
   public Status deleteMeta(String table, int fieldnum, String condition, String keymatch) {
@@ -909,14 +930,8 @@ public class JdbcDBClient extends DB {
     return new MaddObj(mallData, mData);
   }
 
-  @Override
-  public Status insertTTL(String table, String key,
-                         Map<String, ByteIterator> values, int ttl) {
-    // System.out.println("inside inserttl");
+  public Status regularInsert(MaddObj newObj) {
     try{
-      int numFields = values.size();
-      OrderedFieldInfo fieldInfo = getFieldInfo(values);
-      MaddObj newObj = generateData();
       Connection c = getConnection();
       Statement statement = c.createStatement();
       StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
@@ -936,29 +951,56 @@ public class JdbcDBClient extends DB {
       sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
       sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
       statement.executeUpdate(sb.toString());
-      
-      // StatementType type = new StatementType(StatementType.Type.INSERT, table,
-      //     numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
-      // PreparedStatement insertStatement = cachedStatements.get(type);
-      // if (insertStatement == null) {
-      //   insertStatement = createAndCacheInsertStatement(type, key);
-      // }
-      
-      // insertStatement.setString(1, key);
-      // int index = 2;
-      // for (String value: fieldInfo.getFieldValues()) {
-      //   insertStatement.setString(index++, value);
-      // }
-      // System.err.println("In insert: "+insertStatement.toString());
-      // int result = insertStatement.executeUpdate();
-      // if (result == 1) {
-      //   return Status.OK;
-      // }
     } catch (Exception e) {
-      System.err.println("Error in processing insert to table: " + table + e);
+      System.err.println("Error in processing insert to table: " + e);
       return Status.ERROR;
     }
   
     return Status.OK;
   }
+
+  public Status tombInsert(MaddObj newObj) {
+    try{
+      Connection c = getConnection();
+      Statement statement = c.createStatement();
+      StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
+      sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at, tomb) VALUES(");
+      sb.append("\'").append(newObj.getMallData().getId()).append("\', ");
+      sb.append("\'").append(newObj.getMallData().getShopName()).append("\', ");
+      sb.append("\'").append(newObj.getMallData().getObsDate()).append("\', ");
+      sb.append("\'").append(newObj.getMallData().getObsTime()).append("\', ");
+      sb.append("\'").append(newObj.getMallData().getUserInterest()).append("\', ");
+      sb.append("\'").append(newObj.getMallData().getDeviceID()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getTtl()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getOrigin()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
+      sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\', ");
+      sb.append("\'").append(0).append("\')");
+      statement.executeUpdate(sb.toString());
+    } catch (Exception e) {
+      System.err.println("Error in processing insert to table: " + e);
+      return Status.ERROR;
+    }
+  
+    return Status.OK;
+  }
+
+  @Override
+  public Status insertTTL(String table, String key,
+                         Map<String, ByteIterator> values, int ttl, Boolean tomb) {
+    // System.out.println("inside inserttl");
+    MaddObj newObj = generateData();
+    if (tomb) {
+      return tombInsert(newObj);
+    }
+    return regularInsert(newObj);
+  }
+
+
+
+
 }

@@ -549,13 +549,7 @@ public class TestTimeSeriesWorkload {
 
     @Override
     public Status insertTTL(String table, String key,
-        Map<String, ByteIterator> values, int ttl) {
-      // TODO Auto-generated method stub
-      return Status.OK;
-    }
-
-    @Override
-    public Status delete(String table, String key) {
+        Map<String, ByteIterator> values, int ttl, Boolean tomb) {
       // TODO Auto-generated method stub
       return Status.OK;
     }
@@ -606,6 +600,12 @@ public class TestTimeSeriesWorkload {
         }
         System.out.println("}");
       }
+    }
+
+    @Override
+    public Status delete(String table, String key, Boolean vacuum, Boolean vacfull, Boolean tomb) {
+      // TODO Auto-generated method stub
+      return null;
     }
   }
 }

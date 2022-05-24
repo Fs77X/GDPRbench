@@ -266,7 +266,7 @@ public class BasicDB extends DB {
    * @param key   The record key of the record to delete.
    * @return Zero on success, a non-zero error code on error
    */
-  public Status delete(String table, String key) {
+  public Status delete(String table, String key, Boolean vacuum, Boolean vacfull, Boolean tomb) {
     delay();
 
     if (verbose) {
@@ -363,7 +363,7 @@ public class BasicDB extends DB {
     return buf.toString().hashCode();
   }
 
-  public Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl) {
+  public Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl, Boolean tomb) {
     return Status.OK;
   }
 
@@ -388,6 +388,12 @@ public class BasicDB extends DB {
   public Status readLog(String table, int logcount) {
     return Status.OK;
   }
+
+  // @Override
+  // public Status delete(String table, String key) {
+  //   // TODO Auto-generated method stub
+  //   return null;
+  // }
 
   /**
    * Short test of BasicDB

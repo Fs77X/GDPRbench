@@ -154,12 +154,12 @@ public class GoodBadUglyDB extends DB {
    * @param key The record key of the record to delete.
    * @return Zero on success, a non-zero error code on error
    */
-  public Status delete(String table, String key) {
+  public Status delete(String table, String key, Boolean vacuum, Boolean vacfull, Boolean tomb) {
     delay();
     return Status.OK;
   }
 
-  public Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl) {
+  public Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl, Boolean tomb) {
     delay();
     return Status.OK;
   }
