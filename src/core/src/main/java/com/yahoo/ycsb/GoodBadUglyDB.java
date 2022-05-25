@@ -171,7 +171,7 @@ public class GoodBadUglyDB extends DB {
   }
 
   public Status updateMeta(String table, int fieldnum, String cond, String keymatch,
-                           String fieldkey, String fieldvalue, String condProp) {
+                           String fieldkey, String fieldvalue, String condProp, Boolean tomb) {
     delay();
     return Status.OK;
   }

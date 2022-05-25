@@ -283,11 +283,11 @@ public class DBWrapper extends DB {
   }
 
   public Status updateMeta(String table, int fieldnum, String cond, String keymatch,
-                           String fieldkey, String fieldvalue, String condProp) {
+                           String fieldkey, String fieldvalue, String condProp, Boolean tomb) {
     try (final TraceScope span = tracer.newScope(scopeStringUpdateMeta)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.updateMeta(table, fieldnum, cond, keymatch, fieldkey, fieldvalue, condProp);
+      Status res = db.updateMeta(table, fieldnum, cond, keymatch, fieldkey, fieldvalue, condProp, false);
       long en = System.nanoTime();
       measure("UPDATEMETA", res, ist, st, en);
       measurements.reportStatus("UPDATEMETA", res);

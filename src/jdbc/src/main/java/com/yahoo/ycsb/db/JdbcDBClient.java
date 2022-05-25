@@ -667,9 +667,55 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status performTombUpdate(String prop, String info) {
+    try {
+      System.out.println("IN UPDATE");
+      Connection c = getConnection();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      Random rand = new Random();
+      String[] meta = {"purpose", "sharing", "origin"};
+      String selectedMeta = meta[rand.nextInt(meta.length)];
+      String query = "SELECT DISTINCT querier, " + selectedMeta + " FROM usertable WHERE tomb = 0";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] querier = new String[rs.getRow()];
+      String[] condVal = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String q = rs.getString("querier");
+        querier[counter] = q;
+        condVal[counter] = rs.getString(selectedMeta);
+        counter = counter + 1;
+      }
+      int idx = rand.nextInt(querier.length);
+      String pickedQ = querier[idx];
+      info = condVal[idx];
+      int val = rand.nextInt(100) + 1;
+      String changeVal = val + "";
+      query = "UPDATE usertable SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\' AND tomb = 0";
+      System.out.println(query);
+      int res = statement.executeUpdate(query);
+      rs.close();
+      statement.close();
+      c.close();
+      if (res >= 0) {
+        return Status.OK;
+      } else {
+        System.out.println(query);
+        System.out.println("FAIL");
+        System.out.println(res);
+        return Status.ERROR;
+      }
+    } catch(Exception e) {
+      e.printStackTrace();
+      return Status.ERROR;
+    }
+  }
+
   @Override
   public Status updateMeta(String table, int fieldnum, String condition, 
-      String keymatch, String fieldname, String metadatavalue, String condProp) {
+      String keymatch, String fieldname, String metadatavalue, String condProp, Boolean tomb) {
     try{
       StatementType type = new StatementType(StatementType.Type.UPDATE, table,
           1, "", getShardIndexByKey(keymatch));
@@ -680,9 +726,12 @@ public class JdbcDBClient extends DB {
       condProp = propChange(condProp);
       String changeVal = metadatavalue;
       System.out.println("PERFORM UPDATEMETA");
-      System.out.println(performUpdate(condProp, changeVal));
+      if (tomb) {
+        return performTombUpdate(condProp, changeVal);
+      }
+      return performUpdate(condProp, changeVal);
       //System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
-      return Status.OK;
+      // return Status.OK;
     } catch(SQLException e) {
       System.err.println("Error in processing update to table: " + table + e);
       e.printStackTrace();
@@ -759,25 +808,13 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  public Status performDelete(Boolean vacuum, Boolean vacfull, Boolean tomb) {
+  public Status performDelete(Boolean vacuum, Boolean vacfull) {
     try {
       System.out.println("PERFORM DELETE");
       System.out.println(vacuum);
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      // String query = "SELECT DISTINCT device_id FROM usertable";
-      // ResultSet rs = statement.executeQuery(query);
-      // rs.last();
-      // String[] devid = new String[rs.getRow()];
-      // rs.beforeFirst();
-      // int counter = 0;
-      // while (rs.next()) {
-      //   String val = rs.getString("device_id");
-      //   devid[counter] = val;
-      //   counter = counter + 1;
-      // }
-      // String deviceid = devid[rand.nextInt(counter)];
       String query = "SELECT id FROM usertable";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
@@ -834,6 +871,46 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status tombDelete() {
+    try {
+      Connection c = getConnection();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      Random rand = new Random();
+      String query = "SELECT id FROM usertable WHERE tomb = 0";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] id = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("id");
+        id[counter] = val;
+        counter = counter + 1;
+      }
+      if (id.length == 0) {
+        System.out.println("NOT GOOD");
+      }
+      int idx = rand.nextInt(id.length);
+      String qkey = id[idx] + "";
+      rs.close();
+      query = "UPDATE usertable SET tomb = 1 WHERE id = \'" + qkey + "\'";
+      // System.out.println(query);
+      int res = statement.executeUpdate(query);
+      if (res != 0) {
+        rs.close();
+        return Status.OK;
+      }
+      rs.close();
+      statement.close();
+      c.close();
+      return Status.ERROR;
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return Status.ERROR;
+    }
+  }
+
   @Override
   public Status delete(String table, String key, Boolean vacuum, Boolean vacfull, Boolean tomb) {
     try {
@@ -843,14 +920,12 @@ public class JdbcDBClient extends DB {
         deleteStatement = createAndCacheDeleteStatement(type, key);
       }
       deleteStatement.setString(1, key);
-      // int result = deleteStatement.executeUpdate();
-      //System.err.println("Delete Jdbc key "+key+ "result "+ result);
-      // if (result == 1) {
-      //   return Status.OK;
-      // }
       System.out.println("DELETEEE");
       System.out.println(vacuum);
-      return performDelete(vacuum, vacfull, tomb);
+      if (tomb) {
+
+      }
+      return performDelete(vacuum, vacfull);
     } catch (SQLException e) {
       System.err.println("Error in processing delete to table: " + table + e);
       return Status.ERROR;
