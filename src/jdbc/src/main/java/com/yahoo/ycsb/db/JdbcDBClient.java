@@ -810,8 +810,8 @@ public class JdbcDBClient extends DB {
 
   public Status performDelete(Boolean vacuum, Boolean vacfull) {
     try {
-      System.out.println("PERFORM DELETE");
-      System.out.println(vacuum);
+      // System.out.println("PERFORM DELETE");
+      // System.out.println(vacuum);
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
@@ -840,10 +840,6 @@ public class JdbcDBClient extends DB {
         return Status.OK;
       }
       rs.close();
-      System.out.println("HERE HERE HERE");
-      System.out.println("VACUUM IS: " + vacuum);
-      System.out.println("HERE HERE HERE");
-      System.out.println("HERE HERE HERE");
       if (vacuum) {
         query = "VACUUM usertable";
         res = statement.executeUpdate(query);

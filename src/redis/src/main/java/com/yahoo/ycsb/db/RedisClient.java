@@ -173,7 +173,7 @@ public class RedisClient extends DB {
 
   @Override
   public Status insertTTL(String table, String key,
-      Map<String, ByteIterator> values, int ttl) {
+      Map<String, ByteIterator> values, int ttl, Boolean tomb) {
     if (jedis.hmset(key, StringByteIterator.getStringMap(values))
         .equals("OK")) {
       jedis.zadd(INDEX_KEY, hash(key), key);
@@ -186,7 +186,7 @@ public class RedisClient extends DB {
   }
 
   @Override
-  public Status delete(String table, String key) {
+  public Status delete(String table, String key, Boolean vacuum, Boolean vacfull, Boolean tombstone) {
     return jedis.del(key) == 0 && jedis.zrem(INDEX_KEY, key) == 0 ? Status.ERROR
         : Status.OK;
   }
@@ -222,7 +222,7 @@ public class RedisClient extends DB {
 
   @Override
   public Status updateMeta(String table, int fieldnum, String condition, 
-      String keymatch, String newfieldname, String newmetadatavalue, String condProp) {
+      String keymatch, String newfieldname, String newmetadatavalue, String condProp, Boolean tomb) {
     //System.out.println("HELLO updateMeta got called with startkey "+ startkey);
     Set<String> keys = ((Jedis) jedis).keys(keymatch);
     HashSet<String> fields = null;
