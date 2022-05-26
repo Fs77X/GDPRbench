@@ -23,7 +23,7 @@
 #   Request distribution: zipfian
 
 recordcount=200000
-operationcount=70000
+operationcount=30000
 workload=com.yahoo.ycsb.workloads.GDPRWorkload
 
 readallfields=true

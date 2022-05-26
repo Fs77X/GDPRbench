@@ -916,10 +916,10 @@ public class JdbcDBClient extends DB {
         deleteStatement = createAndCacheDeleteStatement(type, key);
       }
       deleteStatement.setString(1, key);
-      System.out.println("DELETEEE");
-      System.out.println(vacuum);
+      // System.out.println("DELETEEE");
+      // System.out.println(vacuum);
       if (tomb) {
-
+        return tombDelete();
       }
       return performDelete(vacuum, vacfull);
     } catch (SQLException e) {
