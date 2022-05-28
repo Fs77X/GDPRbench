@@ -373,7 +373,7 @@ public class BasicDB extends DB {
   }
 
   public Status updateMeta(String table, int fieldnum, String cond, String keymatch,
-                           String fieldkey, String fieldvalue, String condProp, Boolean customer) {
+                           String fieldkey, String fieldvalue, String condProp) {
     return Status.OK;
   }
 

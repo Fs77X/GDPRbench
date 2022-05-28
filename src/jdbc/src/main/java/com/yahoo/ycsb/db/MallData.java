@@ -3,7 +3,6 @@ import java.sql.Time;
 import java.sql.Date;
 public class MallData {
     private String id;
-    private String uname;
     private String shop_name;
     private Date obs_date;
     private Time obs_time;
@@ -13,9 +12,8 @@ public class MallData {
     public MallData() {
 
     }
-    public MallData(String id, String uname, String shop_name, Date obs_date, Time obs_time, String user_interest, Integer device_id) {
+    public MallData(String id, String shop_name, Date obs_date, Time obs_time, String user_interest, Integer device_id) {
         this.id = id;
-        this.uname = uname;
         this.shop_name = shop_name;
         this.obs_date = obs_date;
         this.obs_time = obs_time;
@@ -25,10 +23,6 @@ public class MallData {
 
     public String getId() {
         return this.id;
-    }
-
-    public String getUname() {
-        return this.uname;
     }
 
     public String getShopName() {

@@ -257,11 +257,11 @@ public class DBWrapper extends DB {
    * @param key The record key of the record to delete.
    * @return The result of the operation.
    */
-  public Status delete(String table, String key, Boolean customer) {
+  public Status delete(String table, String key) {
     try (final TraceScope span = tracer.newScope(scopeStringDelete)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.delete(table, key, customer);
+      Status res = db.delete(table, key);
       long en = System.nanoTime();
       measure("DELETE", res, ist, st, en);
       measurements.reportStatus("DELETE", res);
@@ -283,11 +283,11 @@ public class DBWrapper extends DB {
   }
 
   public Status updateMeta(String table, int fieldnum, String cond, String keymatch,
-                           String fieldkey, String fieldvalue, String condProp, Boolean customer) {
+                           String fieldkey, String fieldvalue, String condProp) {
     try (final TraceScope span = tracer.newScope(scopeStringUpdateMeta)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.updateMeta(table, fieldnum, cond, keymatch, fieldkey, fieldvalue, condProp, customer);
+      Status res = db.updateMeta(table, fieldnum, cond, keymatch, fieldkey, fieldvalue, condProp);
       long en = System.nanoTime();
       measure("UPDATEMETA", res, ist, st, en);
       measurements.reportStatus("UPDATEMETA", res);

@@ -568,7 +568,7 @@ public class TestTimeSeriesWorkload {
 
     @Override
     public Status updateMeta(String table, int fieldnum, String cond, String startkey,
-                             String fieldkey, String fieldvalue, String condProp, Boolean customer) {
+                             String fieldkey, String fieldvalue, String condProp) {
       return Status.OK;
     }
 

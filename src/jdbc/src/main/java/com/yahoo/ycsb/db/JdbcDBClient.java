@@ -30,6 +30,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import com.yahoo.ycsb.db.flavors.DBFlavor;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.fasterxml.jackson.core.type.TypeReference;
+// import com.fasterxml.jackson.databind.DeserializationFeature;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
+
 /**
  * A class that wraps a JDBC compliant database to allow it to be interfaced
  * with YCSB. This class extends {@link DB} and implements the database
@@ -713,11 +725,12 @@ public class JdbcDBClient extends DB {
       String changeVal = val + "";
       query = "UPDATE user_policy SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\' AND tomb = 0";
       System.out.println(query);
-      int res = statement.executeUpdate(query);
+      Integer res = statement.executeUpdate(query);
       rs.close();
       statement.close();
       c.close();
       if (res != 0) {
+        log(pickedQ, query, res.toString());
         return Status.OK;
       } else {
         System.out.println(query);
@@ -788,7 +801,7 @@ public class JdbcDBClient extends DB {
 
   @Override
   public Status updateMeta(String table, int fieldnum, String condition, 
-      String keymatch, String fieldname, String metadatavalue, String condProp, Boolean customer) {
+      String keymatch, String fieldname, String metadatavalue, String condProp) {
     try{
       StatementType type = new StatementType(StatementType.Type.UPDATE, table,
           1, "", getShardIndexByKey(keymatch));
@@ -797,14 +810,10 @@ public class JdbcDBClient extends DB {
       //updateStatement.setString(1,keymatch);
       // int result = updateStatement.executeUpdate();
       condProp = propChange(condProp);
-      String changeVal = metadatavalue;
-      System.out.println("PERFORM UPDATEMETA");
-      if (customer) {
-        System.out.println(performUpdate(condProp, changeVal));
-      } else {
-        System.out.println(performUpdateMeta());
-      }
+      // String changeVal = metadatavalue;
       
+      System.out.println("PERFORM UPDATEMETA");
+      System.out.println(performUpdateMeta());
       //System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
       return Status.OK;
     } catch(SQLException e) {
@@ -883,39 +892,70 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public void log(String querier, String query, String results) {
+    try {
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      // MediaType mediaType = MediaType.parse("text/plain");
+      RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+          .addFormDataPart("querier", querier)
+          .addFormDataPart("query", query)
+          .addFormDataPart("result", results)
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/add_log/")
+          .method("POST", body)
+          .build();
+      Response response = client.newCall(request).execute();
+      if (response.code() != 201) {
+        ResponseBody boi = response.body();
+        boi.close();
+        return;
+      }
+      ResponseBody boi = response.body();
+      boi.close();
+    } catch (Exception e) {
+      System.err.println(e);
+    } 
+  }
+
   public Status performDelete() {
     try {
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      // String query = "SELECT DISTINCT device_id FROM usertable";
-      // ResultSet rs = statement.executeQuery(query);
-      // rs.last();
-      // String[] devid = new String[rs.getRow()];
-      // rs.beforeFirst();
-      // int counter = 0;
-      // while (rs.next()) {
-      //   String val = rs.getString("device_id");
-      //   devid[counter] = val;
-      //   counter = counter + 1;
-      // }
-      // String deviceid = devid[rand.nextInt(counter)];
-      String query = "SELECT id FROM user_policy WHERE tomb = 0";
+      String query = "SELECT DISTINCT device_id, id FROM user_policy WHERE tomb = 0";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
+      String[] devid = new String[rs.getRow()];
       String[] id = new String[rs.getRow()];
       rs.beforeFirst();
       int counter = 0;
       while (rs.next()) {
-        String val = rs.getString("id");
+        String val = rs.getString("device_id");
+        devid[counter] = val;
+        val = rs.getString("id");
         id[counter] = val;
         counter = counter + 1;
       }
-      if (id.length == 0) {
-        System.out.println("NOT GOOD");
-      }
+      String deviceid = devid[rand.nextInt(counter)];
       int idx = rand.nextInt(id.length);
       String qkey = id[idx] + "";
+      // query = "SELECT id FROM user_policy WHERE device_id = " + deviceid + " AND tomb = 0";
+      // rs = statement.executeQuery(query);
+      // rs.last();
+      
+      // rs.beforeFirst();
+      // counter = 0;
+      // while (rs.next()) {
+      //   String val = rs.getString("id");
+      //   id[counter] = val;
+      //   counter = counter + 1;
+      // }
+      // if (id.length == 0) {
+      //   System.out.println("NOT GOOD");
+      // }
+      
       rs.close();
       // query = "DELETE from mall_observation WHERE id = \'" + qkey + "\'";
       // // System.out.println(query);
@@ -925,9 +965,9 @@ public class JdbcDBClient extends DB {
       //   System.out.println("ERR DELETING data for: " + qkey);
       //   return Status.ERROR;
       // }
-      query = "UPDATE user_policy set tomb = 1 WHERE id = \'" + qkey + "\'";
+      query = "UPDATE user_policy set tomb = 1 WHERE id = \'" + qkey + "\' AND device_id = " + deviceid;
       // System.out.println(query);
-      int res = statement.executeUpdate(query);
+      Integer res = statement.executeUpdate(query);
       if (res < 0) {
         System.out.println(res);
         System.out.println("ERR DELETING METADA for: " + qkey);
@@ -935,6 +975,7 @@ public class JdbcDBClient extends DB {
       }
       statement.close();
       c.close();
+      log(deviceid, qkey, res.toString());
       return Status.OK;
     } catch (Exception e) {
       // TODO Auto-generated catch block
@@ -1005,7 +1046,6 @@ public class JdbcDBClient extends DB {
   public MaddObj generateData() {
     // mallData
     String mdId = "o" + mallobsCounter;
-    String userID = "u" + mallobsCounter;
     mallobsCounter = mallobsCounter + 1;
     Random rand = new Random();
     String shopName = "store " + (rand.nextInt(99) + 1);
@@ -1015,7 +1055,7 @@ public class JdbcDBClient extends DB {
     String[] userInterest = {"", "shoes", "fastfood", "cars", "planes"};
     String uInterest = userInterest[rand.nextInt(userInterest.length)];
     int device_id =  rand.nextInt(2000) + 1;
-    MallData mallData = new MallData(mdId, userID, shopName, obs_date, obs_time, uInterest, device_id);
+    MallData mallData = new MallData(mdId, shopName, obs_date, obs_time, uInterest, device_id);
 
     // metadata
     Instant instant = Instant.ofEpochMilli(now);
@@ -1046,7 +1086,7 @@ public class JdbcDBClient extends DB {
       MaddObj newObj = generateData();
       Connection c = getConnection();
       Statement statement = c.createStatement();
-      StringBuilder sb = new StringBuilder("INSERT INTO mall_observation(id, shop_name, obs_date, obs_time, ");
+      StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
       sb.append("user_interest, device_id) VALUES(");
       sb.append("\'").append(newObj.getMallData().getId()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getShopName()).append("\', ");
@@ -1055,8 +1095,9 @@ public class JdbcDBClient extends DB {
       sb.append("\'").append(newObj.getMallData().getUserInterest()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getDeviceID()).append("\')");
       statement.executeUpdate(sb.toString());
+      log(newObj.getMallData().getDeviceID().toString(), sb.toString(), "INSERT USERDATA SUCC");
       StringBuilder sbM = new StringBuilder("INSERT INTO user_policy(id, purpose, querier, ttl, origin, objection, sharing");
-      sbM.append(", enforcement_action, inserted_at, tomb) VALUES(");
+      sbM.append(", enforcement_action, inserted_at, tomb, device_id) VALUES(");
       sbM.append("\'").append(newObj.getMallData().getId()).append("\', ");
       sbM.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
       sbM.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
@@ -1066,10 +1107,12 @@ public class JdbcDBClient extends DB {
       sbM.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
       sbM.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
       sbM.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\', ");
-      sbM.append("\'").append(0).append("\')");
+      sbM.append("\'").append(0).append("\', ");
+      sbM.append("\'").append(newObj.getMallData().getDeviceID()).append("\')");
       statement.executeUpdate(sbM.toString());
       statement.close();
       c.close();
+      log(newObj.getMallData().getDeviceID().toString(), sbM.toString(), "INSERT USERMETA SUCC");
     } catch (Exception e) {
       System.err.println("Error in processing insert to table: " + table + e);
       return Status.ERROR;

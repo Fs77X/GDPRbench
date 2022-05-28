@@ -41,4 +41,9 @@ CREATE TABLE usertable(id character varying(50) NOT NULL,
   enforcement_action character varying(255),
   inserted_at character varying(255) NOT NULL
   );
+
+create index tomb_index on user_policy (tomb);
+
+
+
   -- {DEC=dec1, USR=user9993, SRC=src3, OBJ=obj93, CAT=cat3, ACL=acl3, Data=99931754682999311113468279993-448309203999316143130999993-6183550329993-477178749993-167714670099936, PUR=purpose18, SHR=shr3, TTL=14000}
