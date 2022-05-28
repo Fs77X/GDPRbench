@@ -133,7 +133,7 @@ public class BasicDB extends DB {
    * @param result A HashMap of field/value pairs for the result
    * @return Zero on success, a non-zero error code on error
    */
-  public Status read(String table, String key, Set<String> fields, Map<String, ByteIterator> result, Boolean customer, Boolean processor) {
+  public Status read(String table, String key, Set<String> fields, Map<String, ByteIterator> result) {
     delay();
 
     if (verbose) {
@@ -368,12 +368,12 @@ public class BasicDB extends DB {
   }
 
   public Status readMeta(String table, int fieldnum, String cond, String keymatch,
-                         Vector<HashMap<String, ByteIterator>> result, Boolean customer, Boolean processor) {
+                         Vector<HashMap<String, ByteIterator>> result) {
     return Status.OK;
   }
 
   public Status updateMeta(String table, int fieldnum, String cond, String keymatch,
-                           String fieldkey, String fieldvalue, String condProp) {
+                           String fieldkey, String fieldvalue, String condProp, Boolean customer) {
     return Status.OK;
   }
 

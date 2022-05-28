@@ -773,7 +773,7 @@ public class TimeSeriesWorkload extends Workload {
     }
     
     final Map<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
-    final Status status = db.read(table, keyname, fields, cells, true, false);
+    final Status status = db.read(table, keyname, fields, cells);
     
     if (dataintegrity && status == Status.OK) {
       verifyRow(keyname, cells);

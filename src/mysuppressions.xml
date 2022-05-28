@@ -32,4 +32,6 @@
     <suppress files="GoodBadUglyDB\.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="GDPRWorkload\.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="DBWrapper\.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="RedisClient\.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="MgetEntry\.java" checks="[a-zA-Z0-9]*"/>
 </suppressions>

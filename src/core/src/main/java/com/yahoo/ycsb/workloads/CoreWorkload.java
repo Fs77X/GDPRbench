@@ -727,7 +727,7 @@ public class CoreWorkload extends Workload {
     }
 
     HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
-    db.read(table, keyname, fields, cells, true, false);
+    db.read(table, keyname, fields, cells);
 
     if (dataintegrity) {
       verifyRow(keyname, cells);
@@ -767,7 +767,7 @@ public class CoreWorkload extends Workload {
 
     long ist = measurements.getIntendedtartTimeNs();
     long st = System.nanoTime();
-    db.read(table, keyname, fields, cells, true, false);
+    db.read(table, keyname, fields, cells);
 
     db.update(table, keyname, values);
 

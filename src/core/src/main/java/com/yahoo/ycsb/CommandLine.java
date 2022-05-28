@@ -326,7 +326,7 @@ public final class CommandLine {
       }
 
       HashMap<String, ByteIterator> result = new HashMap<>();
-      Status ret = db.read(table, tokens[1], fields, result, true, false);
+      Status ret = db.read(table, tokens[1], fields, result);
       System.out.println("Return code: " + ret.getName());
       for (Map.Entry<String, ByteIterator> ent : result.entrySet()) {
         System.out.println(ent.getKey() + "=" + ent.getValue());

@@ -107,7 +107,7 @@ public abstract class TimeseriesDB extends DB {
   }
 
   @Override
-  public final Status read(String table, String key, Set<String> fields, Map<String, ByteIterator> result, Boolean customer, Boolean processor) {
+  public final Status read(String table, String key, Set<String> fields, Map<String, ByteIterator> result) {
     Map<String, List<String>> tagQueries = new HashMap<>();
     Long timestamp = null;
     for (String field : fields) {
