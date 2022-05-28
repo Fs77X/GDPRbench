@@ -280,7 +280,7 @@ public class RestWorkload extends CoreWorkload {
   @Override
   public void doTransactionRead(DB db) {
     HashMap<String, ByteIterator> result = new HashMap<String, ByteIterator>();
-    db.read(null, getNextURL(1), null, result);
+    db.read(null, getNextURL(1), null, result, true, false);
   }
 
   @Override
@@ -292,7 +292,7 @@ public class RestWorkload extends CoreWorkload {
   }
 
   public void doTransactionDelete(DB db) {
-    db.delete(null, getNextURL(3));
+    db.delete(null, getNextURL(3), true);
   }
 
   @Override

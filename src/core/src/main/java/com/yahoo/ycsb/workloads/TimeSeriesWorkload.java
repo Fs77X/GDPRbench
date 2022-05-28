@@ -773,7 +773,7 @@ public class TimeSeriesWorkload extends Workload {
     }
     
     final Map<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
-    final Status status = db.read(table, keyname, fields, cells);
+    final Status status = db.read(table, keyname, fields, cells, true, false);
     
     if (dataintegrity && status == Status.OK) {
       verifyRow(keyname, cells);
@@ -880,7 +880,7 @@ public class TimeSeriesWorkload extends Workload {
          .append(timestampKey + tagPairDelimiter + startTimestamp);  
     }
     
-    db.delete(table, buf.toString());
+    db.delete(table, buf.toString(), true);
   }
   
   /**

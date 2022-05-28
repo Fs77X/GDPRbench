@@ -521,7 +521,7 @@ public class TestTimeSeriesWorkload {
     
     @Override
     public Status read(String table, String key, Set<String> fields,
-                       Map<String, ByteIterator> result) {
+                       Map<String, ByteIterator> result, Boolean customer, Boolean processor) {
       return Status.OK;
     }
 
@@ -555,20 +555,20 @@ public class TestTimeSeriesWorkload {
     }
 
     @Override
-    public Status delete(String table, String key) {
+    public Status delete(String table, String key, Boolean customer) {
       // TODO Auto-generated method stub
       return Status.OK;
     }
    
     @Override
     public Status readMeta(String table, int fieldnum, String cond, String startkey, 
-                           Vector<HashMap<String, ByteIterator>> result) {
+                           Vector<HashMap<String, ByteIterator>> result, Boolean customer, Boolean processor) {
       return Status.OK;
     }
 
     @Override
     public Status updateMeta(String table, int fieldnum, String cond, String startkey,
-                             String fieldkey, String fieldvalue, String condProp) {
+                             String fieldkey, String fieldvalue, String condProp, Boolean customer) {
       return Status.OK;
     }
 

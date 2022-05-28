@@ -95,7 +95,7 @@ public class GoodBadUglyDB extends DB {
    * @param result A HashMap of field/value pairs for the result
    * @return Zero on success, a non-zero error code on error
    */
-  public Status read(String table, String key, Set<String> fields, Map<String, ByteIterator> result) {
+  public Status read(String table, String key, Set<String> fields, Map<String, ByteIterator> result, Boolean customer, Boolean processor) {
     delay();
     return Status.OK;
   }
@@ -154,7 +154,7 @@ public class GoodBadUglyDB extends DB {
    * @param key The record key of the record to delete.
    * @return Zero on success, a non-zero error code on error
    */
-  public Status delete(String table, String key) {
+  public Status delete(String table, String key, Boolean customer) {
     delay();
     return Status.OK;
   }
@@ -165,13 +165,13 @@ public class GoodBadUglyDB extends DB {
   }
 
   public Status readMeta(String table, int fieldnum, String cond, String ketmatch,
-                         Vector<HashMap<String, ByteIterator>> result) {
+                         Vector<HashMap<String, ByteIterator>> result, Boolean customer, Boolean processor) {
     delay();
     return Status.OK;
   }
 
   public Status updateMeta(String table, int fieldnum, String cond, String keymatch,
-                           String fieldkey, String fieldvalue, String condProp) {
+                           String fieldkey, String fieldvalue, String condProp, Boolean customer) {
     delay();
     return Status.OK;
   }

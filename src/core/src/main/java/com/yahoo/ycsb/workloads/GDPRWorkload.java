@@ -178,6 +178,18 @@ public class GDPRWorkload extends Workload {
   public static final String READ_LOG_PROPERTY_DEFAULT = "true";
 
   protected boolean readlog;
+
+  public static final String CUSTOMER_PROPERTY = "customer";
+
+  public static final String CUSTOMER_PROPERTY_DEFAULT = "false";
+
+  public boolean customer;
+
+  public static final String PROCESSOR_PROPERTY = "processor";
+
+  public static final String PROCESSOR_PROPERTY_DEFAULT = "false";
+
+  public boolean processor;
   
   public static final String CHECK_COMPL_PROPERTY = "checkcompliance";
 
@@ -555,6 +567,8 @@ public class GDPRWorkload extends Workload {
 
     readlog = Boolean.parseBoolean(
         p.getProperty(READ_LOG_PROPERTY, READ_LOG_PROPERTY_DEFAULT));
+    customer = Boolean.parseBoolean(p.getProperty(CUSTOMER_PROPERTY, CUSTOMER_PROPERTY_DEFAULT));
+    processor = Boolean.parseBoolean(p.getProperty(PROCESSOR_PROPERTY, PROCESSOR_PROPERTY_DEFAULT));
     checkcompliance = Boolean.parseBoolean(
         p.getProperty(CHECK_COMPL_PROPERTY, CHECK_COMPL_PROPERTY_DEFAULT));
 
@@ -1000,7 +1014,7 @@ public class GDPRWorkload extends Workload {
     }
 
     HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
-    db.read(table, keyname, fields, cells);
+    db.read(table, keyname, fields, cells, customer, processor);
 
     /*if (dataintegrity) {
       verifyRow(keynum, keyname, cells);
@@ -1016,7 +1030,7 @@ public class GDPRWorkload extends Workload {
 
     //System.err.println("Read metadata called with cond: "+ metadatacond + " Field num: " + metadatanum);
 
-    db.readMeta(table, metadatanum, metadatacond, "key*", new Vector<HashMap<String, ByteIterator>>());
+    db.readMeta(table, metadatanum, metadatacond, "key*", new Vector<HashMap<String, ByteIterator>>(), customer, processor);
   }
 
   public void doTransactionReadLog(DB db) {
@@ -1070,7 +1084,7 @@ public class GDPRWorkload extends Workload {
 
     long ist = measurements.getIntendedtartTimeNs();
     long st = System.nanoTime();
-    db.read(table, keyname, fields, cells);
+    db.read(table, keyname, fields, cells, true, false);
 
     db.update(table, keyname, values);
 
@@ -1125,7 +1139,7 @@ public class GDPRWorkload extends Workload {
     //System.err.println("Update metadata called with cond: "+ metadatacond +
     //                   " value: " + metadatavalue + " metadatanum " + metadatanum);
     
-    db.updateMeta(table, metadatanum, metadatacond, "key*", fieldkey, metadatavalue, fieldnames.get(metadatanum));
+    db.updateMeta(table, metadatanum, metadatacond, "key*", fieldkey, metadatavalue, fieldnames.get(metadatanum), customer);
   }
 
   public void doTransactionUpdate(DB db) {
@@ -1155,7 +1169,7 @@ public class GDPRWorkload extends Workload {
     
     //System.err.println("Transaction delete called for: "+ keyname);
     
-    db.delete(table, keyname);
+    db.delete(table, keyname, customer);
   }
 
   public void doTransactionDeleteMeta(DB db, int metadatanum) {

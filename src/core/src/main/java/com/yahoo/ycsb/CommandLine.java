@@ -245,7 +245,7 @@ public final class CommandLine {
     if (tokens.length != 2) {
       System.out.println("Error: syntax is \"delete keyname\"");
     } else {
-      Status ret = db.delete(table, tokens[1]);
+      Status ret = db.delete(table, tokens[1], true);
       System.out.println("Return result: " + ret.getName());
     }
   }
@@ -326,7 +326,7 @@ public final class CommandLine {
       }
 
       HashMap<String, ByteIterator> result = new HashMap<>();
-      Status ret = db.read(table, tokens[1], fields, result);
+      Status ret = db.read(table, tokens[1], fields, result, true, false);
       System.out.println("Return code: " + ret.getName());
       for (Map.Entry<String, ByteIterator> ent : result.entrySet()) {
         System.out.println(ent.getKey() + "=" + ent.getValue());

@@ -138,11 +138,11 @@ public class DBWrapper extends DB {
    * @return The result of the operation.
    */
   public Status read(String table, String key, Set<String> fields,
-                     Map<String, ByteIterator> result) {
+                     Map<String, ByteIterator> result, Boolean customer, Boolean processor) {
     try (final TraceScope span = tracer.newScope(scopeStringRead)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.read(table, key, fields, result);
+      Status res = db.read(table, key, fields, result, customer, processor);
       long en = System.nanoTime();
       measure("READ", res, ist, st, en);
       measurements.reportStatus("READ", res);
@@ -257,11 +257,11 @@ public class DBWrapper extends DB {
    * @param key The record key of the record to delete.
    * @return The result of the operation.
    */
-  public Status delete(String table, String key) {
+  public Status delete(String table, String key, Boolean customer) {
     try (final TraceScope span = tracer.newScope(scopeStringDelete)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.delete(table, key);
+      Status res = db.delete(table, key, customer);
       long en = System.nanoTime();
       measure("DELETE", res, ist, st, en);
       measurements.reportStatus("DELETE", res);
@@ -270,11 +270,11 @@ public class DBWrapper extends DB {
   }
 
   public Status readMeta(String table, int fieldnum, String cond, String keymatch,
-                         Vector<HashMap<String, ByteIterator>> result) {
+                         Vector<HashMap<String, ByteIterator>> result, Boolean customer, Boolean processor) {
     try (final TraceScope span = tracer.newScope(scopeStringReadMeta)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.readMeta(table, fieldnum, cond, keymatch, result);
+      Status res = db.readMeta(table, fieldnum, cond, keymatch, result, customer, processor);
       long en = System.nanoTime();
       measure("READMETA", res, ist, st, en);
       measurements.reportStatus("READMETA", res);
@@ -283,11 +283,11 @@ public class DBWrapper extends DB {
   }
 
   public Status updateMeta(String table, int fieldnum, String cond, String keymatch,
-                           String fieldkey, String fieldvalue, String condProp) {
+                           String fieldkey, String fieldvalue, String condProp, Boolean customer) {
     try (final TraceScope span = tracer.newScope(scopeStringUpdateMeta)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.updateMeta(table, fieldnum, cond, keymatch, fieldkey, fieldvalue, condProp);
+      Status res = db.updateMeta(table, fieldnum, cond, keymatch, fieldkey, fieldvalue, condProp, customer);
       long en = System.nanoTime();
       measure("UPDATEMETA", res, ist, st, en);
       measurements.reportStatus("UPDATEMETA", res);
