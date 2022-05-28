@@ -137,7 +137,7 @@ public abstract class DB {
    * @param key The record key of the record to delete.
    * @return The result of the operation.
    */
-  public abstract Status delete(String table, String key, Boolean customer);
+  public abstract Status delete(String table, String key);
   public abstract Status deleteMeta(String table, int fieldnum, String cond, String keymatch);
 
   public abstract Status verifyTTL(String table, long recordcount);

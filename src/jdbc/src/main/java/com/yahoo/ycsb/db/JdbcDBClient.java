@@ -946,7 +946,7 @@ public class JdbcDBClient extends DB {
 
 
   @Override
-  public Status delete(String tableName, String key, Boolean customer) {
+  public Status delete(String tableName, String key) {
     try {
       StatementType type = new StatementType(StatementType.Type.DELETE, tableName, 1, "", getShardIndexByKey(key));
       PreparedStatement deleteStatement = cachedStatements.get(type);

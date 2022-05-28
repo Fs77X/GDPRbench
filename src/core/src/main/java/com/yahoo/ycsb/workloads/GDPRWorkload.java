@@ -1169,7 +1169,7 @@ public class GDPRWorkload extends Workload {
     
     //System.err.println("Transaction delete called for: "+ keyname);
     
-    db.delete(table, keyname, customer);
+    db.delete(table, keyname);
   }
 
   public void doTransactionDeleteMeta(DB db, int metadatanum) {

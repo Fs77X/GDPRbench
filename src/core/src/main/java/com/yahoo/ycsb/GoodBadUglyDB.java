@@ -154,7 +154,7 @@ public class GoodBadUglyDB extends DB {
    * @param key The record key of the record to delete.
    * @return Zero on success, a non-zero error code on error
    */
-  public Status delete(String table, String key, Boolean customer) {
+  public Status delete(String table, String key) {
     delay();
     return Status.OK;
   }

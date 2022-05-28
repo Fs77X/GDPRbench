@@ -292,7 +292,7 @@ public class RestWorkload extends CoreWorkload {
   }
 
   public void doTransactionDelete(DB db) {
-    db.delete(null, getNextURL(3), true);
+    db.delete(null, getNextURL(3));
   }
 
   @Override

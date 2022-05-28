@@ -555,7 +555,7 @@ public class TestTimeSeriesWorkload {
     }
 
     @Override
-    public Status delete(String table, String key, Boolean customer) {
+    public Status delete(String table, String key) {
       // TODO Auto-generated method stub
       return Status.OK;
     }
