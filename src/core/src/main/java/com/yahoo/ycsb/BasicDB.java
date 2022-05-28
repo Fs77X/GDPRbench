@@ -368,7 +368,7 @@ public class BasicDB extends DB {
   }
 
   public Status readMeta(String table, int fieldnum, String cond, String keymatch,
-                         Vector<HashMap<String, ByteIterator>> result) {
+                         Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
     return Status.OK;
   }
 

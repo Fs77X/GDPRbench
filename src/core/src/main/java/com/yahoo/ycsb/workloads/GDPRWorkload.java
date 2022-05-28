@@ -1030,7 +1030,7 @@ public class GDPRWorkload extends Workload {
 
     //System.err.println("Read metadata called with cond: "+ metadatacond + " Field num: " + metadatanum);
 
-    db.readMeta(table, metadatanum, metadatacond, "key*", new Vector<HashMap<String, ByteIterator>>());
+    db.readMeta(table, metadatanum, metadatacond, "key*", new Vector<HashMap<String, ByteIterator>>(), processor);
   }
 
   public void doTransactionReadLog(DB db) {

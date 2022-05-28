@@ -562,7 +562,7 @@ public class TestTimeSeriesWorkload {
    
     @Override
     public Status readMeta(String table, int fieldnum, String cond, String startkey, 
-                           Vector<HashMap<String, ByteIterator>> result) {
+                           Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
       return Status.OK;
     }
 

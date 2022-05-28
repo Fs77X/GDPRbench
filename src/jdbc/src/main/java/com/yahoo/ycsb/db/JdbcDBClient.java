@@ -387,10 +387,10 @@ public class JdbcDBClient extends DB {
       rs.last();
       rs.beforeFirst();
       counter = 0;
-      StringBuilder res = new StringBuilder("(");
+      StringBuilder res = new StringBuilder();
       while (rs.next()) {
         String iId = rs.getString("id");
-        res.append(iId).append("|");
+        res.append("(" + iId).append("|");
         String shop_name = rs.getString("shop_name");
         res.append(shop_name).append("|");
         String obs_date = rs.getString("obs_date");
@@ -436,9 +436,8 @@ public class JdbcDBClient extends DB {
       // }
       // resultSet.close();
       System.out.println("read okchamp");
-      System.out.println(performRead());
+      return performRead();
       
-      return Status.OK;
     } catch (SQLException e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);
       // exception for returning ok here than error since data is random
@@ -499,7 +498,7 @@ public class JdbcDBClient extends DB {
       String deviceid = devid[sel];
       String qkey = id[sel] + "";
       query = "SELECT * from user_policy WHERE id = \'" + qkey + "\' AND device_id = " + deviceid;
-      System.out.println(query);
+      // System.out.println(query);
       rs = statement.executeQuery(query);
       // if (!rs.next()) {
       //   rs.close();
@@ -542,7 +541,7 @@ public class JdbcDBClient extends DB {
       res.append(inserted_at).append("|");
       res.append(tomb).append("|");
       res.append(device_id);
-      System.out.println(res.toString());
+      // System.out.println(res.toString());
       log(deviceid, query, res.toString());
 
       rs.close();
@@ -590,10 +589,109 @@ public class JdbcDBClient extends DB {
       return "";
     }
   }
+
+  public Status procReadMeta() {
+    // Random rand = new Random();
+    // int[] multqid  = new int[]{7, 5, 9, 12};
+    // int qid = multqid[rand.nextInt(multqid.length)];
+    // String id = qid + "";
+    // String prop = "purpose";
+    // int[] purposes  = new int[]{5, 16};
+    // int ival = purposes[rand.nextInt(purposes.length)];
+    // String info = "" + ival;
+    try {
+
+      Connection c = getConnection();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      String query = "SELECT querier, purpose FROM user_policy WHERE tomb = 0";
+      ResultSet rs = statement.executeQuery(query);
+      String prop = "purpose";
+      rs.last();
+      String[] id = new String[rs.getRow()];
+      String[] purp = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("querier");
+        id[counter] = val;
+        val = rs.getString("purpose");
+        purp[counter] = val;
+        counter = counter + 1;
+      }
+      if (id.length == 0) {
+        System.out.println("NOT GOOD");
+      }
+      Random rand = new Random();
+      int idx = rand.nextInt(id.length);
+      String qkey = id[idx] + "";
+      String info = purp[idx] + "";
+      rs.close();
+      query = "SELECT * from user_policy WHERE querier = \'" + qkey + "\' AND " + prop + " = \'" + info + "\'";
+      // System.out.println(query);
+      rs = statement.executeQuery(query);
+      // if (!rs.next()) {
+      //   rs.close();
+      //   return Status.NOT_FOUND;
+      // }
+      String idR = "";
+      String purpose = "";
+      String querier = "";
+      String ttl = "";
+      String origin = "";
+      String objection = "";
+      String sharing = "";
+      String enforcement_action = "";
+      String inserted_at = "";
+      String tomb = "";
+      String device_id = "";
+      StringBuilder res = new StringBuilder();
+      while (rs.next()) {
+        idR = rs.getString("id");
+        purpose = rs.getString("purpose");
+        querier = rs.getString("querier");
+        ttl = rs.getString("ttl");
+        origin = rs.getString("origin");
+        objection = rs.getString("objection");
+        sharing = rs.getString("sharing");
+        enforcement_action = rs.getString("enforcement_action");
+        inserted_at = rs.getString("inserted_at");
+        tomb = rs.getString("tomb");
+        device_id = rs.getString("device_id");
+        res.append("(" + idR).append("|");
+        res.append(purpose).append("|");
+        res.append(querier).append("|");
+        res.append(ttl).append("|");
+        res.append(origin).append("|");
+        res.append(objection).append("|");
+        res.append(sharing).append("|");
+        res.append(enforcement_action).append("|");
+        res.append(inserted_at).append("|");
+        res.append(tomb).append("|");
+        res.append(device_id).append(")");
+      }
+
+      
+      
+      // System.out.println(res.toString());
+      log(qkey, query, res.toString());
+
+      rs.close();
+      statement.close();
+      c.close();
+      return Status.OK;
+
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return Status.ERROR;
+    }
+    
+  }
+
   //modify
   @Override
   public Status readMeta(String tableName, int fieldnum, String cond, 
-      String keymatch, Vector<HashMap<String, ByteIterator>> result) {
+      String keymatch, Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
     //TODO: No use for keyMatch whatsoever, so check if without queering for keys this will work.
     try {
       // Random rand = new Random();
@@ -631,11 +729,14 @@ public class JdbcDBClient extends DB {
       //   values.put("field0", new StringByteIterator(value));
       //   result.add(values);
       // }
-      System.out.println("performReadMeta");
-      System.out.println(performReadMeta());
-      // resultSet.close();
+      // System.out.println("performReadMeta");
+      if (processor) {
+        return procReadMeta();
+      } else {
+        return performReadMeta();
+      }
       
-      return Status.OK;
+      // resultSet.close();
     } catch (SQLException e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);
       return Status.ERROR;
@@ -707,12 +808,12 @@ public class JdbcDBClient extends DB {
 
   public Status performUpdate(String prop, String info) {
     try {
-      System.out.println("IN UPDATE");
+      // System.out.println("IN UPDATE");
       MgetEntry mge = createMgetEntry();
       Connection c = getConnection();
       Statement statement = c.createStatement();
       String query = "UPDATE usertable set " + prop + " = \'" + info + "\' WHERE id = \'" + mge.getId() + "\' AND device_id = " + mge.getDeviceId();
-      System.out.println("performupdate: " + query);
+      // System.out.println("performupdate: " + query);
       int res = statement.executeUpdate(query);
       statement.close();
       c.close();
@@ -906,7 +1007,7 @@ public class JdbcDBClient extends DB {
       String changeVal = metadatavalue;
       // String changeVal = metadatavalue;
       
-      System.out.println("PERFORM UPDATEMETA");
+      // System.out.println("PERFORM UPDATEMETA");
       if (customer) {
         return performUpdateCustomer(condProp, condVal, changeProp, changeVal);
       } else {

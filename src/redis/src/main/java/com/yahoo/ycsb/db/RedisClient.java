@@ -142,7 +142,7 @@ public class RedisClient extends DB {
 
   @Override
   public Status readMeta(String table, int fieldnum, String cond, String keymatch,
-      Vector<HashMap<String, ByteIterator>> result) {
+      Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
     Set<String> keys = ((Jedis) jedis).keys(keymatch);
     HashSet<String> fields = null;
     HashMap<String, ByteIterator> values;
