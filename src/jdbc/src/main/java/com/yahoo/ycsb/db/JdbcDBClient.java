@@ -63,6 +63,9 @@ public class JdbcDBClient extends DB {
   /** The class to use as the jdbc driver. */
   public static final String DRIVER_CLASS = "db.driver";
 
+  public OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+
   /** The URL to connect to the database. */
   public static final String CONNECTION_URL = "db.url";
 
@@ -1094,8 +1097,6 @@ public class JdbcDBClient extends DB {
 
   public void log(String querier, String query, String results) {
     try {
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
       // MediaType mediaType = MediaType.parse("text/plain");
       RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
           .addFormDataPart("querier", querier)
