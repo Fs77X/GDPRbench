@@ -142,7 +142,7 @@ public class RedisClient extends DB {
 
   @Override
   public Status readMeta(String table, int fieldnum, String cond, String keymatch,
-      Vector<HashMap<String, ByteIterator>> result) {
+      Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
     Set<String> keys = ((Jedis) jedis).keys(keymatch);
     HashSet<String> fields = null;
     HashMap<String, ByteIterator> values;
@@ -186,7 +186,7 @@ public class RedisClient extends DB {
   }
 
   @Override
-  public Status delete(String table, String key) {
+  public Status delete(String table, String key, Boolean customer) {
     return jedis.del(key) == 0 && jedis.zrem(INDEX_KEY, key) == 0 ? Status.ERROR
         : Status.OK;
   }
@@ -222,7 +222,7 @@ public class RedisClient extends DB {
 
   @Override
   public Status updateMeta(String table, int fieldnum, String condition, 
-      String keymatch, String newfieldname, String newmetadatavalue, String condProp) {
+      String keymatch, String newfieldname, String newmetadatavalue, String condProp, Boolean customer) {
     //System.out.println("HELLO updateMeta got called with startkey "+ startkey);
     Set<String> keys = ((Jedis) jedis).keys(keymatch);
     HashSet<String> fields = null;

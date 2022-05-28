@@ -28,7 +28,21 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import com.yahoo.ycsb.db.JSON.MgetEntry;
 import com.yahoo.ycsb.db.flavors.DBFlavor;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.fasterxml.jackson.core.type.TypeReference;
+// import com.fasterxml.jackson.databind.DeserializationFeature;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 
 /**
  * A class that wraps a JDBC compliant database to allow it to be interfaced
@@ -46,6 +60,9 @@ import com.yahoo.ycsb.db.flavors.DBFlavor;
  */
 public class JdbcDBClient extends DB {
   private int mallobsCounter = 3000000;
+
+  public OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
   /** The class to use as the jdbc driver. */
   public static final String DRIVER_CLASS = "db.driver";
 
@@ -119,7 +136,7 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  private Connection getConnection() throws Exception{
+  private Connection getConnection(String actor) throws Exception{
 
     try {
       Connection c = null;
@@ -352,7 +369,7 @@ public class JdbcDBClient extends DB {
 //MARK
   public Status performRead() {
     try {
-      Connection c = getConnection();
+      Connection c = getConnection("customer");
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
       String query = "SELECT DISTINCT device_id FROM usertable";
@@ -387,12 +404,31 @@ public class JdbcDBClient extends DB {
       query = "SELECT * from usertable WHERE device_id = \'" + deviceid + "\' AND id = \'" + qkey + "\'";
       // System.out.println(query);
       rs = statement.executeQuery(query);
-      if (!rs.next()) {
-        rs.close();
-        return Status.NOT_FOUND;
+      rs.last();
+      rs.beforeFirst();
+      counter = 0;
+      StringBuilder res = new StringBuilder();
+      while (rs.next()) {
+        String iId = rs.getString("id");
+        res.append("(" + iId).append("|");
+        String shop_name = rs.getString("shop_name");
+        res.append(shop_name).append("|");
+        String obs_date = rs.getString("obs_date");
+        res.append(obs_date).append("|");
+        String obs_time = rs.getString("obs_time");
+        res.append(obs_time).append("|");
+        String user_interest = rs.getString("user_interest");
+        res.append(user_interest).append("|");
+        String dId = rs.getString("device_id");
+        res.append(dId).append(")");
       }
       rs.close();
+      log(deviceid, query, res.toString());
       return Status.OK;
+      // if (!rs.next()) {
+      //   rs.close();
+      //   return Status.NOT_FOUND;
+      // }
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -461,17 +497,98 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  public Status performReadMeta(String qid, String prop, String info) {
+  public void log(String querier, String query, String results) {
+    try {
+      // MediaType mediaType = MediaType.parse("text/plain");
+      RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+          .addFormDataPart("querier", querier)
+          .addFormDataPart("query", query)
+          .addFormDataPart("result", results)
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:8000/add_log/")
+          .method("POST", body)
+          .build();
+      Response response = client.newCall(request).execute();
+      if (response.code() != 201) {
+        ResponseBody boi = response.body();
+        boi.close();
+        return;
+      }
+      ResponseBody boi = response.body();
+      boi.close();
+    } catch (Exception e) {
+      System.err.println(e);
+    } 
+  }
+
+  public Status performReadMeta() {
     Connection c;
     try {
-      c = getConnection();
+      c = getConnection("customer");
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-      String query = "SELECT * from usertable WHERE querier = \'" + qid + "\' AND " + prop + " = \'" + info + "\'";
+      Random rand = new Random();
+      String query = "SELECT DISTINCT device_id, id FROM user_policy WHERE tomb = 0";
       ResultSet rs = statement.executeQuery(query);
-      if (!rs.next()) {
-        rs.close();
-        return Status.NOT_FOUND;
+      rs.last();
+      String[] devid = new String[rs.getRow()];
+      String[] id = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("device_id");
+        devid[counter] = val;
+        val = rs.getString("id");
+        id[counter] = val;
+        counter = counter + 1;
       }
+      Integer sel = rand.nextInt(counter);
+      String deviceid = devid[sel];
+      String qkey = id[sel] + "";
+      query = "SELECT * from usertable WHERE id = \'" + qkey + "\' AND device_id = " + deviceid;
+      // System.out.println(query);
+      rs = statement.executeQuery(query);
+      // if (!rs.next()) {
+      //   rs.close();
+      //   return Status.NOT_FOUND;
+      // }
+      String idR = "";
+      String purpose = "";
+      String querier = "";
+      String ttl = "";
+      String origin = "";
+      String objection = "";
+      String sharing = "";
+      String enforcement_action = "";
+      String inserted_at = "";
+      String device_id = "";
+      while (rs.next()) {
+        idR = rs.getString("id");
+        purpose = rs.getString("purpose");
+        querier = rs.getString("querier");
+        ttl = rs.getString("ttl");
+        origin = rs.getString("origin");
+        objection = rs.getString("objection");
+        sharing = rs.getString("sharing");
+        enforcement_action = rs.getString("enforcement_action");
+        inserted_at = rs.getString("inserted_at");
+        device_id = rs.getString("device_id");
+      }
+
+      StringBuilder res = new StringBuilder();
+      res.append(idR).append("|");
+      res.append(purpose).append("|");
+      res.append(querier).append("|");
+      res.append(ttl).append("|");
+      res.append(origin).append("|");
+      res.append(objection).append("|");
+      res.append(sharing).append("|");
+      res.append(enforcement_action).append("|");
+      res.append(inserted_at).append("|");
+      res.append(device_id);
+      // System.out.println(res.toString());
+      log(deviceid, query, res.toString());
+
       rs.close();
       statement.close();
       c.close();
@@ -486,26 +603,122 @@ public class JdbcDBClient extends DB {
 
 
   }
+
+  public Status procReadMeta() {
+    // Random rand = new Random();
+    // int[] multqid  = new int[]{7, 5, 9, 12};
+    // int qid = multqid[rand.nextInt(multqid.length)];
+    // String id = qid + "";
+    // String prop = "purpose";
+    // int[] purposes  = new int[]{5, 16};
+    // int ival = purposes[rand.nextInt(purposes.length)];
+    // String info = "" + ival;
+    try {
+
+      Connection c = getConnection("processor");
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      String query = "SELECT querier, purpose FROM usertable";
+      ResultSet rs = statement.executeQuery(query);
+      String prop = "purpose";
+      rs.last();
+      String[] id = new String[rs.getRow()];
+      String[] purp = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("querier");
+        id[counter] = val;
+        val = rs.getString("purpose");
+        purp[counter] = val;
+        counter = counter + 1;
+      }
+      if (id.length == 0) {
+        System.out.println("NOT GOOD");
+      }
+      Random rand = new Random();
+      int idx = rand.nextInt(id.length);
+      String qkey = id[idx] + "";
+      String info = purp[idx] + "";
+      rs.close();
+      query = "SELECT * from usertable WHERE querier = \'" + qkey + "\' AND " + prop + " = \'" + info + "\'";
+      // System.out.println(query);
+      rs = statement.executeQuery(query);
+      // if (!rs.next()) {
+      //   rs.close();
+      //   return Status.NOT_FOUND;
+      // }
+      String idR = "";
+      String purpose = "";
+      String querier = "";
+      String ttl = "";
+      String origin = "";
+      String objection = "";
+      String sharing = "";
+      String enforcement_action = "";
+      String inserted_at = "";
+      String device_id = "";
+      StringBuilder res = new StringBuilder();
+      while (rs.next()) {
+        idR = rs.getString("id");
+        purpose = rs.getString("purpose");
+        querier = rs.getString("querier");
+        ttl = rs.getString("ttl");
+        origin = rs.getString("origin");
+        objection = rs.getString("objection");
+        sharing = rs.getString("sharing");
+        enforcement_action = rs.getString("enforcement_action");
+        inserted_at = rs.getString("inserted_at");
+        device_id = rs.getString("device_id");
+        res.append("(" + idR).append("|");
+        res.append(purpose).append("|");
+        res.append(querier).append("|");
+        res.append(ttl).append("|");
+        res.append(origin).append("|");
+        res.append(objection).append("|");
+        res.append(sharing).append("|");
+        res.append(enforcement_action).append("|");
+        res.append(inserted_at).append("|");
+        res.append(device_id).append(")");
+      }
+
+      
+      
+      // System.out.println(res.toString());
+      log(qkey, query, res.toString());
+
+      rs.close();
+      statement.close();
+      c.close();
+      return Status.OK;
+
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return Status.ERROR;
+    }
+  }
+
+
   //modify
   @Override
   public Status readMeta(String tableName, int fieldnum, String cond, 
-      String keymatch, Vector<HashMap<String, ByteIterator>> result) {
+      String keymatch, Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
     //TODO: No use for keyMatch whatsoever, so check if without queering for keys this will work.
     try {
-      Random rand = new Random();
-      int qid = rand.nextInt(39) + 1;
-      String[] properties = new String[]{"objection", "sharing", "purpose"};
-      String[] propVals = new String[]{"obj", "shr", "purpose"};
-      String id = qid + "";
-      int idx = rand.nextInt(properties.length);
-      String prop = properties[idx];
-      int ival = rand.nextInt(99) + 1;
-      String info = propVals[idx]+ival;
+      // Random rand = new Random();
+      // int qid = rand.nextInt(39) + 1;
+      // String[] properties = new String[]{"objection", "sharing", "purpose"};
+      // String[] propVals = new String[]{"obj", "shr", "purpose"};
+      // String id = qid + "";
+      // int idx = rand.nextInt(properties.length);
+      // String prop = properties[idx];
+      // int ival = rand.nextInt(99) + 1;
+      // String info = propVals[idx]+ival;
       HashSet<String> fields = null;
-      System.out.println("tablename: " + tableName + " keymatch " + keymatch);
+      // System.out.println("tablename: " + tableName + " keymatch " + keymatch);
       StatementType type = new StatementType(StatementType.Type.READ, tableName, 1, "", getShardIndexByKey(keymatch));
       PreparedStatement readStatement = createAndCacheReadMetaStatement(type, keymatch);
-      System.out.println("readmeta query: " + readStatement.toString());
+      // System.out.println("readmeta query: " + readStatement.toString());
       // ResultSet resultSet = readStatement.executeQuery();
       // if (!resultSet.next()) {
       //   resultSet.close();
@@ -529,8 +742,11 @@ public class JdbcDBClient extends DB {
       // }
 
       // resultSet.close();
-      System.out.println(performReadMeta(id, prop, info));
-      return Status.OK;
+      if (processor) {
+        return procReadMeta();
+      } else {
+        return performReadMeta();
+      }
     } catch (SQLException e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);
       return Status.ERROR;
@@ -568,41 +784,19 @@ public class JdbcDBClient extends DB {
 
   public Status performUpdate(String prop, String info) {
     try {
-      System.out.println("IN UPDATE");
-      Connection c = getConnection();
-      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-      Random rand = new Random();
-      String[] meta = {"purpose", "sharing", "origin"};
-      String selectedMeta = meta[rand.nextInt(meta.length)];
-      String query = "SELECT DISTINCT querier, " + selectedMeta + " FROM usertable";
-      ResultSet rs = statement.executeQuery(query);
-      rs.last();
-      String[] querier = new String[rs.getRow()];
-      String[] condVal = new String[rs.getRow()];
-      rs.beforeFirst();
-      int counter = 0;
-      while (rs.next()) {
-        String q = rs.getString("querier");
-        querier[counter] = q;
-        condVal[counter] = rs.getString(selectedMeta);
-        counter = counter + 1;
-      }
-      int idx = rand.nextInt(querier.length);
-      String pickedQ = querier[idx];
-      info = condVal[idx];
-      int val = rand.nextInt(100) + 1;
-      String changeVal = val + "";
-      query = "UPDATE usertable SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\'";
-      System.out.println(query);
+      MgetEntry mge = createMgetEntry();
+      Connection c = getConnection("customer");
+      Statement statement = c.createStatement();
+      String query = "UPDATE usertable set " + prop + " = \'" + info + "\' WHERE id = \'" + mge.getId() + "\' AND device_id = " + mge.getDeviceId();
+      // System.out.println("performupdate: " + query);
       int res = statement.executeUpdate(query);
-      rs.close();
       statement.close();
       c.close();
-      if (res != 0) {
+      if (res > 0) {
+        log(mge.getDeviceId(), query, "update succ");
         return Status.OK;
       } else {
-        System.out.println(query);
-        System.out.println("FAIL");
+        System.err.println("UPDATE ERROR");
         return Status.ERROR;
       }
     } catch(Exception e) {
@@ -644,18 +838,10 @@ public class JdbcDBClient extends DB {
   }
   public String propChange(String prop) {
     switch (prop) {
-    case "DEC":
-      return "adm";
-    case "USR":
-      return "device_id";
     case "SRC":
       return "origin";
     case "OBJ":
       return "objection";
-    case "CAT":
-      return "cat";
-    case "ACL":
-      return "acl";
     case "PUR":
       return "purpose";
     case "SHR":
@@ -663,13 +849,123 @@ public class JdbcDBClient extends DB {
     case "TTL":
       return "ttl";
     default:
-      return "";
+      return "purpose";
+    }
+  }
+
+  public MgetEntry createMgetEntry() {
+    try {
+      Connection c = getConnection("postgres");
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      Random rand = new Random();
+      String query = "SELECT DISTINCT id, device_id FROM user_policy WHERE tomb = 0";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] devid = new String[rs.getRow()];
+      String[] id = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("id");
+        id[counter] = val;
+        val = rs.getString("device_id");
+        devid[counter] = val;
+        counter = counter + 1;
+      }
+      Integer sel = rand.nextInt(counter);
+      String deviceid = devid[sel];
+      String qkey = id[sel] + "";
+      rs.close();
+      statement.close();
+      c.close();
+      return new MgetEntry(qkey, deviceid);
+
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public Status performUpdateCustomer(String condProp, String condVal,
+    String changeProp, String changeVal) {
+    try {
+      Random rand = new Random();
+      MgetEntry mge = createMgetEntry();
+      changeVal = "" + (rand.nextInt(39) + 1);
+      Connection c = getConnection("customer");
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      String query = "UPDATE usertable SET " + condProp + " = " + changeVal + " WHERE device_id = "
+          + mge.getDeviceId()
+          + " AND id = \'" + mge.getId() + "\'";
+      if (condProp.equals("device_id")) {
+        System.out.println("SUSSYBAKA");
+        System.out.println(query);
+      }
+      Integer res = statement.executeUpdate(query);
+      statement.close();
+      c.close();
+      if (res != 0) {
+        log(mge.getDeviceId(), query, res.toString());
+        return Status.OK;
+      } else {
+        System.out.println("performupdcust: " + query);
+        System.out.println("FAIL");
+        return Status.ERROR;
+      }
+    } catch (Exception e) {
+      System.out.println(e);
+      return Status.ERROR;
+    }
+  }
+  public Status performUpdateMeta() {
+    try {
+      // update meta?
+      Connection c = getConnection("controller");
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      Random rand = new Random();
+      String[] meta = {"purpose", "sharing", "origin"};
+      String selectedMeta = meta[rand.nextInt(meta.length)];
+      String query = "SELECT DISTINCT querier, " + selectedMeta + " FROM usertable";
+      ResultSet rs = statement.executeQuery(query);
+      rs.last();
+      String[] querier = new String[rs.getRow()];
+      String[] condVal = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String q = rs.getString("querier");
+        querier[counter] = q;
+        condVal[counter] = rs.getString(selectedMeta);
+        counter = counter + 1;
+      }
+      int idx = rand.nextInt(querier.length);
+      String pickedQ = querier[idx];
+      String info = condVal[idx];
+      int val = rand.nextInt(100) + 1;
+      String changeVal = val + "";
+      query = "UPDATE usertable SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\'";
+      Integer res = statement.executeUpdate(query);
+      rs.close();
+      statement.close();
+      c.close();
+      if (res != 0) {
+        log(pickedQ, query, res.toString());
+        return Status.OK;
+      } else {
+        System.out.println("perf updatemeta: " + query);
+        System.out.println("FAIL");
+        return Status.ERROR;
+      }
+    } catch(Exception e) {
+      e.printStackTrace();
+      return Status.ERROR;
     }
   }
 
   @Override
   public Status updateMeta(String table, int fieldnum, String condition, 
-      String keymatch, String fieldname, String metadatavalue, String condProp) {
+      String keymatch, String fieldname, String metadatavalue, String condProp, Boolean customer) {
     try{
       StatementType type = new StatementType(StatementType.Type.UPDATE, table,
           1, "", getShardIndexByKey(keymatch));
@@ -678,11 +974,18 @@ public class JdbcDBClient extends DB {
       //updateStatement.setString(1,keymatch);
       // int result = updateStatement.executeUpdate();
       condProp = propChange(condProp);
+      String condVal = condition;
+      String changeProp = propChange(fieldname);
       String changeVal = metadatavalue;
-      System.out.println("PERFORM UPDATEMETA");
-      System.out.println(performUpdate(condProp, changeVal));
+      // String changeVal = metadatavalue;
+      
+      // System.out.println("PERFORM UPDATEMETA");
+      if (customer) {
+        return performUpdateCustomer(condProp, condVal, changeProp, changeVal);
+      } else {
+        return performUpdateMeta();
+      }
       //System.err.println("UpdateMeta statement "+updateStatement+" Result "+result);
-      return Status.OK;
     } catch(SQLException e) {
       System.err.println("Error in processing update to table: " + table + e);
       e.printStackTrace();
@@ -759,9 +1062,15 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  public Status performDelete() {
+  public Status performDelete(Boolean customer) {
     try {
-      Connection c = getConnection();
+      Connection c;
+      if (customer) {
+        c = getConnection("customer");
+      } else {
+        c = getConnection("controller");
+      }
+      
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
       // String query = "SELECT DISTINCT device_id FROM usertable";
@@ -776,37 +1085,33 @@ public class JdbcDBClient extends DB {
       //   counter = counter + 1;
       // }
       // String deviceid = devid[rand.nextInt(counter)];
-      String query = "SELECT id FROM usertable";
+      String query = "SELECT id, device_id FROM usertable";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
       String[] id = new String[rs.getRow()];
+      String[] devid = new String[rs.getRow()];
       rs.beforeFirst();
       int counter = 0;
       while (rs.next()) {
-        String val = rs.getString("id");
+        String val = rs.getString("device_id");
+        devid[counter] = val;
+        val = rs.getString("id");
         id[counter] = val;
         counter = counter + 1;
       }
       if (id.length == 0) {
         System.out.println("NOT GOOD");
       }
-      int idx = rand.nextInt(id.length);
-      String qkey = id[idx] + "";
+      Integer sel = rand.nextInt(counter);
+      String deviceid = devid[sel];
+      String qkey = id[sel] + "";
       rs.close();
-      query = "DELETE from usertable WHERE id = \'" + qkey + "\'";
+      query = "DELETE from usertable WHERE id = \'" + qkey + "\' AND device_id = " + deviceid;
       // System.out.println(query);
-      int res = statement.executeUpdate(query);
+      Integer res = statement.executeUpdate(query);
       if (res != 0) {
         rs.close();
-        return Status.OK;
-      }
-      rs.close();
-      query = "VACUUM FULL usertable";
-      // System.out.println(query);
-      res = statement.executeUpdate(query);
-      if (res != 0) {
-        rs.close();
-        System.out.println("VACUUM FAIL");
+        log(deviceid, query, res.toString());
         return Status.OK;
       }
       rs.close();
@@ -821,7 +1126,7 @@ public class JdbcDBClient extends DB {
   }
 
   @Override
-  public Status delete(String tableName, String key) {
+  public Status delete(String tableName, String key, Boolean customer) {
     try {
       StatementType type = new StatementType(StatementType.Type.DELETE, tableName, 1, "", getShardIndexByKey(key));
       PreparedStatement deleteStatement = cachedStatements.get(type);
@@ -834,7 +1139,7 @@ public class JdbcDBClient extends DB {
       // if (result == 1) {
       //   return Status.OK;
       // }
-      return performDelete();
+      return performDelete(customer);
     } catch (SQLException e) {
       System.err.println("Error in processing delete to table: " + tableName + e);
       return Status.ERROR;
@@ -917,7 +1222,7 @@ public class JdbcDBClient extends DB {
       int numFields = values.size();
       OrderedFieldInfo fieldInfo = getFieldInfo(values);
       MaddObj newObj = generateData();
-      Connection c = getConnection();
+      Connection c = getConnection("postgres");
       Statement statement = c.createStatement();
       StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
       sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at) VALUES(");
@@ -936,7 +1241,7 @@ public class JdbcDBClient extends DB {
       sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
       sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
       statement.executeUpdate(sb.toString());
-      
+      log(newObj.getMallData().getDeviceID().toString(), sb.toString(), "INSERT USERDATA SUCC");
       // StatementType type = new StatementType(StatementType.Type.INSERT, table,
       //     numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
       // PreparedStatement insertStatement = cachedStatements.get(type);

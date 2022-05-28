@@ -234,6 +234,19 @@ public class GDPRWorkload extends Workload {
    */
   private boolean dataintegrity;
 
+
+  public static final String CUSTOMER_PROPERTY = "customer";
+
+  public static final String CUSTOMER_PROPERTY_DEFAULT = "false";
+
+  public boolean customer;
+
+  public static final String PROCESSOR_PROPERTY = "processor";
+
+  public static final String PROCESSOR_PROPERTY_DEFAULT = "false";
+
+  public boolean processor;
+
   /**
    * The name of the property for the proportion of transactions that are reads.
    */
@@ -558,6 +571,8 @@ public class GDPRWorkload extends Workload {
     checkcompliance = Boolean.parseBoolean(
         p.getProperty(CHECK_COMPL_PROPERTY, CHECK_COMPL_PROPERTY_DEFAULT));
 
+    customer = Boolean.parseBoolean(p.getProperty(CUSTOMER_PROPERTY, CUSTOMER_PROPERTY_DEFAULT));
+    processor = Boolean.parseBoolean(p.getProperty(PROCESSOR_PROPERTY, PROCESSOR_PROPERTY_DEFAULT));
     dataintegrity = Boolean.parseBoolean(
         p.getProperty(DATA_INTEGRITY_PROPERTY, DATA_INTEGRITY_PROPERTY_DEFAULT));
     // Confirm that fieldlengthgenerator returns a constant if data
@@ -1016,7 +1031,7 @@ public class GDPRWorkload extends Workload {
 
     //System.err.println("Read metadata called with cond: "+ metadatacond + " Field num: " + metadatanum);
 
-    db.readMeta(table, metadatanum, metadatacond, "key*", new Vector<HashMap<String, ByteIterator>>());
+    db.readMeta(table, metadatanum, metadatacond, "key*", new Vector<HashMap<String, ByteIterator>>(), processor);
   }
 
   public void doTransactionReadLog(DB db) {
@@ -1125,7 +1140,7 @@ public class GDPRWorkload extends Workload {
     //System.err.println("Update metadata called with cond: "+ metadatacond +
     //                   " value: " + metadatavalue + " metadatanum " + metadatanum);
     
-    db.updateMeta(table, metadatanum, metadatacond, "key*", fieldkey, metadatavalue, fieldnames.get(metadatanum));
+    db.updateMeta(table, metadatanum, metadatacond, "key*", fieldkey, metadatavalue, fieldnames.get(metadatanum), customer);
   }
 
   public void doTransactionUpdate(DB db) {
@@ -1155,7 +1170,7 @@ public class GDPRWorkload extends Workload {
     
     //System.err.println("Transaction delete called for: "+ keyname);
     
-    db.delete(table, keyname);
+    db.delete(table, keyname, customer);
   }
 
   public void doTransactionDeleteMeta(DB db, int metadatanum) {

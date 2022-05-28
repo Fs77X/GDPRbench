@@ -266,7 +266,7 @@ public class BasicDB extends DB {
    * @param key   The record key of the record to delete.
    * @return Zero on success, a non-zero error code on error
    */
-  public Status delete(String table, String key) {
+  public Status delete(String table, String key, Boolean customer) {
     delay();
 
     if (verbose) {
@@ -368,12 +368,12 @@ public class BasicDB extends DB {
   }
 
   public Status readMeta(String table, int fieldnum, String cond, String keymatch,
-                         Vector<HashMap<String, ByteIterator>> result) {
+                         Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
     return Status.OK;
   }
 
   public Status updateMeta(String table, int fieldnum, String cond, String keymatch,
-                           String fieldkey, String fieldvalue, String condProp) {
+                           String fieldkey, String fieldvalue, String condProp, Boolean customer) {
     return Status.OK;
   }
 
