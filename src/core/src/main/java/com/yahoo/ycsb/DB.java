@@ -128,7 +128,7 @@ public abstract class DB {
    * @return The result of the operation.
    */
   public abstract Status insert(String table, String key, Map<String, ByteIterator> values);
-  public abstract Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl);
+  public abstract Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl, Boolean load);
 
   /**
    * Delete a record from the database.

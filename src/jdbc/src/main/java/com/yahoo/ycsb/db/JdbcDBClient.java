@@ -141,9 +141,16 @@ public class JdbcDBClient extends DB {
     try {
       Connection c = null;
       Class.forName("org.postgresql.Driver");
-      c = DriverManager
+      if (actor.equals("postgres")) {
+        c = DriverManager
           .getConnection("jdbc:postgresql://127.0.0.1:5432/the_db",
               "postgres", "admin");
+      } else {
+        c = DriverManager
+        .getConnection("jdbc:postgresql://127.0.0.1:5432/the_db",
+            actor, "");
+      }
+      
       // System.out.println("Opened database successfully");
       return c;
     } catch (Exception e) {
@@ -459,9 +466,8 @@ public class JdbcDBClient extends DB {
       //   }
       // }
       // resultSet.close();
-      System.out.println(performRead());
-      System.out.println("read okchamp");
-      return Status.OK;
+      return performRead();
+      // return Status.OK;
     } catch (SQLException e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);
       // exception for returning ok here than error since data is random
@@ -528,7 +534,7 @@ public class JdbcDBClient extends DB {
       c = getConnection("customer");
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      String query = "SELECT DISTINCT device_id, id FROM user_policy WHERE tomb = 0";
+      String query = "SELECT DISTINCT device_id, id FROM usertable";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
       String[] devid = new String[rs.getRow()];
@@ -858,7 +864,7 @@ public class JdbcDBClient extends DB {
       Connection c = getConnection("postgres");
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      String query = "SELECT DISTINCT id, device_id FROM user_policy WHERE tomb = 0";
+      String query = "SELECT DISTINCT id, device_id FROM usertable";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
       String[] devid = new String[rs.getRow()];
@@ -921,7 +927,7 @@ public class JdbcDBClient extends DB {
   public Status performUpdateMeta() {
     try {
       // update meta?
-      Connection c = getConnection("controller");
+      Connection c = getConnection("postgres");
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
       String[] meta = {"purpose", "sharing", "origin"};
@@ -944,9 +950,13 @@ public class JdbcDBClient extends DB {
       String info = condVal[idx];
       int val = rand.nextInt(100) + 1;
       String changeVal = val + "";
+      rs.close();
+      statement.close();
+      c.close();
+      c = getConnection("controller");
+      statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       query = "UPDATE usertable SET " + selectedMeta + " = \'" + changeVal + "\' WHERE " + selectedMeta + " = \'" + info + "\' AND querier = \'" + pickedQ + "\'";
       Integer res = statement.executeUpdate(query);
-      rs.close();
       statement.close();
       c.close();
       if (res != 0) {
@@ -1065,11 +1075,7 @@ public class JdbcDBClient extends DB {
   public Status performDelete(Boolean customer) {
     try {
       Connection c;
-      if (customer) {
-        c = getConnection("customer");
-      } else {
-        c = getConnection("controller");
-      }
+      c = getConnection("postgres");
       
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
@@ -1106,6 +1112,14 @@ public class JdbcDBClient extends DB {
       String deviceid = devid[sel];
       String qkey = id[sel] + "";
       rs.close();
+      statement.close();
+      c.close();
+      if (customer) {
+        c = getConnection("customer");
+      } else {
+        c = getConnection("controller");
+      }
+      statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       query = "DELETE from usertable WHERE id = \'" + qkey + "\' AND device_id = " + deviceid;
       // System.out.println(query);
       Integer res = statement.executeUpdate(query);
@@ -1114,7 +1128,6 @@ public class JdbcDBClient extends DB {
         log(deviceid, query, res.toString());
         return Status.OK;
       }
-      rs.close();
       statement.close();
       c.close();
       return Status.ERROR;
@@ -1216,13 +1229,19 @@ public class JdbcDBClient extends DB {
 
   @Override
   public Status insertTTL(String table, String key,
-                         Map<String, ByteIterator> values, int ttl) {
+                         Map<String, ByteIterator> values, int ttl, Boolean load) {
     // System.out.println("inside inserttl");
     try{
       int numFields = values.size();
       OrderedFieldInfo fieldInfo = getFieldInfo(values);
       MaddObj newObj = generateData();
-      Connection c = getConnection("postgres");
+      String actor;
+      if (load) {
+        actor = "postgres";
+      } else {
+        actor = "controller";
+      }
+      Connection c = getConnection(actor);
       Statement statement = c.createStatement();
       StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
       sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at) VALUES(");

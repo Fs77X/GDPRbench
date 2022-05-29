@@ -173,7 +173,7 @@ public class RedisClient extends DB {
 
   @Override
   public Status insertTTL(String table, String key,
-      Map<String, ByteIterator> values, int ttl) {
+      Map<String, ByteIterator> values, int ttl, Boolean load) {
     if (jedis.hmset(key, StringByteIterator.getStringMap(values))
         .equals("OK")) {
       jedis.zadd(INDEX_KEY, hash(key), key);

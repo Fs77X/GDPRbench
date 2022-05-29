@@ -159,13 +159,13 @@ public class GoodBadUglyDB extends DB {
     return Status.OK;
   }
 
-  public Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl) {
+  public Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl, Boolean load) {
     delay();
     return Status.OK;
   }
 
   public Status readMeta(String table, int fieldnum, String cond, String ketmatch,
-                         Vector<HashMap<String, ByteIterator>> result) {
+                         Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
     delay();
     return Status.OK;
   }

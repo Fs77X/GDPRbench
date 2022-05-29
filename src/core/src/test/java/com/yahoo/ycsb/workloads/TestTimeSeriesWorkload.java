@@ -549,7 +549,7 @@ public class TestTimeSeriesWorkload {
 
     @Override
     public Status insertTTL(String table, String key,
-        Map<String, ByteIterator> values, int ttl) {
+        Map<String, ByteIterator> values, int ttl, Boolean load) {
       // TODO Auto-generated method stub
       return Status.OK;
     }

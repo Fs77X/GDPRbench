@@ -363,7 +363,7 @@ public class BasicDB extends DB {
     return buf.toString().hashCode();
   }
 
-  public Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl) {
+  public Status insertTTL(String table, String key, Map<String, ByteIterator> values, int ttl, Boolean load) {
     return Status.OK;
   }
 

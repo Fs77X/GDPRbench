@@ -241,6 +241,12 @@ public class GDPRWorkload extends Workload {
 
   public boolean customer;
 
+  public static final String LOAD_PROPERTY = "load";
+
+  public static final String LOAD_PROPERTY_DEFAULT = "true";
+
+  public boolean load;
+
   public static final String PROCESSOR_PROPERTY = "processor";
 
   public static final String PROCESSOR_PROPERTY_DEFAULT = "false";
@@ -573,6 +579,7 @@ public class GDPRWorkload extends Workload {
 
     customer = Boolean.parseBoolean(p.getProperty(CUSTOMER_PROPERTY, CUSTOMER_PROPERTY_DEFAULT));
     processor = Boolean.parseBoolean(p.getProperty(PROCESSOR_PROPERTY, PROCESSOR_PROPERTY_DEFAULT));
+    load = Boolean.parseBoolean(p.getProperty(LOAD_PROPERTY, LOAD_PROPERTY_DEFAULT));
     dataintegrity = Boolean.parseBoolean(
         p.getProperty(DATA_INTEGRITY_PROPERTY, DATA_INTEGRITY_PROPERTY_DEFAULT));
     // Confirm that fieldlengthgenerator returns a constant if data
@@ -858,7 +865,7 @@ public class GDPRWorkload extends Workload {
     Status status;
     int numOfRetries = 0;
     do {
-      status = db.insertTTL(table, dbkey, values, ttl);
+      status = db.insertTTL(table, dbkey, values, ttl, load);
       if (null != status && status.isOk()) {
         break;
       }
@@ -1194,7 +1201,7 @@ public class GDPRWorkload extends Workload {
 
       int ttl = buildTTLValue(keynum);
       HashMap<String, ByteIterator> values = buildValues(keynum, dbkey);
-      db.insertTTL(table, dbkey, values, ttl);
+      db.insertTTL(table, dbkey, values, ttl, true);
     } finally {
       transactioninsertkeysequence.acknowledge(keynum);
     }

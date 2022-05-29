@@ -42,3 +42,24 @@ CREATE TABLE usertable(id character varying(50) NOT NULL,
   inserted_at character varying(255) NOT NULL
   );
   -- {DEC=dec1, USR=user9993, SRC=src3, OBJ=obj93, CAT=cat3, ACL=acl3, Data=99931754682999311113468279993-448309203999316143130999993-6183550329993-477178749993-167714670099936, PUR=purpose18, SHR=shr3, TTL=14000}
+create policy controller_all on usertable for select using(true);
+CREATE POLICY controller_all ON usertable TO controller USING (true) WITH CHECK (true);
+create policy controller_insert on usertable for insert to controller with check(true);
+create policy controller_update on usertable for update to controller using(true) with check(true);
+create policy controller_delete on usertable for delete to controller using(true);
+create policy controller_update on usertable for update to controller using(true);
+
+-- works, not sure how else to do row level policies
+CREATE POLICY admin_controller ON usertable TO controller USING (true) WITH CHECK (true);
+GRANT SELECT, INSERT, UPDATE, DELETE ON usertable TO controller;
+CREATE POLICY admin_processor ON usertable TO processor USING (true) WITH CHECK (true);
+GRANT SELECT, INSERT, UPDATE, DELETE ON usertable TO processor;
+CREATE POLICY admin_customer ON usertable TO customer USING (true) WITH CHECK (true);
+GRANT SELECT, INSERT, UPDATE, DELETE ON usertable TO customer;
+
+
+CREATE POLICY controller_insert on usertable for insert with check(true);
+
+CREATE POLICY controller_update on usertable for update USING (true) WITH CHECK (true);
+
+CREATE POLICY controller_delete on usertable for delete USING (true);

@@ -606,7 +606,7 @@ public class CoreWorkload extends Workload {
     Status status;
     int numOfRetries = 0;
     do {
-      status = db.insertTTL(table, dbkey, values, ttl);
+      status = db.insertTTL(table, dbkey, values, ttl, true);
       if (null != status && status.isOk()) {
         break;
       }

@@ -237,11 +237,11 @@ public class DBWrapper extends DB {
   }
 
   public Status insertTTL(String table, String key,
-                       Map<String, ByteIterator> values, int ttl) {
+                       Map<String, ByteIterator> values, int ttl, Boolean load) {
     try (final TraceScope span = tracer.newScope(scopeStringInsert)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.insertTTL(table, key, values, ttl);
+      Status res = db.insertTTL(table, key, values, ttl, load);
       long en = System.nanoTime();
       measure("INSERT", res, ist, st, en);
       measurements.reportStatus("INSERT", res);
@@ -270,11 +270,11 @@ public class DBWrapper extends DB {
   }
 
   public Status readMeta(String table, int fieldnum, String cond, String keymatch,
-                         Vector<HashMap<String, ByteIterator>> result) {
+                         Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
     try (final TraceScope span = tracer.newScope(scopeStringReadMeta)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();
-      Status res = db.readMeta(table, fieldnum, cond, keymatch, result);
+      Status res = db.readMeta(table, fieldnum, cond, keymatch, result, processor);
       long en = System.nanoTime();
       measure("READMETA", res, ist, st, en);
       measurements.reportStatus("READMETA", res);
