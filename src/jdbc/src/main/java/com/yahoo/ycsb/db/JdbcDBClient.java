@@ -430,7 +430,7 @@ public class JdbcDBClient extends DB {
         res.append(dId).append(")");
       }
       rs.close();
-      log(deviceid, "", res.toString());
+      log(deviceid, "q", res.toString());
       return Status.OK;
       // if (!rs.next()) {
       //   rs.close();
@@ -593,7 +593,7 @@ public class JdbcDBClient extends DB {
       res.append(inserted_at).append("|");
       res.append(device_id);
       // System.out.println(res.toString());
-      log(deviceid, "", res.toString());
+      log(deviceid, "q", res.toString());
 
       rs.close();
       statement.close();
@@ -690,7 +690,7 @@ public class JdbcDBClient extends DB {
       
       
       // System.out.println(res.toString());
-      log(qkey, "", res.toString());
+      log(qkey, "q", res.toString());
 
       rs.close();
       statement.close();
@@ -799,7 +799,7 @@ public class JdbcDBClient extends DB {
       statement.close();
       c.close();
       if (res > 0) {
-        log(mge.getDeviceId(), "", "update succ");
+        log(mge.getDeviceId(), "q", "update succ");
         return Status.OK;
       } else {
         System.err.println("UPDATE ERROR");
@@ -912,7 +912,7 @@ public class JdbcDBClient extends DB {
       statement.close();
       c.close();
       if (res != 0) {
-        log(mge.getDeviceId(), "", res.toString());
+        log(mge.getDeviceId(), "q", res.toString());
         return Status.OK;
       } else {
         System.out.println("performupdcust: " + query);
@@ -960,7 +960,7 @@ public class JdbcDBClient extends DB {
       statement.close();
       c.close();
       if (res != 0) {
-        log(pickedQ, "", res.toString());
+        log(pickedQ, "q", res.toString());
         return Status.OK;
       } else {
         System.out.println("perf updatemeta: " + query);
@@ -1125,7 +1125,7 @@ public class JdbcDBClient extends DB {
       Integer res = statement.executeUpdate(query);
       if (res != 0) {
         rs.close();
-        log(deviceid, "", res.toString());
+        log(deviceid, "q", res.toString());
         return Status.OK;
       }
       statement.close();
@@ -1260,7 +1260,7 @@ public class JdbcDBClient extends DB {
       sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
       sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
       statement.executeUpdate(sb.toString());
-      log(newObj.getMallData().getDeviceID().toString(), "", "INSERT USERDATA SUCC");
+      log(newObj.getMallData().getDeviceID().toString(), "q", "INSERT USERDATA SUCC");
       // StatementType type = new StatementType(StatementType.Type.INSERT, table,
       //     numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
       // PreparedStatement insertStatement = cachedStatements.get(type);
