@@ -22,13 +22,14 @@
 #   Default data size: 1 KB records (10 fields, 100 bytes each, plus key)
 #   Request distribution: zipfian
 
-recordcount=14000
-operationcount=10000
+recordcount=1000
+operationcount=100
 workload=com.yahoo.ycsb.workloads.GDPRWorkload
 
 readallfields=true
 writeallfields=true
 dataintegrity=true
+processor=true
 
 purcount=25
 usrcount=14000

@@ -178,6 +178,12 @@ public class GDPRWorkload extends Workload {
   public static final String READ_LOG_PROPERTY_DEFAULT = "true";
 
   protected boolean readlog;
+
+  public static final String PROCESSOR_LOG_PROPERTY = "processor";
+
+  public static final String PROCESSOR_PROPERTY_DEFAULT = "false";
+
+  public boolean processor;
   
   public static final String CHECK_COMPL_PROPERTY = "checkcompliance";
 
@@ -555,6 +561,8 @@ public class GDPRWorkload extends Workload {
 
     readlog = Boolean.parseBoolean(
         p.getProperty(READ_LOG_PROPERTY, READ_LOG_PROPERTY_DEFAULT));
+    processor = Boolean.parseBoolean(
+          p.getProperty(PROCESSOR_LOG_PROPERTY, PROCESSOR_PROPERTY_DEFAULT));
     checkcompliance = Boolean.parseBoolean(
         p.getProperty(CHECK_COMPL_PROPERTY, CHECK_COMPL_PROPERTY_DEFAULT));
 
@@ -1030,7 +1038,7 @@ public class GDPRWorkload extends Workload {
     //     metadatacond + " Field num: " + fieldnames.get(metadatanum));
     // System.out.println("HERE");
     db.readMeta(table, metadatanum, fieldnames.get(metadatanum), metadatacond
-        , new Vector<HashMap<String, ByteIterator>>());
+        , new Vector<HashMap<String, ByteIterator>>(), processor);
   }
 
   public void doTransactionReadLog(DB db) {
@@ -1039,7 +1047,7 @@ public class GDPRWorkload extends Workload {
 
     // System.err.println("Read log called with scan len: "+ len);
 
-    db.readLog(table, len);
+    // db.readLog(table, len);
   }
 
   public void doTransactionCheckCompliance(DB db) {
@@ -1048,7 +1056,7 @@ public class GDPRWorkload extends Workload {
 
     System.err.println("Verify conformance called with recordcount "+ count);
 
-    db.verifyTTL(table, count);
+    // db.verifyTTL(table, count);
   }
 
   public void doTransactionReadModifyWrite(DB db) {

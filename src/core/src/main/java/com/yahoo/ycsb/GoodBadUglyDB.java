@@ -165,7 +165,7 @@ public class GoodBadUglyDB extends DB {
   }
 
   public Status readMeta(String table, int fieldnum, String cond, String ketmatch,
-                         Vector<HashMap<String, ByteIterator>> result) {
+                         Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
     delay();
     return Status.OK;
   }

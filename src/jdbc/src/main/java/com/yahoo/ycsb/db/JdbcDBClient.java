@@ -74,6 +74,8 @@ import java.util.UUID;
 public class JdbcDBClient extends DB {
   private int mallobsCounter = 3000000;
   private int userPCounter = 300000;
+
+  public OkHttpClient client = new OkHttpClient().newBuilder().build();
   /** The class to use as the jdbc driver. */
   public static final String DRIVER_CLASS = "db.driver";
 
@@ -167,7 +169,7 @@ public class JdbcDBClient extends DB {
       Class.forName("org.postgresql.Driver");
       c = DriverManager
           .getConnection("jdbc:postgresql://127.0.0.1:5432/sieve",
-              "sieve", "");
+              "postgres", "admin");
       System.out.println("Opened database successfully");
       return c;
     } catch (Exception e) {
@@ -442,8 +444,6 @@ public class JdbcDBClient extends DB {
       // key = "o" + keyNum;
       // // 999999 10000
       MgetEntry mge = createMgetEntry();
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
       // System.out.println("http://localhost:5344/mget_entry/" + mge.getDeviceId() + "/" + mge.getId());
       Request request = new Request.Builder()
           .url("http://localhost:5344/sieve/mget_entry/" + mge.getDeviceId() + "/" + mge.getId())
@@ -478,8 +478,6 @@ public class JdbcDBClient extends DB {
 
   public Status getLog(String logCount) {
     try {
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
       Request request = new Request.Builder()
           .url("http://localhost:8080/getLogs/" + logCount)
           .method("GET", null)
@@ -513,27 +511,16 @@ public class JdbcDBClient extends DB {
     }
   }
 
-  public Status actualReadMeta(String cond, String keymatch) {
-    Random rand = new Random();
-    int qid = rand.nextInt(39) + 1;
-    String[] properties = new String[]{"objection", "sharing", "purpose"};
-    String[] propVals = new String[]{"obj", "shr", "purpose"};
-    String id = qid + "";
-    // System.out.println("IN ACTUAL RMD");
-    int idx = rand.nextInt(properties.length);
-    String prop = properties[idx];
-    int ival = rand.nextInt(99) + 1;
-    String info = propVals[idx]+ival;
-    MgetObj mObj = new MgetObj(id, prop, info);
-    ObjectMapper mapper = new ObjectMapper();
-    String jsonString = "";
-    try {
-      jsonString = mapper.writeValueAsString(mObj);
-    } catch (JsonProcessingException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-    System.out.println(jsonString);
+  public Status readProcMeta(String cond, String keymatch) {
+    // Random rand = new Random();
+    // int qid = rand.nextInt(39) + 1;
+    // String id = qid + "";
+    // // System.out.println("IN ACTUAL RMD");
+    // String prop = "purpose";
+    // int ival = rand.nextInt(99) + 1;
+    // String info = ""+ival;
+    // MgetObj mObj = new MgetObj(id, prop, info);
+ 
     // if (cond.equals("USR")) {
     //   id = "[\"" + keymatch.replace("user", "key") + "\"]";
     // } else {
@@ -544,8 +531,43 @@ public class JdbcDBClient extends DB {
     // System.out.println(id);
     // System.out.println(purpose);
     try {
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
+      Connection c = getConnection();
+      Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+      String query = "SELECT querier, purpose FROM user_policy";
+      ResultSet rs = statement.executeQuery(query);
+      String prop = "purpose";
+      rs.last();
+      String[] id = new String[rs.getRow()];
+      String[] purp = new String[rs.getRow()];
+      rs.beforeFirst();
+      int counter = 0;
+      while (rs.next()) {
+        String val = rs.getString("querier");
+        id[counter] = val;
+        val = rs.getString("purpose");
+        purp[counter] = val;
+        counter = counter + 1;
+      }
+      if (id.length == 0) {
+        System.out.println("NOT GOOD");
+      }
+      Random rand = new Random();
+      int idx = rand.nextInt(id.length);
+      String qkey = id[idx] + "";
+      String info = purp[idx] + "";
+      rs.close();
+      statement.close();
+      c.close();
+      MgetObj mObj = new MgetObj(qkey, prop, info);
+      ObjectMapper mapper = new ObjectMapper();
+      String jsonString = "";
+      try {
+        jsonString = mapper.writeValueAsString(mObj);
+      } catch (JsonProcessingException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+      System.out.println(jsonString);
       MediaType mediaType = MediaType.parse("application/json");
       RequestBody body = RequestBody.create(mediaType,
           jsonString);
@@ -565,13 +587,37 @@ public class JdbcDBClient extends DB {
     }
   }
 
+  public Status actualReadMeta(String cond, String keymatch) {
+    MgetEntry mge = createMgetEntry();
+    try {
+      OkHttpClient client = new OkHttpClient().newBuilder()
+          .build();
+      Request request = new Request.Builder()
+          .url("http://localhost:5344/sieve/mget_metaEntry/" + mge.getDeviceId() + "/" + mge.getId())
+          .method("GET", null)
+          .build();
+      Response response = client.newCall(request).execute();
+      System.out.println("RESPONSE CODE IN RMD: " + response.code());
+      ResponseBody boi = response.body();
+      boi.close();
+      return Status.OK;
+    } catch (Exception e) {
+      System.out.println(e);
+      return Status.ERROR;
+    }
+  }
+
   @Override
   public Status readMeta(String tableName, int fieldnum, String cond,
-      String keymatch, Vector<HashMap<String, ByteIterator>> result) {
+      String keymatch, Vector<HashMap<String, ByteIterator>> result, Boolean processor) {
     // TODO: No use for keyMatch whatsoever, so check if without queering for keys
     // this will work.
     try {
-      return actualReadMeta(cond, keymatch);
+      if (processor) {
+        return readProcMeta(cond, keymatch);
+      } else {
+        return actualReadMeta(cond, keymatch);
+      }
     } catch (Exception e) {
       System.err.println("Error in processing read of table " + tableName + ": " + e);
       return Status.ERROR;
@@ -623,8 +669,6 @@ public class JdbcDBClient extends DB {
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
       MediaType mediaType = MediaType.parse("application/json");
       RequestBody body = RequestBody.create(mediaType,
           jsonString);
@@ -644,8 +688,6 @@ public class JdbcDBClient extends DB {
 
   public Status updateIndividualMeta(String key, String prop, String info) {
     try {
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
       MediaType mediaType = MediaType.parse("text/plain");
       RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
           .addFormDataPart("property", prop)
@@ -765,9 +807,7 @@ public class JdbcDBClient extends DB {
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
-      System.out.println(jsonString);
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
+      // System.out.println(jsonString);
       MediaType mediaType = MediaType.parse("application/json");
       RequestBody body = RequestBody.create(mediaType, jsonString);
       Request request = new Request.Builder()
@@ -918,8 +958,6 @@ public class JdbcDBClient extends DB {
 
   public Status actualDeleteMeta(String key) {
     try {
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
       Request request = new Request.Builder()
           .url("http://localhost:8080/mdelete_UserMetaobj/" + key)
           .method("DELETE", null)
@@ -942,8 +980,6 @@ public class JdbcDBClient extends DB {
   public Status actualDelete(String key) {
     try {
       MgetEntry mge = createMgetEntry();
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
       Request request = new Request.Builder()
           .url("http://localhost:5344/sieve/mdelete_obj/" + mge.getDeviceId() + "/" + mge.getId())
           .method("DELETE", null)
@@ -1024,8 +1060,6 @@ public class JdbcDBClient extends DB {
 
   public long getKeys() {
     try {
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
       Request request = new Request.Builder()
           .url("http://localhost:8080/getKeyCount")
           .method("GET", null)
@@ -1102,8 +1136,6 @@ public class JdbcDBClient extends DB {
   private Status insertEntry(String key, String value, String name) {
     try {
       MaddObj newObj = generateData();
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
       MediaType mediaType = MediaType.parse("application/json");
       ObjectMapper mapper = new ObjectMapper();
       String jsonString = "";
@@ -1113,7 +1145,7 @@ public class JdbcDBClient extends DB {
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
-      System.out.println(jsonString);
+      // System.out.println(jsonString);
       RequestBody body = RequestBody.create(mediaType, jsonString);
       Request request = new Request.Builder()
           .url("http://localhost:5344/sieve/madd_obj/" + newObj.getMallData().getDeviceID())
@@ -1136,8 +1168,6 @@ public class JdbcDBClient extends DB {
 
   private Status insertMeta(String key, OrderedFieldInfo value) {
     try {
-      OkHttpClient client = new OkHttpClient().newBuilder()
-          .build();
       MediaType mediaType = MediaType.parse("application/json");
       RequestBody body = RequestBody.create(mediaType, "{\r\n    \"TTL\":\"" + value.getFieldValues().get(9) +
           "\",\r\n    \"purpose\": \"" + value.getFieldValues().get(7) +

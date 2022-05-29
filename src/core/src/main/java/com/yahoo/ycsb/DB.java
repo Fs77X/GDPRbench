@@ -89,7 +89,7 @@ public abstract class DB {
   public abstract Status read(String table, String key, Set<String> fields, Map<String, ByteIterator> result);
   public abstract Status readLog(String table, int logCount);
   public abstract Status readMeta(String table, int fieldnum, String cond, String keymatch, 
-                                  Vector<HashMap<String, ByteIterator>> result);
+                                  Vector<HashMap<String, ByteIterator>> result, Boolean processor);
 
   /**
    * Perform a range scan for a set of records in the database. Each field/value pair from the result will be stored
