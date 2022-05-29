@@ -1128,6 +1128,12 @@ public class JdbcDBClient extends DB {
         log(deviceid, "q", res.toString());
         return Status.OK;
       }
+      query = "VACUUM usertable";
+      res = statement.executeUpdate(query);
+      if (res < 0) {
+        System.out.println("VACUUM FAIL");
+        return Status.ERROR;
+      }
       statement.close();
       c.close();
       return Status.ERROR;
