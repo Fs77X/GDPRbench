@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.sql.Time;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 import com.yahoo.ycsb.db.JSON.MaddObj;
 import com.yahoo.ycsb.db.JSON.MallData;
@@ -1115,7 +1116,9 @@ public class JdbcDBClient extends DB {
     MallData mallData = new MallData(mdId, shopName, obs_date, obs_time, uInterest, device_id);
 
     // metadata
-    int ttl = (int)now + rand.nextInt(300000) + 100000;
+    Instant instant = Instant.ofEpochMilli(now);
+    long res = instant.getEpochSecond();
+    int ttl = (int)res + rand.nextInt(4000) + 30;
     int polid = userPCounter;
     userPCounter = userPCounter + 1;
     String uuid = UUID.randomUUID().toString();
