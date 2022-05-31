@@ -69,6 +69,16 @@ CREATE TABLE usertable(id character varying(50) NOT NULL,
   create index tomb_index on usertable (tomb);
 
 
+  create table user_policy(id character varying(50) NOT NULL,  querier character varying(255) NOT NULL,
+  purpose character varying(255) NOT NULL,
+  ttl integer NOT NULL,
+  origin character varying(255) NOT NULL,
+  objection character varying(255) NOT NULL,
+  sharing character varying(255) NOT NULL,
+  enforcement_action character varying(255),
+  inserted_at character varying(255) NOT NULL, tomb integer, device_id integer);
+
+create index tomb_index on user_policy (tomb);
 
 
 
