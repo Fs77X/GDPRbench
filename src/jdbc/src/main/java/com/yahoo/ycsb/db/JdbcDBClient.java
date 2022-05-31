@@ -369,25 +369,26 @@ public class JdbcDBClient extends DB {
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      String query = "SELECT DISTINCT device_id FROM user_policy WHERE tomb = 0";
+      String query = "SELECT id FROM usertable WHERE tomb = 0";
       ResultSet rs = statement.executeQuery(query);
       rs.last();
-      String[] devid = new String[rs.getRow()];
+      String[] id = new String[rs.getRow()];
       rs.beforeFirst();
       int counter = 0;
       while (rs.next()) {
-        String val = rs.getString("device_id");
-        devid[counter] = val;
+        String val = rs.getString("id");
+        id[counter] = val;
         counter = counter + 1;
       }
-      String device_id = devid[rand.nextInt(counter)];
-      query = "SELECT * from usertable WHERE device_id = \'" + device_id + "\'";
+      String key = id[rand.nextInt(counter)];
+      query = "SELECT * from usertable WHERE id = \'" + id + "\'";
       // System.out.println(query);
       rs = statement.executeQuery(query);
       rs.last();
       rs.beforeFirst();
       counter = 0;
       StringBuilder res = new StringBuilder();
+      String dId = "";
       while (rs.next()) {
         String iId = rs.getString("id");
         res.append("(" + iId).append("|");
@@ -399,11 +400,11 @@ public class JdbcDBClient extends DB {
         res.append(obs_time).append("|");
         String user_interest = rs.getString("user_interest");
         res.append(user_interest).append("|");
-        String dId = rs.getString("device_id");
+        dId = rs.getString("device_id");
         res.append(dId).append(")");
       }
       rs.close();
-      log(device_id, query, res.toString());
+      log(dId, query, res.toString());
       return Status.OK;
     } catch (Exception e) {
       // TODO Auto-generated catch block
@@ -1287,32 +1288,33 @@ public class JdbcDBClient extends DB {
       Connection c = getConnection();
       Statement statement = c.createStatement();
       StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
-      sb.append("user_interest, device_id) VALUES(");
+      sb.append("user_interest, device_id, tomb) VALUES(");
       sb.append("\'").append(newObj.getMallData().getId()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getShopName()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getObsDate()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getObsTime()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getUserInterest()).append("\', ");
-      sb.append("\'").append(newObj.getMallData().getDeviceID()).append("\')");
+      sb.append("\'").append(newObj.getMallData().getDeviceID()).append("\', ");
+      sb.append("\'").append(0).append("\')");
       statement.executeUpdate(sb.toString());
       log(newObj.getMallData().getDeviceID().toString(), sb.toString(), "INSERT USERDATA SUCC");
-      StringBuilder sbM = new StringBuilder("INSERT INTO user_policy(id, purpose, querier, ttl, origin, objection, sharing");
-      sbM.append(", enforcement_action, inserted_at, tomb, device_id) VALUES(");
-      sbM.append("\'").append(newObj.getMallData().getId()).append("\', ");
-      sbM.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
-      sbM.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
-      sbM.append("\'").append(newObj.getMetaData().getTtl()).append("\', ");
-      sbM.append("\'").append(newObj.getMetaData().getOrigin()).append("\', ");
-      sbM.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
-      sbM.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
-      sbM.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
-      sbM.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\', ");
-      sbM.append("\'").append(0).append("\', ");
-      sbM.append("\'").append(newObj.getMallData().getDeviceID()).append("\')");
-      statement.executeUpdate(sbM.toString());
+      // StringBuilder sbM = new StringBuilder("INSERT INTO user_policy(id, purpose, querier, ttl, origin, objection, sharing");
+      // sbM.append(", enforcement_action, inserted_at, tomb, device_id) VALUES(");
+      // sbM.append("\'").append(newObj.getMallData().getId()).append("\', ");
+      // sbM.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
+      // sbM.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
+      // sbM.append("\'").append(newObj.getMetaData().getTtl()).append("\', ");
+      // sbM.append("\'").append(newObj.getMetaData().getOrigin()).append("\', ");
+      // sbM.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
+      // sbM.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
+      // sbM.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
+      // sbM.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\', ");
+      // sbM.append("\'").append(0).append("\', ");
+      // sbM.append("\'").append(newObj.getMallData().getDeviceID()).append("\')");
+      // statement.executeUpdate(sbM.toString());
       statement.close();
       c.close();
-      log(newObj.getMallData().getDeviceID().toString(), sbM.toString(), "INSERT USERMETA SUCC");
+      // log(newObj.getMallData().getDeviceID().toString(), sbM.toString(), "INSERT USERMETA SUCC");
     } catch (Exception e) {
       System.err.println("Error in processing insert to table: " + table + e);
       return Status.ERROR;
