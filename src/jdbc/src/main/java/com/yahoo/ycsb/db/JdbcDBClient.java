@@ -59,7 +59,9 @@ import okhttp3.ResponseBody;
  * Therefore, only one index on the primary key is needed.
  */
 public class JdbcDBClient extends DB {
-  private int mallobsCounter = 3000000;
+  //3199999
+  //3200000
+  private int mallobsCounter = 3400000;
 
   public OkHttpClient client = new OkHttpClient().newBuilder()
           .build();
@@ -431,7 +433,7 @@ public class JdbcDBClient extends DB {
         res.append(devid).append(")");
       }
       rs.close();
-      log(devid, "", res.toString());
+      log(devid, "q", res.toString());
       return Status.OK;
       // if (!rs.next()) {
       //   rs.close();
@@ -1267,7 +1269,7 @@ public class JdbcDBClient extends DB {
       // sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
       // sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
       statement.executeUpdate(sb.toString());
-      log(newObj.getMallData().getDeviceID().toString(), "", "INSERT USERDATA SUCC");
+      log(newObj.getMallData().getDeviceID().toString(), "q", "INSERT USERDATA SUCC");
       // StatementType type = new StatementType(StatementType.Type.INSERT, table,
       //     numFields, fieldInfo.getFieldKeys(), getShardIndexByKey(key));
       // PreparedStatement insertStatement = cachedStatements.get(type);
