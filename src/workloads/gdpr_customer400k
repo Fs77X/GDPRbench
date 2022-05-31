@@ -22,14 +22,14 @@
 #   Default data size: 1 KB records (10 fields, 100 bytes each, plus key)
 #   Request distribution: zipfian
 
-recordcount=100000
+recordcount=400000
 operationcount=10000
 workload=com.yahoo.ycsb.workloads.GDPRWorkload
 
 readallfields=true
 writeallfields=true
 dataintegrity=true
-processor=true
+customer=true
 
 purcount=25
 usrcount=10000
@@ -40,18 +40,20 @@ shrcount=10
 srccount=10
 catcount=10
 
+readmetapurposeproportion=0.1
+readmetauserproportion=0.1
+
+# done
 readproportion=0.2
-readmetapurposeproportion=0.4
-readmetauserproportion=0.4
-updateproportion=0
-updatemetapurposeproportion=0
-updatemetauserproportion=0
-deleteproportion=0
+updatemetapurposeproportion=0.1
+updatemetauserproportion=0.1
+deleteproportion=0.2
 deletemetapurposeproportion=0
 deletemetauserproportion=0
 scanproportion=0
 insertproportion=0
 insertorder=ordered
+updateproportion=0.2
 
-requestdistribution=uniform
+requestdistribution=zipfian
 

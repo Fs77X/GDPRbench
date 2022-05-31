@@ -42,6 +42,7 @@ CREATE TABLE usertable(id character varying(50) NOT NULL,
   inserted_at character varying(255) NOT NULL
   );
 
+ -- if all in one table
   CREATE user_policy(
     id character varying(50) NOT NULL,
     querier character varying(255) NOT NULL,
@@ -57,6 +58,7 @@ CREATE TABLE usertable(id character varying(50) NOT NULL,
   )
   create index tomb_index on user_policy (tomb);
 
+-- ycsb
 CREATE TABLE usertable(id character varying(50) NOT NULL,
   shop_name character varying(20) NOT NULL,
   obs_date character varying(255) NOT NULL,
@@ -68,7 +70,18 @@ CREATE TABLE usertable(id character varying(50) NOT NULL,
 
   create index tomb_index on usertable (tomb);
 
+  --seperate table
+  create table user_policy(id character varying(50) NOT NULL,
+  purpose character varying(255) NOT NULL,
+  querier character varying(255) NOT NULL,
+  ttl integer NOT NULL,
+  origin character varying(255) NOT NULL,
+  objection character varying(255) NOT NULL,
+  sharing character varying(255) NOT NULL,
+  enforcement_action character varying(255),
+  inserted_at character varying(255) NOT NULL, tomb integer, device_id integer);
 
+create index tomb_index on user_policy (tomb);
 
 
 
