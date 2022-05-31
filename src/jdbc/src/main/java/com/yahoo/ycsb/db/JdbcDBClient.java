@@ -1250,7 +1250,7 @@ public class JdbcDBClient extends DB {
       }
       Connection c = getConnection(actor);
       Statement statement = c.createStatement();
-      StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time) VALUES (");
+      StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, user_interest, device_id) VALUES (");
       // sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at) VALUES(");
       sb.append("\'").append(newObj.getMallData().getId()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getShopName()).append("\', ");
