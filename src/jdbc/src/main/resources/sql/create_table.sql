@@ -41,6 +41,15 @@ CREATE TABLE usertable(id character varying(50) NOT NULL,
   enforcement_action character varying(255),
   inserted_at character varying(255) NOT NULL
   );
+
+  -- non ycsb
+  CREATE TABLE usertable(id character varying(50) NOT NULL,
+  shop_name character varying(20) NOT NULL,
+  obs_date character varying(255) NOT NULL,
+  obs_time character varying(255) NOT NULL,
+  user_interest character varying(20),
+  device_id integer NOT NULL,
+  );
   -- {DEC=dec1, USR=user9993, SRC=src3, OBJ=obj93, CAT=cat3, ACL=acl3, Data=99931754682999311113468279993-448309203999316143130999993-6183550329993-477178749993-167714670099936, PUR=purpose18, SHR=shr3, TTL=14000}
 create policy controller_all on usertable for select using(true);
 CREATE POLICY controller_all ON usertable TO controller USING (true) WITH CHECK (true);

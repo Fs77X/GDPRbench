@@ -379,24 +379,24 @@ public class JdbcDBClient extends DB {
       Connection c = getConnection("customer");
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      String query = "SELECT DISTINCT device_id FROM usertable";
+      // String query = "SELECT DISTINCT device_id FROM usertable";
+      // ResultSet rs = statement.executeQuery(query);
+      // rs.last();
+      // String[] devid = new String[rs.getRow()];
+      // rs.beforeFirst();
+      // int counter = 0;
+      // while (rs.next()) {
+      //   String val = rs.getString("device_id");
+      //   devid[counter] = val;
+      //   counter = counter + 1;
+      // }
+      // String deviceid = devid[rand.nextInt(counter)];
+      String query = "SELECT id FROM usertable";
       ResultSet rs = statement.executeQuery(query);
-      rs.last();
-      String[] devid = new String[rs.getRow()];
-      rs.beforeFirst();
-      int counter = 0;
-      while (rs.next()) {
-        String val = rs.getString("device_id");
-        devid[counter] = val;
-        counter = counter + 1;
-      }
-      String deviceid = devid[rand.nextInt(counter)];
-      query = "SELECT id FROM usertable WHERE device_id = \'" + deviceid + "\'";
-      rs = statement.executeQuery(query);
       rs.last();
       String[] id = new String[rs.getRow()];
       rs.beforeFirst();
-      counter = 0;
+      Integer counter = 0;
       while (rs.next()) {
         String val = rs.getString("id");
         id[counter] = val;
@@ -408,12 +408,13 @@ public class JdbcDBClient extends DB {
       int idx = rand.nextInt(id.length);
       String qkey = id[idx] + "";
       rs.close();
-      query = "SELECT * from usertable WHERE device_id = \'" + deviceid + "\' AND id = \'" + qkey + "\'";
+      query = "SELECT * from usertable WHERE id = \'" + qkey + "\'";
       // System.out.println(query);
       rs = statement.executeQuery(query);
       rs.last();
       rs.beforeFirst();
       counter = 0;
+      String devid = "";
       StringBuilder res = new StringBuilder();
       while (rs.next()) {
         String iId = rs.getString("id");
@@ -426,11 +427,11 @@ public class JdbcDBClient extends DB {
         res.append(obs_time).append("|");
         String user_interest = rs.getString("user_interest");
         res.append(user_interest).append("|");
-        String dId = rs.getString("device_id");
-        res.append(dId).append(")");
+        devid = rs.getString("device_id");
+        res.append(devid).append(")");
       }
       rs.close();
-      log(deviceid, "", res.toString());
+      log(devid, "", res.toString());
       return Status.OK;
       // if (!rs.next()) {
       //   rs.close();
@@ -1215,21 +1216,21 @@ public class JdbcDBClient extends DB {
     MallData mallData = new MallData(mdId, shopName, obs_date, obs_time, uInterest, device_id);
 
     // metadata
-    Instant instant = Instant.ofEpochMilli(now);
-    long res = instant.getEpochSecond();
-    int ttl = (int)res + rand.nextInt(4000) + 30;
-    String uuid = UUID.randomUUID().toString();
-    int q = rand.nextInt(100) + 1;
-    String querier = q + "";
-    String purpose = (rand.nextInt(100) + 1) + "";
-    String origin = (rand.nextInt(100) + 1) + "";
-    String objection = (rand.nextInt(100) + 1) + "";
-    String sharing = (rand.nextInt(100) + 1) + "";
-    String enforcement = "allow";
-    Timestamp ts = new Timestamp(now);
-    String timeStamp = ts.toString();
-    String key = mdId;
-    MetaData mData = new MetaData(uuid, querier, purpose, ttl, origin, objection, sharing, enforcement, timeStamp, device_id, key);
+    // Instant instant = Instant.ofEpochMilli(now);
+    // long res = instant.getEpochSecond();
+    // int ttl = (int)res + rand.nextInt(4000) + 30;
+    // String uuid = UUID.randomUUID().toString();
+    // int q = rand.nextInt(100) + 1;
+    // String querier = q + "";
+    // String purpose = (rand.nextInt(100) + 1) + "";
+    // String origin = (rand.nextInt(100) + 1) + "";
+    // String objection = (rand.nextInt(100) + 1) + "";
+    // String sharing = (rand.nextInt(100) + 1) + "";
+    // String enforcement = "allow";
+    // Timestamp ts = new Timestamp(now);
+    // String timeStamp = ts.toString();
+    // String key = mdId;
+    MetaData mData = new MetaData("", "", "", 0, "", "", "", "", "", device_id, "");
     return new MaddObj(mallData, mData);
   }
 
@@ -1249,22 +1250,22 @@ public class JdbcDBClient extends DB {
       }
       Connection c = getConnection(actor);
       Statement statement = c.createStatement();
-      StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time, ");
-      sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at) VALUES(");
+      StringBuilder sb = new StringBuilder("INSERT INTO usertable(id, shop_name, obs_date, obs_time) VALUES (");
+      // sb.append("user_interest, device_id, querier, purpose, ttl, origin, objection, sharing, enforcement_action, inserted_at) VALUES(");
       sb.append("\'").append(newObj.getMallData().getId()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getShopName()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getObsDate()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getObsTime()).append("\', ");
       sb.append("\'").append(newObj.getMallData().getUserInterest()).append("\', ");
-      sb.append("\'").append(newObj.getMallData().getDeviceID()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getTtl()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getOrigin()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
-      sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
+      sb.append("\'").append(newObj.getMallData().getDeviceID()).append("\')");
+      // sb.append("\'").append(newObj.getMetaData().getQuerier()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getPurpose()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getTtl()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getOrigin()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getObjection()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getSharing()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getEnforcementAction()).append("\', ");
+      // sb.append("\'").append(newObj.getMetaData().getInsertedAt()).append("\')");
       statement.executeUpdate(sb.toString());
       log(newObj.getMallData().getDeviceID().toString(), "", "INSERT USERDATA SUCC");
       // StatementType type = new StatementType(StatementType.Type.INSERT, table,
