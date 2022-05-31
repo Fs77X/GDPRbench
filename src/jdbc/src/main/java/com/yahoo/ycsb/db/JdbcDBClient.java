@@ -185,25 +185,25 @@ public class JdbcDBClient extends DB {
       Connection c = getConnection();
       Statement statement = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
       Random rand = new Random();
-      String query = "SELECT DISTINCT device_id FROM mall_observation";
+      // String query = "SELECT DISTINCT device_id FROM mall_observation";
+      // ResultSet rs = statement.executeQuery(query);
+      // rs.last();
+      // String[] devid = new String[rs.getRow()];
+      // rs.beforeFirst();
+      // int counter = 0;
+      // while (rs.next()) {
+      //   String val = rs.getString("device_id");
+      //   devid[counter] = val;
+      //   counter = counter + 1;
+      // }
+      // String deviceid = devid[rand.nextInt(counter)];
+      String query = "SELECT id FROM mall_observation";
       ResultSet rs = statement.executeQuery(query);
-      rs.last();
-      String[] devid = new String[rs.getRow()];
-      rs.beforeFirst();
-      int counter = 0;
-      while (rs.next()) {
-        String val = rs.getString("device_id");
-        devid[counter] = val;
-        counter = counter + 1;
-      }
-      String deviceid = devid[rand.nextInt(counter)];
-      query = "SELECT id FROM mall_observation WHERE device_id = \'" + deviceid + "\'";
-      rs = statement.executeQuery(query);
       rs.last();
       
       String[] id = new String[rs.getRow()];
       rs.beforeFirst();
-      counter = 0;
+      Integer counter = 0;
       while (rs.next()) {
         String val = rs.getString("id");
         id[counter] = val;
@@ -219,7 +219,7 @@ public class JdbcDBClient extends DB {
       rs.close();
       statement.close();
       c.close();
-      return new MgetEntry(qkey, deviceid);
+      return new MgetEntry(qkey, "");
 
     } catch (Exception e) {
       // TODO Auto-generated catch block
@@ -447,7 +447,7 @@ public class JdbcDBClient extends DB {
       MgetEntry mge = createMgetEntry();
       // System.out.println("http://localhost:5344/mget_entry/" + mge.getDeviceId() + "/" + mge.getId());
       Request request = new Request.Builder()
-          .url("http://localhost:5344/sieve/mget_entry/" + mge.getDeviceId() + "/" + mge.getId())
+          .url("http://localhost:5344/sieve/mget_entry/" + mge.getId())
           .method("GET", null)
           .build();
       Response response = client.newCall(request).execute();
@@ -470,7 +470,7 @@ public class JdbcDBClient extends DB {
     // System.out.println("we in the read");
     try {
       Status resRead = actualRead(key);
-      return Status.OK;
+      return resRead;
     } catch (Exception e) {
       System.err.println(key + ": " + e);
       return Status.ERROR;
@@ -1116,22 +1116,22 @@ public class JdbcDBClient extends DB {
     MallData mallData = new MallData(mdId, shopName, obs_date, obs_time, uInterest, device_id);
 
     // metadata
-    Instant instant = Instant.ofEpochMilli(now);
-    long res = instant.getEpochSecond();
-    int ttl = (int)res + rand.nextInt(4000) + 30;
-    int polid = userPCounter;
-    userPCounter = userPCounter + 1;
-    String uuid = UUID.randomUUID().toString();
-    int q = rand.nextInt(100) + 1;
-    String querier = q + "";
-    String purpose = (rand.nextInt(100) + 1) + "";
-    String origin = (rand.nextInt(100) + 1) + "";
-    String objection = (rand.nextInt(100) + 1) + "";
-    String sharing = (rand.nextInt(100) + 1) + "";
+    // Instant instant = Instant.ofEpochMilli(now);
+    // long res = instant.getEpochSecond();
+    int ttl = 0;
+    int polid = 0;
+    // userPCounter = userPCounter + 1;
+    String uuid = "q";
+    // int q = 0;
+    String querier = "q";
+    String purpose = "q";
+    String origin = "q";
+    String objection = "q";
+    String sharing = "q";
     String enforcement = "allow";
-    Timestamp ts = new Timestamp(now);
-    String timeStamp = ts.toString();
-    String key = mdId;
+    // Timestamp ts = new Timestamp(now);
+    String timeStamp = "q";
+    String key = "q";
     MetaData mData = new MetaData(polid, uuid, querier, purpose, ttl, origin, objection, sharing, enforcement, timeStamp, device_id, key);
     return new MaddObj(mallData, mData);
   }
