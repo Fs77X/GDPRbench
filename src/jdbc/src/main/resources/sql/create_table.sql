@@ -56,6 +56,7 @@ CREATE POLICY admin_processor ON usertable TO processor USING (true) WITH CHECK 
 GRANT SELECT, INSERT, UPDATE, DELETE ON usertable TO processor;
 CREATE POLICY admin_customer ON usertable TO customer USING (true) WITH CHECK (true);
 GRANT SELECT, INSERT, UPDATE, DELETE ON usertable TO customer;
+alter table usertable enable row level security;
 
 
 CREATE POLICY controller_insert on usertable for insert with check(true);
